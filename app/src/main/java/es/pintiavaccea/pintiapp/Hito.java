@@ -1,0 +1,146 @@
+package es.pintiavaccea.pintiapp;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * Created by Miguel on 02/05/2016.
+ */
+public class Hito implements Parcelable {
+
+    private int id;
+    private int numeroHito;
+    private String titulo;
+    private String subtitulo;
+    private String fecha;
+    private double latitud;
+    private double longitud;
+    private boolean itinerario;
+    private String texto;
+
+    public Hito(int id, int numeroHito, String titulo, String subtitulo, String fecha, double latitud, double longitud, boolean itinerario, String texto){
+        this.id = id;
+        this.numeroHito = numeroHito;
+        this.titulo = titulo;
+        this.subtitulo = subtitulo;
+        this.fecha = fecha;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.itinerario = itinerario;
+        this.texto = texto;
+    }
+
+    protected Hito(Parcel in) {
+        setId(in.readInt());
+        setNumeroHito(in.readInt());
+        setTitulo(in.readString());
+        setSubtitulo(in.readString());
+        setFecha(in.readString());
+        setLatitud(in.readDouble());
+        setLongitud(in.readDouble());
+        setItinerario(in.readByte() != 0);
+        setTexto(in.readString());
+    }
+
+    public static final Creator<Hito> CREATOR = new Creator<Hito>() {
+        @Override
+        public Hito createFromParcel(Parcel in) {
+            return new Hito(in);
+        }
+
+        @Override
+        public Hito[] newArray(int size) {
+            return new Hito[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(getId());
+        dest.writeInt(getNumeroHito());
+        dest.writeString(getTitulo());
+        dest.writeString(getSubtitulo());
+        dest.writeString(getFecha());
+        dest.writeDouble(getLatitud());
+        dest.writeDouble(getLongitud());
+        dest.writeByte((byte) (isItinerario() ? 1 : 0));
+        dest.writeString(getTexto());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getNumeroHito() {
+        return numeroHito;
+    }
+
+    public void setNumeroHito(int numeroHito) {
+        this.numeroHito = numeroHito;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getSubtitulo() {
+        return subtitulo;
+    }
+
+    public void setSubtitulo(String subtitulo) {
+        this.subtitulo = subtitulo;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public boolean isItinerario() {
+        return itinerario;
+    }
+
+    public void setItinerario(boolean itinerario) {
+        this.itinerario = itinerario;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+}

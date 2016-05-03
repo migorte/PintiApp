@@ -27,6 +27,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="es.pintiavaccea.pintiapp.MainActivity" />
         </activity>
+        <activity
+            android:name=".ListaHitosActivity"
+            android:label="@string/title_activity_lista_hitos"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="es.pintiavaccea.pintiapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public static DBHelper getInstance(Context context){
         if(mInstance == null){
-            mInstance = new DBHelper(context.getApplicationContext());
+            mInstance = new DBHelper(context);
         }
         return mInstance;
     }
@@ -29,6 +29,8 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(DataSource.CREATE_HITO_SCRIPT);
         db.execSQL(DataSource.CREATE_IMAGEN_SCRIPT);
         db.execSQL(DataSource.CREATE_VIDEO_SCRIPT);
+
+        db.execSQL(DataSource.INSERT_HITO_SCRIPT);
     }
 
     @Override

@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_lista_hitos) {
-
+            startActivity(new Intent(MainActivity.this, ListaHitosActivity.class));
         } else if (id == R.id.nav_precargar) {
 
         } else if (id == R.id.nav_ayuda) {

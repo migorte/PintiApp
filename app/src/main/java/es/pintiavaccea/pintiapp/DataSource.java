@@ -1,8 +1,12 @@
 package es.pintiavaccea.pintiapp;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Miguel on 28/04/2016.
@@ -25,7 +29,7 @@ public class DataSource {
         public static final String SUBTITULO = "subtitulo";
         public static final String FECHA = "fecha";
         public static final String LATITUD = "latitud";
-        public static final String LONGITUD = "latitud";
+        public static final String LONGITUD = "longitud";
         public static final String TEXTO = "texto";
         public static final String ITINERARIO = "itinerario";
     }
@@ -63,11 +67,15 @@ public class DataSource {
             ColumnImagen.PORTADA + " " + STRING_TYPE + " not null," +
             ColumnImagen.HITO + " " + INT_TYPE + " not null)";
 
-    public static final String CREATE_VIDEO_SCRIPT = "create table " + IMAGEN_TABLE + " ( " +
-            ColumnImagen.ID + " " + INT_TYPE + " primary key," +
-            ColumnImagen.NOMBRE + " " + STRING_TYPE + " not null," +
-            ColumnImagen.RUTA + " " + STRING_TYPE + " not null," +
-            ColumnImagen.HITO + " " + INT_TYPE + " not null)";
+    public static final String CREATE_VIDEO_SCRIPT = "create table " + VIDEO_TABLE + " ( " +
+            ColumnVideo.ID + " " + INT_TYPE + " primary key," +
+            ColumnVideo.NOMBRE + " " + STRING_TYPE + " not null," +
+            ColumnVideo.RUTA + " " + STRING_TYPE + " not null," +
+            ColumnVideo.HITO + " " + INT_TYPE + " not null)";
+
+    public static final String INSERT_HITO_SCRIPT =
+            "insert into " + HITO_TABLE + " values (null, 1, 'Las Ruedas', " +
+                    "'Cerámica Vaccea', 's III aC', 23.45, 45.65, 'absdfa', 1)";
 
 
     public DataSource(Context context) {
@@ -76,5 +84,32 @@ public class DataSource {
         database = openHelper.getWritableDatabase();
     }
 
+    public List<Hito> getAllHitos() {
+        Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 
+        cursor.moveToFirst();
+
+        List<Hito> listaHitos = new ArrayList<>();
+
+        while (!cursor.isAfterLast()) {
+
+            boolean itinerario = false;
+
+            if (cursor.getInt(cursor.getColumnIndex(ColumnHito.ITINERARIO)) == 1) itinerario = true;
+
+            Hito hito = new Hito(cursor.getInt(cursor.getColumnIndex(ColumnHito.ID)),
+                    cursor.getInt(cursor.getColumnIndex(ColumnHito.NUMERO_HITO)),
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.TITULO)),
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.SUBTITULO)),
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.FECHA)),
+                    cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
+                    cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
+                    itinerario,
+                    cursor.getColumnName(cursor.getColumnIndex(ColumnHito.TEXTO)));
+
+            cursor.moveToNext();
+        }
+
+        return listaHitos;
+    }
 }

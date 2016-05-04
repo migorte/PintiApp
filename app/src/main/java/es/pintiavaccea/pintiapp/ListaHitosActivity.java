@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.List;
+
 public class ListaHitosActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
@@ -33,8 +35,11 @@ public class ListaHitosActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        DataSource dataSource = new DataSource(this);
+        List<Hito> myDataset = dataSource.getAllHitos();
+
         // specify an adapter (see also next example)
-//        mAdapter = new ListaHitosAdapter(myDataset);
+        mAdapter = new ListaHitosAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
     }

@@ -107,6 +107,7 @@ public class DataSource {
                     itinerario,
                     cursor.getColumnName(cursor.getColumnIndex(ColumnHito.TEXTO)));
 
+            listaHitos.add(hito);
             cursor.moveToNext();
         }
 

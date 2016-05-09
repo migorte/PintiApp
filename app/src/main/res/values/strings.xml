@@ -99,4 +99,6 @@
     <string name="ayuda_boton">Pulsa el botón de ubicación para localizar el hito más cercano y mostrar su información.</string>
     <string name="ayuda_precargar">La información es descargada desde nuestros servidores. Debido a que la cobertura de Padilla de Duero no es la mejor, se recomienda precargar los datos antes de realizar la visita.</string>
     <string name="title_activity_lista_hitos">ListaHitosActivity</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_lista_hitos) {
             startActivity(new Intent(MainActivity.this, ListaHitosActivity.class));
         } else if (id == R.id.nav_precargar) {
-            startActivity(new Intent(MainActivity.this, ItemListActivity.class));
+
         } else if (id == R.id.nav_ayuda) {
             startActivity(new Intent(MainActivity.this, AyudaActivity.class));
         }

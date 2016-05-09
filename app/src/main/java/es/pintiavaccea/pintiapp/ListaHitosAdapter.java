@@ -1,5 +1,7 @@
 package es.pintiavaccea.pintiapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +15,12 @@ import java.util.List;
 /**
  * Created by Miguel on 02/05/2016.
  */
-public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.ViewHolder>{
+public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.ViewHolder> {
 
     private List<Hito> mDataset;
+    private Context context;
 
-    public ListaHitosAdapter (List<Hito> mDataset){
+    public ListaHitosAdapter(List<Hito> mDataset) {
         this.mDataset = mDataset;
     }
 
@@ -37,6 +40,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titulo.setText(mDataset.get(position).getTitulo());
         holder.subtitulo.setText(mDataset.get(position).getSubtitulo());
+        holder.hito = mDataset.get(position);
     }
 
     @Override
@@ -44,26 +48,35 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
         return mDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView foto;
         public TextView titulo;
         public TextView subtitulo;
         public TextView fecha;
+        public Hito hito;
+        private final Context context;
 
-        public ViewHolder(View v){
+        public ViewHolder(View v) {
             super(v);
 
             foto = (ImageView) v.findViewById(R.id.hito_foto);
             titulo = (TextView) v.findViewById(R.id.hito_titulo);
             subtitulo = (TextView) v.findViewById(R.id.hito_subtitulo);
 //            fecha = (TextView) v.findViewById(R.id.hito_fecha);
+            context = v.getContext();
+
+            v.setClickable(true);
+            v.setOnClickListener(this);
 
         }
 
         @Override
-        public void onClick(View view){
-
+        public void onClick(View view) {
+            final Intent intent;
+            intent = new Intent(context, DetalleHitoActivity.class);
+            intent.putExtra("hito", hito);
+            context.startActivity(intent);
         }
     }
 }

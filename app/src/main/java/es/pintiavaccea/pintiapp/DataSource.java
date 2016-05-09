@@ -75,7 +75,7 @@ public class DataSource {
 
     public static final String INSERT_HITO_SCRIPT =
             "insert into " + HITO_TABLE + " values (null, 1, 'Las Ruedas', " +
-                    "'Cerámica Vaccea', 's III aC', 23.45, 45.65, 'absdfa', 1)";
+                    "'Cerámica Vaccea', 's III aC', 23.45, 45.65, 'Distrito comercial del asentamiento, aquí es donde los mercaderes vendían sus productos provenientes de Tartesso', 1)";
 
 
     public DataSource(Context context) {
@@ -105,7 +105,7 @@ public class DataSource {
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
                     itinerario,
-                    cursor.getColumnName(cursor.getColumnIndex(ColumnHito.TEXTO)));
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.TEXTO)));
 
             listaHitos.add(hito);
             cursor.moveToNext();

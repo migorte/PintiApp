@@ -1,6 +1,9 @@
 package es.pintiavaccea.pintiapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +20,10 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private LocationReceiver locationReceiver;
+    private double latitude;
+    private double longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +35,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Latitud: " + latitude + "\t Longitud: " + longitude, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -92,5 +99,48 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Receptor de cambios en la localizacion.
+     */
+    private class LocationReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            Bundle b = intent.getExtras();
+            latitude = b.getDouble("latitude");
+            longitude = b.getDouble("longitude");
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        locationReceiver = new LocationReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LocationService.MY_ACTION);
+        registerReceiver(locationReceiver, intentFilter);
+
+        //Start our own service
+        Intent intent = new Intent(this, LocationService.class);
+        startService(intent);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(locationReceiver);
     }
 }

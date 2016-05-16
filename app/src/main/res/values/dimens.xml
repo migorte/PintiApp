@@ -9,4 +9,8 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="item_width">200dp</dimen>
+
+    <!-- Dimensiones para la pantalla de detalle hito. -->
+    <dimen name="subtitulo_size">18sp</dimen>
+    <dimen name="fecha_size">16sp</dimen>
 </resources>

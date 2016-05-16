@@ -38,6 +38,8 @@ public class DetalleHitoActivity extends AppCompatActivity {
             hito = savedInstanceState.getParcelable("hito");
         }
 
+//        assignHito(savedInstanceState);
+        this.setTitle(hito.getTitulo());
         setContent();
     }
 
@@ -48,7 +50,30 @@ public class DetalleHitoActivity extends AppCompatActivity {
     }
 
     private void setContent(){
+        TextView subtitulo = (TextView) findViewById(R.id.subtitulo);
+        subtitulo.setText(hito.getSubtitulo());
+        TextView fecha = (TextView) findViewById(R.id.fecha);
+        fecha.setText(hito.getFecha());
         TextView texto = (TextView) findViewById(R.id.texto);
         texto.setText(hito.getTexto());
     }
+
+    /**
+     * Obtiene el hito del intent
+     *
+     * @param savedInstanceState savedInstanceState
+     */
+
+//    private void assignHito(Bundle savedInstanceState) {
+//        if (savedInstanceState == null) {
+//            Bundle extras = getIntent().getExtras();
+//            if (extras == null) {
+//                hito = null;
+//            } else {
+//                hito = (Hito) extras.getSerializable("hito");
+//            }
+//        } else {
+//            hito = (Hito) savedInstanceState.getSerializable("hito");
+//        }
+//    }
 }

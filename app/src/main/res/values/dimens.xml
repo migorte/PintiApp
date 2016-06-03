@@ -13,4 +13,7 @@
     <!-- Dimensiones para la pantalla de detalle hito. -->
     <dimen name="subtitulo_size">18sp</dimen>
     <dimen name="fecha_size">16sp</dimen>
+
+    <dimen name="sheet_text_scrim_height_top">88dp</dimen>
+    <dimen name="sheet_text_scrim_height_bottom">100dp</dimen>
 </resources>

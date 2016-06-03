@@ -76,6 +76,9 @@ public class DataSource {
     public static final String INSERT_HITO_SCRIPT =
             "insert into " + HITO_TABLE + " values (null, 1, 'Las Ruedas', " +
                     "'Cerámica Vaccea', 's III aC', 23.45, 45.65, 'Distrito comercial del asentamiento, aquí es donde los mercaderes vendían sus productos provenientes de Tartesso', 1)";
+    public static final String INSERT_HITO_SCRIPT1 =
+            "insert into " + HITO_TABLE + " values (null, 2, 'La muralla', " +
+                    "'A través de las civilizaciones', 's III aC', 23.45, 45.65, 'Se fueron restaurando a lo largo de los siglos. Se cree que hubo una vaccea, una romana y una visigoda.', 1)";
 
 
     public DataSource(Context context) {

@@ -5,12 +5,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class DetalleHitoActivity extends AppCompatActivity {
 
     private Hito hito;
+    private ImageView portada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +23,7 @@ public class DetalleHitoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_hito);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -27,7 +33,6 @@ public class DetalleHitoActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState==null){
             Bundle extras = getIntent().getExtras();
@@ -56,6 +61,22 @@ public class DetalleHitoActivity extends AppCompatActivity {
         fecha.setText(hito.getFecha());
         TextView texto = (TextView) findViewById(R.id.texto);
         texto.setText(hito.getTexto());
+        portada = (ImageView) findViewById(R.id.imagen_toolbar);
+        Picasso.with(this).setIndicatorsEnabled(true);
+        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
+                .error(R.drawable.img201205191603108139).into(portada);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

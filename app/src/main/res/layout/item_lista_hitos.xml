@@ -1,49 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:layout_width="match_parent"
+    android:layout_height="240dp" >
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.38"
+        android:background="#000"
+        android:layout_alignParentBottom="true"/>
 
     <ImageView
         android:id="@+id/hito_foto"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_margin="16dp"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:layout_marginEnd="6dip"
+        android:scaleType="centerCrop"
         android:transitionName="portada_hito"
         android:contentDescription="TODO" />
 
     <TextView
-        android:id="@+id/hito_titulo"
-        android:layout_width="fill_parent"
+        android:id="@+id/hito_numero"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/hito_foto"
-        android:layout_toEndOf="@id/hito_foto"
-        android:gravity="center_vertical"
-        android:text="Example application"
-        android:textSize="16sp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@id/divider"
+        android:text="0"
+        style="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/hito_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/hito_subtitulo"
+        android:layout_toRightOf="@id/hito_numero"
+        android:layout_toEndOf="@id/hito_numero"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Title"
+        style="@style/TextAppearance.AppCompat.Subhead" />
 
     <TextView
         android:id="@+id/hito_subtitulo"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_below="@id/hito_titulo"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@id/hito_foto"
-        android:layout_toEndOf="@id/hito_foto"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:text="Description"
-        android:textSize="12sp" />
-
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/divider"
+        android:layout_toRightOf="@id/hito_numero"
+        android:layout_toEndOf="@id/hito_numero"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="8dp"
+        android:text="Subtitle"
+        android:alpha="0.57"
+        style="@style/TextAppearance.AppCompat.Body1"/>
 
 </RelativeLayout>

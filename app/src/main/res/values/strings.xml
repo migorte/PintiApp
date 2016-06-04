@@ -102,4 +102,16 @@
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="title_activity_detalle_hito">DetalleHitoActivity</string>
+
+    <!-- Localizacion-->
+    <string name="no_internet">Internet no disponible</string>
+    <string name="no_location">Ubicación no disponible</string>
+    <string name="location_google_apis">GOOGLE PLAY SERVICES DEBE ESTAR INSTALADO</string>
+    <string name="gps_disabled">GPS no activado</string>
+    <string name="gps_open">Activar</string>
+    <string name="permission_available_gps">Los permisos de localización se han concedido</string>
+    <string name="permission_gps_rationale">El permiso de localización es necesario</string>
+    <string name="permissions_not_granted">Permisos no concedidos</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
 </resources>

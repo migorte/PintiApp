@@ -53,6 +53,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView foto;
+        public TextView numero;
         public TextView titulo;
         public TextView subtitulo;
         public Hito hito;
@@ -62,6 +63,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             super(v);
 
             foto = (ImageView) v.findViewById(R.id.hito_foto);
+            numero = (TextView) v.findViewById(R.id.hito_numero);
             titulo = (TextView) v.findViewById(R.id.hito_titulo);
             subtitulo = (TextView) v.findViewById(R.id.hito_subtitulo);
             context = v.getContext();
@@ -73,6 +75,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
         public void bind(Hito hito){
             this.hito = hito;
+            numero.setText(String.valueOf(hito.getNumeroHito()));
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
             Picasso.with(context).setIndicatorsEnabled(true);

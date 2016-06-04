@@ -35,7 +35,6 @@
                 android:layout_height="300dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img201205191602434594"
                 android:transitionName="portada_hito"
                 app:layout_collapseMode="parallax" />
 

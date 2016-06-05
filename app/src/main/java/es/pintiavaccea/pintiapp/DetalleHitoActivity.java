@@ -12,10 +12,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+
 public class DetalleHitoActivity extends AppCompatActivity {
 
     private Hito hito;
     private ImageView portada;
+    private VideoView mVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,6 @@ public class DetalleHitoActivity extends AppCompatActivity {
             hito = savedInstanceState.getParcelable("hito");
         }
 
-//        assignHito(savedInstanceState);
         this.setTitle(hito.getTitulo());
         setContent();
     }
@@ -66,6 +70,30 @@ public class DetalleHitoActivity extends AppCompatActivity {
         Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
                 .error(R.drawable.img201205191603108139).into(portada);
 
+
+        /********************
+         * Reproductor Vitamio*
+         *********************/
+        mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
+        String path = "rtmp://rrbalancer.broadcast.tneg.de:1935/pw/ruk/ruk";
+        /*options = new HashMap<>();
+        options.put("rtmp_playpath", "");
+        options.put("rtmp_swfurl", "");
+        options.put("rtmp_live", "1");
+        options.put("rtmp_pageurl", "");*/
+        mVideoView.setVideoPath(path);
+        //mVideoView.setVideoURI(Uri.parse(path), options);
+        mVideoView.setMediaController(new MediaController(this));
+        mVideoView.requestFocus();
+
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setPlaybackSpeed(1.0f);
+            }
+        });
+
+
     }
 
     @Override
@@ -78,23 +106,4 @@ public class DetalleHitoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Obtiene el hito del intent
-     *
-     * @param savedInstanceState savedInstanceState
-     */
-
-//    private void assignHito(Bundle savedInstanceState) {
-//        if (savedInstanceState == null) {
-//            Bundle extras = getIntent().getExtras();
-//            if (extras == null) {
-//                hito = null;
-//            } else {
-//                hito = (Hito) extras.getSerializable("hito");
-//            }
-//        } else {
-//            hito = (Hito) savedInstanceState.getSerializable("hito");
-//        }
-//    }
 }

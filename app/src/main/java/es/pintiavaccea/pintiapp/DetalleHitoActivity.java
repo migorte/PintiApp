@@ -61,8 +61,6 @@ public class DetalleHitoActivity extends AppCompatActivity {
     private void setContent(){
         TextView subtitulo = (TextView) findViewById(R.id.subtitulo);
         subtitulo.setText(hito.getSubtitulo());
-        TextView fecha = (TextView) findViewById(R.id.fecha);
-        fecha.setText(hito.getFecha());
         TextView texto = (TextView) findViewById(R.id.texto);
         texto.setText(hito.getTexto());
         portada = (ImageView) findViewById(R.id.imagen_toolbar);

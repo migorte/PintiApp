@@ -30,16 +30,6 @@
             android:textSize="@dimen/subtitulo_size"/>
 
         <TextView
-            android:id="@+id/fecha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:textSize="@dimen/fecha_size"/>
-
-        <TextView
             android:id="@+id/texto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

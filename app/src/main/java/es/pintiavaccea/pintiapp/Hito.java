@@ -12,18 +12,16 @@ public class Hito implements Parcelable {
     private int numeroHito;
     private String titulo;
     private String subtitulo;
-    private String fecha;
     private double latitud;
     private double longitud;
     private boolean itinerario;
     private String texto;
 
-    public Hito(int id, int numeroHito, String titulo, String subtitulo, String fecha, double latitud, double longitud, boolean itinerario, String texto){
+    public Hito(int id, int numeroHito, String titulo, String subtitulo, double latitud, double longitud, boolean itinerario, String texto){
         this.id = id;
         this.numeroHito = numeroHito;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
-        this.fecha = fecha;
         this.latitud = latitud;
         this.longitud = longitud;
         this.itinerario = itinerario;
@@ -35,7 +33,6 @@ public class Hito implements Parcelable {
         setNumeroHito(in.readInt());
         setTitulo(in.readString());
         setSubtitulo(in.readString());
-        setFecha(in.readString());
         setLatitud(in.readDouble());
         setLongitud(in.readDouble());
         setItinerario(in.readByte() != 0);
@@ -65,7 +62,6 @@ public class Hito implements Parcelable {
         dest.writeInt(getNumeroHito());
         dest.writeString(getTitulo());
         dest.writeString(getSubtitulo());
-        dest.writeString(getFecha());
         dest.writeDouble(getLatitud());
         dest.writeDouble(getLongitud());
         dest.writeByte((byte) (isItinerario() ? 1 : 0));
@@ -102,14 +98,6 @@ public class Hito implements Parcelable {
 
     public void setSubtitulo(String subtitulo) {
         this.subtitulo = subtitulo;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
     }
 
     public double getLatitud() {

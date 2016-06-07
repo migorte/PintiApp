@@ -27,7 +27,6 @@ public class DataSource {
         public static final String NUMERO_HITO = "numeroHito";
         public static final String TITULO = "titulo";
         public static final String SUBTITULO = "subtitulo";
-        public static final String FECHA = "fecha";
         public static final String LATITUD = "latitud";
         public static final String LONGITUD = "longitud";
         public static final String TEXTO = "texto";
@@ -54,7 +53,6 @@ public class DataSource {
             ColumnHito.NUMERO_HITO + " " + INT_TYPE + " not null," +
             ColumnHito.TITULO + " " + STRING_TYPE + " not null," +
             ColumnHito.SUBTITULO + " " + STRING_TYPE + " not null," +
-            ColumnHito.FECHA + " " + STRING_TYPE + " not null," +
             ColumnHito.LATITUD + " " + REAL_TYPE + " not null," +
             ColumnHito.LONGITUD + " " + REAL_TYPE + " not null," +
             ColumnHito.TEXTO + " " + REAL_TYPE + " not null," +
@@ -75,10 +73,10 @@ public class DataSource {
 
     public static final String INSERT_HITO_SCRIPT =
             "insert into " + HITO_TABLE + " values (null, 1, 'Las Ruedas', " +
-                    "'Cerámica Vaccea', 's III aC', 23.45, 45.65, 'Distrito comercial del asentamiento, aquí es donde los mercaderes vendían sus productos provenientes de Tartesso', 1)";
+                    "'Cerámica Vaccea', 23.45, 45.65, 'Distrito comercial del asentamiento, aquí es donde los mercaderes vendían sus productos provenientes de Tartesso', 1)";
     public static final String INSERT_HITO_SCRIPT1 =
             "insert into " + HITO_TABLE + " values (null, 2, 'La muralla', " +
-                    "'A través de las civilizaciones', 's III aC', 23.45, 45.65, 'Se fueron restaurando a lo largo de los siglos. Se cree que hubo una vaccea, una romana y una visigoda.', 1)";
+                    "'A través de las civilizaciones', 23.45, 45.65, 'Se fueron restaurando a lo largo de los siglos. Se cree que hubo una vaccea, una romana y una visigoda.', 1)";
 
 
     public DataSource(Context context) {
@@ -104,7 +102,6 @@ public class DataSource {
                     cursor.getInt(cursor.getColumnIndex(ColumnHito.NUMERO_HITO)),
                     cursor.getString(cursor.getColumnIndex(ColumnHito.TITULO)),
                     cursor.getString(cursor.getColumnIndex(ColumnHito.SUBTITULO)),
-                    cursor.getString(cursor.getColumnIndex(ColumnHito.FECHA)),
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
                     itinerario,

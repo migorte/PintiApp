@@ -1,5 +1,6 @@
 package es.pintiavaccea.pintiapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,6 +85,23 @@ public class ListaHitosActivity extends AppCompatActivity {
      * Created by Miguel on 07/06/2016.
      */
     public class JsonHitoTask extends AsyncTask<URL, Void, List<Hito>> {
+
+        private ProgressDialog spinner;
+
+        public JsonHitoTask() {
+            Context context = ListaHitosActivity.this;
+            spinner = new ProgressDialog(context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // show progress spinner
+            spinner.setMessage("Descargando lista de hitos");
+            spinner.show();
+
+            //do something
+        }
+
         @Override
         protected List<Hito> doInBackground(URL... params) {
             List<Hito> hitos = null;
@@ -112,6 +131,13 @@ public class ListaHitosActivity extends AppCompatActivity {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), "Ha sido imposible conectarse a internet",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             } finally {
                 con.disconnect();
             }
@@ -132,8 +158,9 @@ public class ListaHitosActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(mAdapter);
             } else {
                 Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
-                        Toast.LENGTH_LONG);
+                        Toast.LENGTH_LONG).show();
             }
+            spinner.dismiss();
         }
     }
 }

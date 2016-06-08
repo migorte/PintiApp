@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#004d40</color>
     <color name="colorAccent">#f44336</color>
 
+    <!-- Colores básicos -->
+    <color name="black">#000</color>
+    <color name="white">#FFF</color>
+    <color name="lightGray">#D3D3D3</color>
+
+    <!-- Colores para los scrim -->
     <color name="translucent_scrim_top">#26000000</color>
     <color name="translucent_scrim_top_center">#0C000000</color>
     <color name="translucent_scrim_bottom">#2A000000</color>

@@ -15,4 +15,11 @@
             @transition/change_image_transform</item>
 
     </style>
+
+    <style name="Etiqueta" parent="@android:style/TextAppearance.Material.Subhead">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:typeface">sans</item>
+    </style>
 </resources>

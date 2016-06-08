@@ -30,14 +30,14 @@ public class DetalleHitoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         if (savedInstanceState==null){
             Bundle extras = getIntent().getExtras();
@@ -72,24 +72,24 @@ public class DetalleHitoActivity extends AppCompatActivity {
         /********************
          * Reproductor Vitamio*
          *********************/
-        mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
-        String path = "rtmp://rrbalancer.broadcast.tneg.de:1935/pw/ruk/ruk";
-        /*options = new HashMap<>();
-        options.put("rtmp_playpath", "");
-        options.put("rtmp_swfurl", "");
-        options.put("rtmp_live", "1");
-        options.put("rtmp_pageurl", "");*/
-        mVideoView.setVideoPath(path);
-        //mVideoView.setVideoURI(Uri.parse(path), options);
-        mVideoView.setMediaController(new MediaController(this));
-        mVideoView.requestFocus();
-
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setPlaybackSpeed(1.0f);
-            }
-        });
+//        mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
+//        String path = "rtmp://rrbalancer.broadcast.tneg.de:1935/pw/ruk/ruk";
+//        /*options = new HashMap<>();
+//        options.put("rtmp_playpath", "");
+//        options.put("rtmp_swfurl", "");
+//        options.put("rtmp_live", "1");
+//        options.put("rtmp_pageurl", "");*/
+//        mVideoView.setVideoPath(path);
+//        //mVideoView.setVideoURI(Uri.parse(path), options);
+//        mVideoView.setMediaController(new MediaController(this));
+//        mVideoView.requestFocus();
+//
+//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                mediaPlayer.setPlaybackSpeed(1.0f);
+//            }
+//        });
 
 
     }

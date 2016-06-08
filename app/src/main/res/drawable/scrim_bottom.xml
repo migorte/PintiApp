@@ -6,5 +6,5 @@
     <!--android:centerColor="@color/translucent_scrim_bottom_center"-->
     <!--android:endColor="@android:color/transparent"/>-->
     <solid
-        android:color="@color/colorAccent" />
+        android:color="@color/colorPrimary" />
 </shape>

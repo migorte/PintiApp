@@ -12,65 +12,76 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/lightGray">
+        android:background="@color/lightGray"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:background="@color/white"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/subtitulo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/subtitulo_size"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="Subtitulo"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:textSize="@dimen/subtitulo_size" />
 
         </RelativeLayout>
 
         <VideoView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"/>
+            android:layout_margin="30dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
             android:background="@color/white"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/etiqueta_descripcion"
+                style="@style/Etiqueta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_alignParentTop="true"
-                style="@style/Etiqueta"
-                android:text="DESCRIPCIÓN"/>
+                android:text="DESCRIPCIÓN" />
 
             <TextView
                 android:id="@+id/texto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/etiqueta_descripcion"
                 android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_below="@id/etiqueta_descripcion"/>
+                android:layout_marginStart="16dp" />
 
-            </RelativeLayout>
+        </RelativeLayout>
         <!--<io.vov.vitamio.widget.VideoView-->
-            <!--android:id="@+id/vitamio_videoView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/vitamio_videoView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" />
 
     </LinearLayout>
 

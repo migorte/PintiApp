@@ -51,8 +51,8 @@ public class ListaHitosActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        DataSource dataSource = new DataSource(this);
-        List<Hito> myDataset = dataSource.getAllHitos();
+//        DataSource dataSource = new DataSource(this);
+//        List<Hito> myDataset = dataSource.getAllHitos();
 
         // specify an adapter (see also next example)
 //        mAdapter = new ListaHitosAdapter(myDataset);

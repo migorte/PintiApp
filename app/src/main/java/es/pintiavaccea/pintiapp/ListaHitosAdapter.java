@@ -35,8 +35,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
                 .inflate(R.layout.item_lista_hitos, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
 
     }
 
@@ -79,7 +78,8 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
             Picasso.with(context).setIndicatorsEnabled(true);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4").error(R.drawable.img201205191603108139).into(foto);
+            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
+                    .error(R.drawable.img201205191603108139).into(foto);
         }
 
         @Override

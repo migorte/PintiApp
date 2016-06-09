@@ -26,15 +26,15 @@ public class JsonHitoParser {
 
     public List leerHitos(JsonReader reader) throws IOException {
         // Lista temporal
-        List animales = new ArrayList();
+        List hitos = new ArrayList();
 
         reader.beginArray();
         while (reader.hasNext()) {
             // Leer objeto
-            animales.add(leerHito(reader));
+            hitos.add(leerHito(reader));
         }
         reader.endArray();
-        return animales;
+        return hitos;
     }
 
     public Hito leerHito(JsonReader reader) throws IOException{

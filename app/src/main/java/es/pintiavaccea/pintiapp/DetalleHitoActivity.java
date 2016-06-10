@@ -74,7 +74,7 @@ public class DetalleHitoActivity extends AppCompatActivity {
         }
 
         assert hito != null;
-        this.setTitle(hito.getTitulo());
+        this.setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
         setContent();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -173,17 +173,17 @@ public class DetalleHitoActivity extends AppCompatActivity {
 
         public JsonImagenTask() {
             Context context = DetalleHitoActivity.this;
-            spinner = new ProgressDialog(context);
+//            spinner = new ProgressDialog(context);
         }
 
-        @Override
-        protected void onPreExecute() {
-            // show progress spinner
-            spinner.setMessage("Descargando lista de hitos");
-            spinner.show();
-
-            //do something
-        }
+//        @Override
+//        protected void onPreExecute() {
+//            // show progress spinner
+//            spinner.setMessage("Descargando lista de hitos");
+//            spinner.show();
+//
+//            //do something
+//        }
 
         @Override
         protected List<Imagen> doInBackground(URL... params) {
@@ -244,7 +244,7 @@ public class DetalleHitoActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
                         Toast.LENGTH_LONG).show();
             }
-            spinner.dismiss();
+//            spinner.dismiss();
         }
     }
 }

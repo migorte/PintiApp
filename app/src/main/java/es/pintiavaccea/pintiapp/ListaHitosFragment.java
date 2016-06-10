@@ -6,13 +6,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -20,35 +22,44 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ListaHitosActivity extends AppCompatActivity {
+public class ListaHitosFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_hitos);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private CoordinatorLayout mLayout;
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_lista_hitos, container, false);
+
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        mLayout = (CoordinatorLayout) getActivity().findViewById(R.id.main);
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 //        DataSource dataSource = new DataSource(this);
@@ -63,7 +74,7 @@ public class ListaHitosActivity extends AppCompatActivity {
          */
         try {
             ConnectivityManager connMgr = (ConnectivityManager)
-                    getSystemService(Context.CONNECTIVITY_SERVICE);
+                    getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
@@ -72,13 +83,12 @@ public class ListaHitosActivity extends AppCompatActivity {
                         execute(
                                 new URL("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario"));
             } else {
-                Toast.makeText(this, "Error de conexión", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_LONG).show();
             }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -87,9 +97,10 @@ public class ListaHitosActivity extends AppCompatActivity {
     public class JsonHitoTask extends AsyncTask<URL, Void, List<Hito>> {
 
         private ProgressDialog spinner;
+        private Context context;
 
         public JsonHitoTask() {
-            Context context = ListaHitosActivity.this;
+            context = getContext();
             spinner = new ProgressDialog(context);
         }
 
@@ -131,10 +142,10 @@ public class ListaHitosActivity extends AppCompatActivity {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                runOnUiThread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getBaseContext(), "Ha sido imposible conectarse a internet",
+                        Toast.makeText(context, "Ha sido imposible conectarse a internet",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -157,7 +168,7 @@ public class ListaHitosActivity extends AppCompatActivity {
                 mAdapter = new ListaHitosAdapter(hitos);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
-                Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
+                Toast.makeText(context, "Ha ocurrido un error con el servidor",
                         Toast.LENGTH_LONG).show();
             }
             spinner.dismiss();

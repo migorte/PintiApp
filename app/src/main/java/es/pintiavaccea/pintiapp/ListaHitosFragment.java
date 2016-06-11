@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class ListaHitosFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private DataSource dataSource;
 
     private CoordinatorLayout mLayout;
 
@@ -62,6 +65,8 @@ public class ListaHitosFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        dataSource = new DataSource(getContext());
+
 //        DataSource dataSource = new DataSource(this);
 //        List<Hito> myDataset = dataSource.getAllHitos();
 
@@ -84,6 +89,17 @@ public class ListaHitosFragment extends Fragment {
                                 new URL("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario"));
             } else {
                 Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_LONG).show();
+                if(!dataSource.getAllHitos().isEmpty()) {
+                    List<Hito> hitosDB = dataSource.getAllHitos();
+                    Collections.sort(hitosDB, new Comparator<Hito>() {
+                        @Override
+                        public int compare(Hito lhs, Hito rhs) {
+                            return lhs.getNumeroHito() - rhs.getNumeroHito();
+                        }
+                    });
+                    mAdapter = new ListaHitosAdapter(hitosDB, getContext());
+                    mRecyclerView.setAdapter(mAdapter);
+                }
             }
 
         } catch (MalformedURLException e) {
@@ -98,10 +114,12 @@ public class ListaHitosFragment extends Fragment {
 
         private ProgressDialog spinner;
         private Context context;
+        private DataSource dataSource;
 
         public JsonHitoTask() {
             context = getContext();
             spinner = new ProgressDialog(context);
+            dataSource = new DataSource(context);
         }
 
         @Override
@@ -165,11 +183,27 @@ public class ListaHitosFragment extends Fragment {
                         return lhs.getNumeroHito() - rhs.getNumeroHito();
                     }
                 });
-                mAdapter = new ListaHitosAdapter(hitos);
+                mAdapter = new ListaHitosAdapter(hitos, getContext());
                 mRecyclerView.setAdapter(mAdapter);
+                dataSource.clearHitos();
+                dataSource.saveListaHitos(hitos);
             } else {
-                Toast.makeText(context, "Ha ocurrido un error con el servidor",
-                        Toast.LENGTH_LONG).show();
+                if(!dataSource.getAllHitos().isEmpty()) {
+                    Toast.makeText(context, "Ha ocurrido un error con el servidor",
+                            Toast.LENGTH_LONG).show();
+                    List<Hito> hitosDB = dataSource.getAllHitos();
+                    Collections.sort(hitosDB, new Comparator<Hito>() {
+                        @Override
+                        public int compare(Hito lhs, Hito rhs) {
+                            return lhs.getNumeroHito() - rhs.getNumeroHito();
+                        }
+                    });
+                    mAdapter = new ListaHitosAdapter(hitosDB, getContext());
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    Toast.makeText(context, "Ha ocurrido un error con el servidor",
+                            Toast.LENGTH_LONG).show();
+                }
             }
             spinner.dismiss();
         }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:layout_below="@id/app_bar"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="es.pintiavaccea.pintiapp.DetalleHitoActivity"
     tools:showIn="@layout/activity_detalle_hito">
@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:clipToPadding="false"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
             android:padding="16dp">
 
             <TextView
@@ -36,16 +38,18 @@
 
         </RelativeLayout>
 
-        <VideoView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp" />
+        <!--<VideoView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="30dp" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:clipToPadding="false"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
             android:padding="16dp">
 
             <TextView
@@ -56,7 +60,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:text="DESCRIPCIÓN" />
+                android:text="Descripción" />
 
             <TextView
                 android:id="@+id/texto"
@@ -72,16 +76,53 @@
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content" />-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnWidth="90dp"
-            android:gravity="center"
-            android:horizontalSpacing="10dp"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
+            android:clipToPadding="false">
+
+            <TextView
+                android:id="@+id/etiqueta_galeria"
+                style="@style/Etiqueta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"
+                android:text="Galería" />
+
+            <TextView
+                android:id="@+id/cantidad_imagenes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:text="X imágenes"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/etiqueta_galeria"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="auto_fit"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

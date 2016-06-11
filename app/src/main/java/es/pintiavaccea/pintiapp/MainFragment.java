@@ -55,15 +55,20 @@ public class MainFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup myFragmentView = (ViewGroup) inflater.inflate(
+        final ViewGroup myFragmentView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_main, container, false);
 
         fab = (FloatingActionButton) myFragmentView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if(mLastLocation!=null) {
+                    Snackbar.make(view, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Toast.makeText(myFragmentView.getContext(), "No se pudo obtener su localización",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -79,6 +84,7 @@ public class MainFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        initializeLocation();
 
 //        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
 //                != PackageManager.PERMISSION_GRANTED) {

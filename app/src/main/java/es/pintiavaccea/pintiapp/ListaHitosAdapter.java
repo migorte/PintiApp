@@ -9,7 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,9 +26,11 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
     private List<Hito> mDataset;
     private Context context;
+    private int lastPosition = -1;
 
-    public ListaHitosAdapter(List<Hito> mDataset) {
+    public ListaHitosAdapter(List<Hito> mDataset, Context context) {
         this.mDataset = mDataset;
+        this.context = context;
     }
 
     @Override
@@ -42,6 +47,21 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(mDataset.get(position));
+        setAnimation(holder.container, position);
+    }
+
+    /**
+     * Here is the key method to apply the animation
+     */
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
@@ -51,6 +71,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public RelativeLayout container;
         public ImageView foto;
         public TextView numero;
         public TextView titulo;
@@ -61,6 +82,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
         public ViewHolder(View v) {
             super(v);
 
+            container = (RelativeLayout) v.findViewById(R.id.container);
             foto = (ImageView) v.findViewById(R.id.hito_foto);
             numero = (TextView) v.findViewById(R.id.hito_numero);
             titulo = (TextView) v.findViewById(R.id.hito_titulo);

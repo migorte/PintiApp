@@ -1,5 +1,6 @@
 package es.pintiavaccea.pintiapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -85,6 +86,10 @@ public class DataSource {
         database = openHelper.getWritableDatabase();
     }
 
+    public void clearHitos(){
+        database.delete(HITO_TABLE, null, null);
+    }
+
     public List<Hito> getAllHitos() {
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 
@@ -112,5 +117,24 @@ public class DataSource {
         }
 
         return listaHitos;
+    }
+
+    public void saveListaHitos(List<Hito> hitos){
+
+        for(Hito hito : hitos){
+
+            ContentValues values = new ContentValues();
+
+            values.put(ColumnHito.ID, hito.getId());
+            values.put(ColumnHito.NUMERO_HITO, hito.getNumeroHito());
+            values.put(ColumnHito.TITULO, hito.getTitulo());
+            values.put(ColumnHito.SUBTITULO, hito.getSubtitulo());
+            values.put(ColumnHito.LATITUD, hito.getLatitud());
+            values.put(ColumnHito.LONGITUD, hito.getLongitud());
+            values.put(ColumnHito.TEXTO, hito.getTexto());
+            values.put(ColumnHito.ITINERARIO, 1);
+
+            database.insert(HITO_TABLE, null, values);
+        }
     }
 }

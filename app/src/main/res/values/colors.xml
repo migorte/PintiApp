@@ -7,7 +7,7 @@
     <!-- Colores básicos -->
     <color name="black">#000</color>
     <color name="white">#FFF</color>
-    <color name="lightGray">#D3D3D3</color>
+    <color name="lightGray">#E3E3E3</color>
 
     <!-- Colores para los scrim -->
     <color name="translucent_scrim_top">#26000000</color>

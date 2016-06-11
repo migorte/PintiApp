@@ -30,8 +30,8 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(DataSource.CREATE_IMAGEN_SCRIPT);
         db.execSQL(DataSource.CREATE_VIDEO_SCRIPT);
 
-        db.execSQL(DataSource.INSERT_HITO_SCRIPT);
-        db.execSQL(DataSource.INSERT_HITO_SCRIPT1);
+//        db.execSQL(DataSource.INSERT_HITO_SCRIPT);
+//        db.execSQL(DataSource.INSERT_HITO_SCRIPT1);
     }
 
     @Override

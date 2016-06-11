@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -240,6 +242,9 @@ public class DetalleHitoActivity extends AppCompatActivity {
 //                });
                 mAdapter = new GaleriaAdapter(imagenes);
                 mRecyclerView.setAdapter(mAdapter);
+                TextView cantidadImagenes = (TextView) findViewById(R.id.cantidad_imagenes);
+                assert cantidadImagenes != null;
+                cantidadImagenes.setText(String.format("%d imágenes", imagenes.size()));
             } else {
                 Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
                         Toast.LENGTH_LONG).show();

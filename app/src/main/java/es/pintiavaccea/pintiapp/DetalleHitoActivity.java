@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -42,6 +43,7 @@ import io.vov.vitamio.widget.VideoView;
 
 public class DetalleHitoActivity extends AppCompatActivity {
 
+    private static final long DISK_CACHE_SIZE = 10000000;
     private Hito hito;
     private ImageView portada;
     private VideoView mVideoView;
@@ -125,9 +127,15 @@ public class DetalleHitoActivity extends AppCompatActivity {
         TextView texto = (TextView) findViewById(R.id.texto);
         texto.setText(hito.getTexto());
         portada = (ImageView) findViewById(R.id.imagen_toolbar);
-        Picasso.with(this).setIndicatorsEnabled(true);
-        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
-                .error(R.drawable.img201205191603108139).into(portada);
+        Picasso mBuilder = new Picasso.Builder(this)
+                .loggingEnabled(BuildConfig.DEBUG)
+                .indicatorsEnabled(BuildConfig.DEBUG)
+                .downloader(new OkHttpDownloader(this, DISK_CACHE_SIZE))
+                .build();
+        mBuilder.load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4").into(portada);
+//        Picasso.with(this).setIndicatorsEnabled(true);
+//        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
+//                .error(R.drawable.img201205191603108139).into(portada);
 
 
         /********************

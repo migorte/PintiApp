@@ -148,7 +148,7 @@ public class ListaHitosFragment extends Fragment {
 
                 if (statusCode != 200) {
                     hitos = new ArrayList<>();
-                    hitos.add(new Hito(0, 0, "Error", null, 0.0, 0.0, false, null));
+                    hitos.add(new Hito(0, 0, "Error", null, 0.0, 0.0, false, null, 0));
                 } else {
 
                     //Parsear el flujo con formato JSON
@@ -208,4 +208,106 @@ public class ListaHitosFragment extends Fragment {
             spinner.dismiss();
         }
     }
+
+    /**
+     * Created by Miguel on 07/06/2016.
+     */
+//    public class JsonImagenTask extends AsyncTask<URL, Void, List<Hito>> {
+//
+//        private ProgressDialog spinner;
+//        private Context context;
+//        private DataSource dataSource;
+//
+//        public JsonImagenTask() {
+//            context = getContext();
+//            spinner = new ProgressDialog(context);
+//            dataSource = new DataSource(context);
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            // show progress spinner
+//            spinner.setMessage("Descargando lista de hitos");
+//            spinner.show();
+//
+//            //do something
+//        }
+//
+//        @Override
+//        protected List<Hito> doInBackground(URL... params) {
+//            List<Hito> hitos = null;
+//            HttpURLConnection con = null;
+//
+//            try {
+//
+//                //Establecer conexión con el servidor
+//                con = (HttpURLConnection) params[0].openConnection();
+//                con.setConnectTimeout(15000);
+//                con.setReadTimeout(10000);
+//
+//                //Obtener el estado del recurso
+//                int statusCode = con.getResponseCode();
+//
+//                if (statusCode != 200) {
+//                    hitos = new ArrayList<>();
+//                    hitos.add(new Hito(0, 0, "Error", null, 0.0, 0.0, false, null));
+//                } else {
+//
+//                    //Parsear el flujo con formato JSON
+//                    InputStream in = new BufferedInputStream(con.getInputStream());
+//
+//                    JsonHitoParser parser = new JsonHitoParser();
+////                    GsonHitoParser<Hito> parser = new GsonHitoParser<>(Hito.class);
+//                    hitos = parser.readJsonStream(in);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(context, "Ha sido imposible conectarse a internet",
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            } finally {
+//                con.disconnect();
+//            }
+//            return hitos;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Hito> hitos) {
+//            //Asignar los objetos de Json parseados al adaptador
+//            if (hitos != null) {
+//                Collections.sort(hitos, new Comparator<Hito>() {
+//                    @Override
+//                    public int compare(Hito lhs, Hito rhs) {
+//                        return lhs.getNumeroHito() - rhs.getNumeroHito();
+//                    }
+//                });
+//                mAdapter = new ListaHitosAdapter(hitos, getContext());
+//                mRecyclerView.setAdapter(mAdapter);
+//                dataSource.clearHitos();
+//                dataSource.saveListaHitos(hitos);
+//            } else {
+//                if(!dataSource.getAllHitos().isEmpty()) {
+//                    Toast.makeText(context, "Ha ocurrido un error con el servidor",
+//                            Toast.LENGTH_LONG).show();
+//                    List<Hito> hitosDB = dataSource.getAllHitos();
+//                    Collections.sort(hitosDB, new Comparator<Hito>() {
+//                        @Override
+//                        public int compare(Hito lhs, Hito rhs) {
+//                            return lhs.getNumeroHito() - rhs.getNumeroHito();
+//                        }
+//                    });
+//                    mAdapter = new ListaHitosAdapter(hitosDB, getContext());
+//                    mRecyclerView.setAdapter(mAdapter);
+//                } else {
+//                    Toast.makeText(context, "Ha ocurrido un error con el servidor",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            }
+//            spinner.dismiss();
+//        }
+//    }
 }

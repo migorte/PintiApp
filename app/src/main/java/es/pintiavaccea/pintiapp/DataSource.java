@@ -32,6 +32,7 @@ public class DataSource {
         public static final String LONGITUD = "longitud";
         public static final String TEXTO = "texto";
         public static final String ITINERARIO = "itinerario";
+        public static final String IDIMAGENPORTADA = "idImagenPortada";
     }
 
     public static class ColumnImagen {
@@ -57,7 +58,8 @@ public class DataSource {
             ColumnHito.LATITUD + " " + REAL_TYPE + " not null," +
             ColumnHito.LONGITUD + " " + REAL_TYPE + " not null," +
             ColumnHito.TEXTO + " " + REAL_TYPE + " not null," +
-            ColumnHito.ITINERARIO + " " + INT_TYPE + " not null)";
+            ColumnHito.ITINERARIO + " " + INT_TYPE + " not null," +
+            ColumnHito.IDIMAGENPORTADA + " " + INT_TYPE + " not null)";
 
     public static final String CREATE_IMAGEN_SCRIPT = "create table " + IMAGEN_TABLE + " ( " +
             ColumnImagen.ID + " " + INT_TYPE + " primary key," +
@@ -110,7 +112,8 @@ public class DataSource {
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
                     cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
                     itinerario,
-                    cursor.getString(cursor.getColumnIndex(ColumnHito.TEXTO)));
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.TEXTO)),
+                    cursor.getInt(cursor.getColumnIndex(ColumnHito.IDIMAGENPORTADA)));
 
             listaHitos.add(hito);
             cursor.moveToNext();
@@ -133,6 +136,7 @@ public class DataSource {
             values.put(ColumnHito.LONGITUD, hito.getLongitud());
             values.put(ColumnHito.TEXTO, hito.getTexto());
             values.put(ColumnHito.ITINERARIO, 1);
+            values.put(ColumnHito.IDIMAGENPORTADA, hito.getIdImagenPortada());
 
             database.insert(HITO_TABLE, null, values);
         }

@@ -16,21 +16,33 @@ public class GsonHitoParser<E> {
 
     public Class<E> type;
 
-    public GsonHitoParser(Class<E> type){
+    public GsonHitoParser(Class<E> type) {
         this.type = type;
     }
 
     public List<E> readJsonStream(InputStream in) throws IOException {
         Gson gson = new Gson();
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        List<E> hitos = new ArrayList<E>();
-        while (reader.hasNext()){
-            E hito = gson.fromJson(reader, type);
-            hitos.add(hito);
+        List<E> objetos = new ArrayList<E>();
+        while (reader.hasNext()) {
+            E objeto = gson.fromJson(reader, type);
+            objetos.add(objeto);
         }
 
         reader.endArray();
         reader.close();
-        return hitos;
+        return objetos;
+    }
+
+    public E readJson(InputStream in) throws IOException {
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+
+        E objeto = gson.fromJson(reader, type);
+
+
+        reader.endObject();
+        reader.close();
+        return objeto;
     }
 }

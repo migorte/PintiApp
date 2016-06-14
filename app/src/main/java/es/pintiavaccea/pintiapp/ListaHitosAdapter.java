@@ -100,7 +100,8 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
             Picasso.with(context).setIndicatorsEnabled(true);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
+            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
+            hito.getIdImagenPortada())
                     .error(R.drawable.img201205191603108139).into(foto);
         }
 

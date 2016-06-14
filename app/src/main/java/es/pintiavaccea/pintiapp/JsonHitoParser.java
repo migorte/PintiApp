@@ -45,6 +45,7 @@ public class JsonHitoParser {
         double latitud = 0.0;
         double longitud = 0.0;
         String texto = null;
+        int idImagenPortada = 0;
 
         reader.beginObject();
         while (reader.hasNext()){
@@ -71,12 +72,15 @@ public class JsonHitoParser {
                 case "texto":
                     texto = reader.nextString();
                     break;
+                case "idImagenPortada":
+                    idImagenPortada = reader.nextInt();
+                    break;
                 default:
                     reader.skipValue();
                     break;
             }
         }
         reader.endObject();
-        return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto);
+        return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto, idImagenPortada);
     }
 }

@@ -16,8 +16,10 @@ public class Hito implements Parcelable {
     private double longitud;
     private boolean itinerario;
     private String texto;
+    private int idImagenPortada;
 
-    public Hito(int id, int numeroHito, String titulo, String subtitulo, double latitud, double longitud, boolean itinerario, String texto){
+    public Hito(int id, int numeroHito, String titulo, String subtitulo, double latitud,
+                double longitud, boolean itinerario, String texto, int idImagenPortada){
         this.id = id;
         this.numeroHito = numeroHito;
         this.titulo = titulo;
@@ -26,6 +28,7 @@ public class Hito implements Parcelable {
         this.longitud = longitud;
         this.itinerario = itinerario;
         this.texto = texto;
+        this.idImagenPortada = idImagenPortada;
     }
 
     protected Hito(Parcel in) {
@@ -37,6 +40,7 @@ public class Hito implements Parcelable {
         setLongitud(in.readDouble());
         setItinerario(in.readByte() != 0);
         setTexto(in.readString());
+        setIdImagenPortada(in.readInt());
     }
 
     public static final Creator<Hito> CREATOR = new Creator<Hito>() {
@@ -66,6 +70,7 @@ public class Hito implements Parcelable {
         dest.writeDouble(getLongitud());
         dest.writeByte((byte) (isItinerario() ? 1 : 0));
         dest.writeString(getTexto());
+        dest.writeInt(getIdImagenPortada());
     }
 
     public int getId() {
@@ -130,5 +135,13 @@ public class Hito implements Parcelable {
 
     public void setTexto(String texto) {
         this.texto = texto;
+    }
+
+    public int getIdImagenPortada() {
+        return idImagenPortada;
+    }
+
+    public void setIdImagenPortada(int idImagenPortada) {
+        this.idImagenPortada = idImagenPortada;
     }
 }

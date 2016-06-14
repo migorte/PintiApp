@@ -127,12 +127,10 @@ public class DetalleHitoActivity extends AppCompatActivity {
         TextView texto = (TextView) findViewById(R.id.texto);
         texto.setText(hito.getTexto());
         portada = (ImageView) findViewById(R.id.imagen_toolbar);
-        Picasso mBuilder = new Picasso.Builder(this)
-                .loggingEnabled(BuildConfig.DEBUG)
-                .indicatorsEnabled(BuildConfig.DEBUG)
-                .downloader(new OkHttpDownloader(this, DISK_CACHE_SIZE))
-                .build();
-        mBuilder.load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4").into(portada);
+        Picasso.with(this).setIndicatorsEnabled(true);
+        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                + hito.getIdImagenPortada()).error(R.drawable.img201205191603108139).into(portada);
+
 //        Picasso.with(this).setIndicatorsEnabled(true);
 //        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
 //                .error(R.drawable.img201205191603108139).into(portada);
@@ -179,21 +177,9 @@ public class DetalleHitoActivity extends AppCompatActivity {
      */
     public class JsonImagenTask extends AsyncTask<URL, Void, List<Imagen>> {
 
-        private ProgressDialog spinner;
-
         public JsonImagenTask() {
             Context context = DetalleHitoActivity.this;
-//            spinner = new ProgressDialog(context);
         }
-
-//        @Override
-//        protected void onPreExecute() {
-//            // show progress spinner
-//            spinner.setMessage("Descargando lista de hitos");
-//            spinner.show();
-//
-//            //do something
-//        }
 
         @Override
         protected List<Imagen> doInBackground(URL... params) {
@@ -213,7 +199,7 @@ public class DetalleHitoActivity extends AppCompatActivity {
                 if (statusCode != 200) {
                     imagenes = new ArrayList<>();
                     imagenes.add(new Imagen(0, "ERROR",
-                            new Hito(0, 0, "Error", null, 0.0, 0.0, false, null)));
+                            new Hito(0, 0, "Error", null, 0.0, 0.0, false, null,0)));
                 } else {
 
                     //Parsear el flujo con formato JSON
@@ -242,12 +228,7 @@ public class DetalleHitoActivity extends AppCompatActivity {
         protected void onPostExecute(List<Imagen> imagenes) {
             //Asignar los objetos de Json parseados al adaptador
             if (imagenes != null) {
-//                Collections.sort(imagenes, new Comparator<Imagen>() {
-//                    @Override
-//                    public int compare(Hito lhs, Hito rhs) {
-//                        return lhs.getNumeroHito() - rhs.getNumeroHito();
-//                    }
-//                });
+
                 mAdapter = new GaleriaAdapter(imagenes);
                 mRecyclerView.setAdapter(mAdapter);
                 TextView cantidadImagenes = (TextView) findViewById(R.id.cantidad_imagenes);
@@ -257,7 +238,6 @@ public class DetalleHitoActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
                         Toast.LENGTH_LONG).show();
             }
-//            spinner.dismiss();
         }
     }
 }

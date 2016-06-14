@@ -40,7 +40,6 @@ public class GsonHitoParser<E> {
 
         E objeto = gson.fromJson(reader, type);
 
-
         reader.endObject();
         reader.close();
         return objeto;

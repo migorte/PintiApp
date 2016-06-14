@@ -2,6 +2,9 @@ package es.pintiavaccea.pintiapp;
 
 import android.util.JsonReader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,7 +40,7 @@ public class JsonHitoParser {
         return hitos;
     }
 
-    public Hito leerHito(JsonReader reader) throws IOException{
+    public Hito leerHito(JsonReader reader) throws IOException {
         int id = 0;
         int numeroHito = 0;
         String titulo = null;
@@ -48,7 +51,7 @@ public class JsonHitoParser {
         int idImagenPortada = 0;
 
         reader.beginObject();
-        while (reader.hasNext()){
+        while (reader.hasNext()) {
             String name = reader.nextName();
             switch (name) {
                 case "id":
@@ -81,6 +84,28 @@ public class JsonHitoParser {
             }
         }
         reader.endObject();
+        return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto, idImagenPortada);
+    }
+
+    public Hito leerHito(JSONObject object) throws IOException, JSONException {
+        int id;
+        int numeroHito;
+        String titulo;
+        String subtitulo;
+        double latitud;
+        double longitud;
+        String texto;
+        int idImagenPortada;
+
+        id = (Integer) object.get("id");
+        numeroHito = (Integer) object.get("numeroHito");
+        titulo = (String) object.get("titulo");
+        subtitulo = (String) object.get("subtitulo");
+        latitud = (double) object.get("latitud");
+        longitud = (double) object.get("longitud");
+        texto = (String) object.get("texto");
+        idImagenPortada = (Integer) object.get("idImagenPortada");
+
         return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto, idImagenPortada);
     }
 }

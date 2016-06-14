@@ -24,6 +24,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,6 +43,11 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by Miguel on 09/06/2016.
@@ -62,9 +73,38 @@ public class MainFragment extends Fragment implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mLastLocation!=null) {
-                    Snackbar.make(view, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                if (mLastLocation != null) {
+
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                            Request.Method.GET,
+                            "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitoCercano?latitud=" + mLastLocation.getLatitude()
+                                    + "&longitud=" + mLastLocation.getLongitude(),
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    JsonHitoParser parser = new JsonHitoParser();
+                                    try {
+                                        Hito hito = parser.leerHito(response);
+                                        final Intent intent;
+                                        intent = new Intent(getContext(), DetalleHitoActivity.class);
+                                        intent.putExtra("hito", hito);
+                                        startActivity(intent);
+                                    } catch (IOException | JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Snackbar.make(myFragmentView, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+                    );
+                    VolleyRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
+
                 } else {
                     Toast.makeText(myFragmentView.getContext(), "No se pudo obtener su localización",
                             Toast.LENGTH_SHORT).show();
@@ -208,9 +248,9 @@ public class MainFragment extends Fragment implements
 
     public void initializeLocation() {
 //        if (checkGooglePlayServices()) {
-            buildGoogleApiClient();
+        buildGoogleApiClient();
 
-            //prepare connection request
+        //prepare connection request
 //            createLocationRequest();
 //            buildLocationSettingsRequest();
 //            checkLocationSettings();

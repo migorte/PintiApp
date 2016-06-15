@@ -2,10 +2,12 @@ package es.pintiavaccea.pintiapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,9 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
@@ -43,7 +53,6 @@ import io.vov.vitamio.widget.VideoView;
 
 public class DetalleHitoActivity extends AppCompatActivity {
 
-    private static final long DISK_CACHE_SIZE = 10000000;
     private Hito hito;
     private ImageView portada;
     private VideoView mVideoView;
@@ -59,14 +68,72 @@ public class DetalleHitoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                startActivity(new Intent(DetalleHitoActivity.this, MapsActivity.class));
+                JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                        Request.Method.GET,
+                        "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                JsonHitoParser parser = new JsonHitoParser();
+                                try {
+
+
+                                    List<Hito> hitos = new ArrayList<>();
+                                    for (int i = 0; i < response.length(); i++) {
+                                        JSONObject object = response.getJSONObject(i);
+                                        hitos.add(parser.leerHito(object));
+                                    }
+                                    if (!hitos.isEmpty()) {
+                                        Collections.sort(hitos, new Comparator<Hito>() {
+                                            @Override
+                                            public int compare(Hito lhs, Hito rhs) {
+                                                return lhs.getNumeroHito() - rhs.getNumeroHito();
+                                            }
+                                        });
+                                        final Intent intent;
+                                        intent = new Intent(DetalleHitoActivity.this, MapsActivity.class);
+                                        intent.putParcelableArrayListExtra("hitos", (ArrayList) hitos);
+                                        startActivity(intent);
+                                    } else {
+//                                        if (!dataSource.getAllHitos().isEmpty()) {
+//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
+//                                                    Toast.LENGTH_LONG).show();
+//                                            List<Hito> hitosDB = dataSource.getAllHitos();
+//                                            Collections.sort(hitosDB, new Comparator<Hito>() {
+//                                                @Override
+//                                                public int compare(Hito lhs, Hito rhs) {
+//                                                    return lhs.getNumeroHito() - rhs.getNumeroHito();
+//                                                }
+//                                            });
+//                                        } else {
+//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
+//                                                    Toast.LENGTH_LONG).show();
+//                                        }
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Snackbar.make(view, "Ha ocurrido un error", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        }
+                );
+                VolleyRequestQueue.getInstance(DetalleHitoActivity.this).addToRequestQueue(jsonObjectRequest);
+            }
+        });
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

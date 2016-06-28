@@ -9,6 +9,8 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.pintiavaccea.pintiapp.modelo.Hito;
+
 /**
  * Created by Miguel on 28/04/2016.
  */
@@ -118,6 +120,7 @@ public class DataSource {
             listaHitos.add(hito);
             cursor.moveToNext();
         }
+        cursor.close();
 
         return listaHitos;
     }

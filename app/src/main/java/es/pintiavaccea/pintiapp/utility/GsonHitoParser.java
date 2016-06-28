@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.utility;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;

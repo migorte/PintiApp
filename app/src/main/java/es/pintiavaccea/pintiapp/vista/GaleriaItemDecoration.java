@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

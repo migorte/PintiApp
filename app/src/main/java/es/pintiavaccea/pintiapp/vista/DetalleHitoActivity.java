@@ -1,25 +1,22 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +25,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -47,7 +42,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import io.vov.vitamio.MediaPlayer;
+import es.pintiavaccea.pintiapp.modelo.Video;
+import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
+import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
+import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
+import es.pintiavaccea.pintiapp.R;
+import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
+import es.pintiavaccea.pintiapp.modelo.Hito;
+import es.pintiavaccea.pintiapp.modelo.Imagen;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
@@ -55,7 +57,6 @@ public class DetalleHitoActivity extends AppCompatActivity {
 
     private Hito hito;
     private ImageView portada;
-    private VideoView mVideoView;
     private GaleriaAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -67,6 +68,15 @@ public class DetalleHitoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                hito = null;
+            } else hito = extras.getParcelable("hito");
+        } else {
+            hito = savedInstanceState.getParcelable("hito");
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -135,14 +145,42 @@ public class DetalleHitoActivity extends AppCompatActivity {
             }
         });
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                hito = null;
-            } else hito = extras.getParcelable("hito");
-        } else {
-            hito = savedInstanceState.getParcelable("hito");
-        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/"+ hito.getId(),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JsonVideoParser parser = new JsonVideoParser();
+                        try {
+                            Video video = parser.leerVideo(response);
+
+                            VideoView vidView = (VideoView)findViewById(R.id.video_view);
+                            String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/"+video.getId();
+                            Uri vidUri = Uri.parse(vidAddress);
+                            vidView.setVideoURI(vidUri);
+                            MediaController vidControl = new MediaController(DetalleHitoActivity.this);
+                            vidControl.setAnchorView(vidView);
+                            vidView.setMediaController(vidControl);
+                            vidView.start();
+
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
+                        layout.setVisibility(View.GONE);
+//                        Snackbar.make(this, "Latitud: "  + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
+//                                .setAction("Action", null).show();
+                    }
+                }
+        );
+        VolleyRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         assert hito != null;
         this.setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());

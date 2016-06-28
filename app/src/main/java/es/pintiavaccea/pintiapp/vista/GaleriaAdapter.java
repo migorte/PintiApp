@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import es.pintiavaccea.pintiapp.R;
+import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**
  * Created by Usuario on 09/06/2016.

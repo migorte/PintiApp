@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@id/app_bar"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="es.pintiavaccea.pintiapp.DetalleHitoActivity"
+    tools:context=".vista.DetalleHitoActivity"
     tools:showIn="@layout/activity_detalle_hito">
 
     <LinearLayout
@@ -18,9 +18,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@color/white"
             android:clipToPadding="false"
-            android:layout_marginBottom="16dp"
             android:elevation="2dp"
             android:padding="16dp">
 
@@ -38,17 +38,29 @@
 
         </RelativeLayout>
 
-        <!--<VideoView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="30dp" />-->
+        <RelativeLayout
+            android:id="@+id/video_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <VideoView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@color/white"
             android:clipToPadding="false"
-            android:layout_marginBottom="16dp"
             android:elevation="2dp"
             android:padding="16dp">
 
@@ -79,10 +91,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:layout_marginBottom="16dp"
-            android:elevation="2dp"
-            android:clipToPadding="false">
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:elevation="2dp">
 
             <TextView
                 android:id="@+id/etiqueta_galeria"
@@ -90,24 +102,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
                 android:text="Galería" />
 
             <TextView
                 android:id="@+id/cantidad_imagenes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="16dp"
+                android:layout_alignParentTop="true"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
-                android:text="X imágenes"/>
+                android:layout_marginTop="16dp"
+                android:text="X imágenes" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"

@@ -1,10 +1,9 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import es.pintiavaccea.pintiapp.R;
+import es.pintiavaccea.pintiapp.modelo.Hito;
 
 /**
  * Created by Miguel on 02/05/2016.

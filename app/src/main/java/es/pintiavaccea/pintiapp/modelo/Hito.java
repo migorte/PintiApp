@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.modelo;
 
 import android.os.Parcel;
 import android.os.Parcelable;

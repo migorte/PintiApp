@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".vista.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,22 +23,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AyudaActivity"
+            android:name=".vista.AyudaActivity"
             android:label="@string/title_activity_ayuda"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".vista.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.pintiavaccea.pintiapp.MainActivity" />
+                android:value=".vista.MainActivity" />
         </activity>
         <activity
-            android:name=".DetalleHitoActivity"
+            android:name=".vista.DetalleHitoActivity"
             android:label="@string/title_activity_detalle_hito"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".vista.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.pintiavaccea.pintiapp.MainActivity" />
+                android:value=".vista.MainActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,11 +53,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".vista.MapsActivity"
             android:label="@string/title_activity_maps">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.pintiavaccea.pintiapp.DetalleHitoActivity" />
+                android:value=".vista.DetalleHitoActivity" />
         </activity>
     </application>
 

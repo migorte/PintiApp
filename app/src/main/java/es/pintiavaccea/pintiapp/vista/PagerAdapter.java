@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

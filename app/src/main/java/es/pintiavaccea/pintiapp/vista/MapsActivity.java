@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.vista;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.pintiavaccea.pintiapp.R;
+import es.pintiavaccea.pintiapp.modelo.Hito;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

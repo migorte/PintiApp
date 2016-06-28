@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.utility;
 
 import android.util.JsonReader;
 
@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.pintiavaccea.pintiapp.modelo.Hito;
 
 /**
  * Created by Miguel on 06/06/2016.

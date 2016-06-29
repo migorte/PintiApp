@@ -20,11 +20,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return new MainFragment();
+                return new GeoFragment();
             case 1:
                 return new ListaHitosFragment();
             default:
-                return new MainFragment();
+                return new GeoFragment();
         }
     }
 

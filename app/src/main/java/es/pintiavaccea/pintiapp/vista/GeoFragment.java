@@ -1,6 +1,7 @@
 package es.pintiavaccea.pintiapp.vista;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import es.pintiavaccea.pintiapp.presentador.GeoPresenter;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
@@ -44,7 +46,7 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 /**
  * Created by Miguel on 09/06/2016.
  */
-public class MainFragment extends Fragment implements
+public class GeoFragment extends Fragment implements GeoView,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, ResultCallback<LocationSettingsResult> {
 
@@ -55,52 +57,21 @@ public class MainFragment extends Fragment implements
     protected LocationSettingsRequest mLocationSettingsRequest;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private FloatingActionButton fab;
+    public ViewGroup view;
+    public GeoPresenter geoPresenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup myFragmentView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_main, container, false);
+                R.layout.fragment_geo, container, false);
+
+        view = myFragmentView;
 
         fab = (FloatingActionButton) myFragmentView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mLastLocation != null) {
-
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                            Request.Method.GET,
-                            "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitoCercano?latitud=" + mLastLocation.getLatitude()
-                                    + "&longitud=" + mLastLocation.getLongitude(),
-                            null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    JsonHitoParser parser = new JsonHitoParser();
-                                    try {
-                                        Hito hito = parser.leerHito(response);
-                                        final Intent intent;
-                                        intent = new Intent(getContext(), DetalleHitoActivity.class);
-                                        intent.putExtra("hito", hito);
-                                        startActivity(intent);
-                                    } catch (IOException | JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Snackbar.make(myFragmentView, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
-                            }
-                    );
-                    VolleyRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-
-                } else {
-                    Toast.makeText(myFragmentView.getContext(), "No se pudo obtener su localización",
-                            Toast.LENGTH_SHORT).show();
-                }
+                geoPresenter.getCloserHito();
             }
         });
 
@@ -118,6 +89,8 @@ public class MainFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         initializeLocation();
 
+        geoPresenter = new GeoPresenter(this);
+
 //        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
 //                != PackageManager.PERMISSION_GRANTED) {
 //            requestGPSPermission();
@@ -129,6 +102,36 @@ public class MainFragment extends Fragment implements
 //                initializeLocation();
 //            }
 //        }
+    }
+
+    @Override
+    public Context getViewContext(){
+        return this.getActivity();
+    }
+
+    @Override
+    public Location getLastLocation(){
+        return mLastLocation;
+    }
+
+    @Override
+    public void openHito(Hito hito){
+        Intent intent = new Intent(getActivity(), DetalleHitoActivity.class);
+        intent.putExtra("hito", hito);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showInternetError(){
+        Snackbar.make(view, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " +
+                mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void showLocationError(){
+        Toast.makeText(getActivity(), "No se pudo obtener su localización",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override

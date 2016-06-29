@@ -2,6 +2,7 @@ package es.pintiavaccea.pintiapp.vista;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -50,8 +51,8 @@ import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 public class DetalleHitoActivity extends AppCompatActivity {
 
@@ -156,14 +157,22 @@ public class DetalleHitoActivity extends AppCompatActivity {
                         try {
                             Video video = parser.leerVideo(response);
 
-                            VideoView vidView = (VideoView)findViewById(R.id.video_view);
+                            final VideoView vidView = (VideoView) findViewById(R.id.video_view);
                             String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/"+video.getId();
+//                            String vidAddress =  "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
+//                            String vidAddress =  "http://techslides.com/demos/sample-videos/small.mp4";
                             Uri vidUri = Uri.parse(vidAddress);
                             vidView.setVideoURI(vidUri);
                             MediaController vidControl = new MediaController(DetalleHitoActivity.this);
                             vidControl.setAnchorView(vidView);
                             vidView.setMediaController(vidControl);
-                            vidView.start();
+                            vidView.requestFocus();
+                            vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                @Override
+                                public void onPrepared(MediaPlayer mp) {
+                                    vidView.start();
+                                }
+                            });
 
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();

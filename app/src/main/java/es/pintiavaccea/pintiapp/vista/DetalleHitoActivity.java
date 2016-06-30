@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,16 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -39,28 +29,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import es.pintiavaccea.pintiapp.modelo.Video;
-import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
+import es.pintiavaccea.pintiapp.presentador.DetalleHitoPresenter;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
-import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
 import es.pintiavaccea.pintiapp.R;
-import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-public class DetalleHitoActivity extends AppCompatActivity {
+public class DetalleHitoActivity extends AppCompatActivity implements DetalleHitoView {
 
     private Hito hito;
     private ImageView portada;
     private GaleriaAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private DetalleHitoPresenter detalleHitoPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,117 +66,18 @@ public class DetalleHitoActivity extends AppCompatActivity {
             hito = savedInstanceState.getParcelable("hito");
         }
 
+        detalleHitoPresenter = new DetalleHitoPresenter(this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                startActivity(new Intent(DetalleHitoActivity.this, MapsActivity.class));
-                JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
-                        Request.Method.GET,
-                        "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
-                        null,
-                        new Response.Listener<JSONArray>() {
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                JsonHitoParser parser = new JsonHitoParser();
-                                try {
-
-
-                                    List<Hito> hitos = new ArrayList<>();
-                                    for (int i = 0; i < response.length(); i++) {
-                                        JSONObject object = response.getJSONObject(i);
-                                        hitos.add(parser.leerHito(object));
-                                    }
-                                    if (!hitos.isEmpty()) {
-                                        Collections.sort(hitos, new Comparator<Hito>() {
-                                            @Override
-                                            public int compare(Hito lhs, Hito rhs) {
-                                                return lhs.getNumeroHito() - rhs.getNumeroHito();
-                                            }
-                                        });
-                                        final Intent intent;
-                                        intent = new Intent(DetalleHitoActivity.this, MapsActivity.class);
-                                        intent.putParcelableArrayListExtra("hitos", (ArrayList) hitos);
-                                        startActivity(intent);
-                                    } else {
-//                                        if (!dataSource.getAllHitos().isEmpty()) {
-//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
-//                                                    Toast.LENGTH_LONG).show();
-//                                            List<Hito> hitosDB = dataSource.getAllHitos();
-//                                            Collections.sort(hitosDB, new Comparator<Hito>() {
-//                                                @Override
-//                                                public int compare(Hito lhs, Hito rhs) {
-//                                                    return lhs.getNumeroHito() - rhs.getNumeroHito();
-//                                                }
-//                                            });
-//                                        } else {
-//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
-//                                                    Toast.LENGTH_LONG).show();
-//                                        }
-                                    }
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Snackbar.make(view, "Ha ocurrido un error", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                            }
-                        }
-                );
-                VolleyRequestQueue.getInstance(DetalleHitoActivity.this).addToRequestQueue(jsonObjectRequest);
+                detalleHitoPresenter.loadMap();
             }
         });
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/"+ hito.getId(),
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        JsonVideoParser parser = new JsonVideoParser();
-                        try {
-                            Video video = parser.leerVideo(response);
-
-                            final VideoView vidView = (VideoView) findViewById(R.id.video_view);
-                            String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/"+video.getId();
-//                            String vidAddress =  "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
-//                            String vidAddress =  "http://techslides.com/demos/sample-videos/small.mp4";
-                            Uri vidUri = Uri.parse(vidAddress);
-                            vidView.setVideoURI(vidUri);
-                            MediaController vidControl = new MediaController(DetalleHitoActivity.this);
-                            vidControl.setAnchorView(vidView);
-                            vidView.setMediaController(vidControl);
-                            vidView.requestFocus();
-                            vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(MediaPlayer mp) {
-                                    vidView.start();
-                                }
-                            });
-
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
-                        layout.setVisibility(View.GONE);
-//                        Snackbar.make(this, "Latitud: "  + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
-//                                .setAction("Action", null).show();
-                    }
-                }
-        );
-        VolleyRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        detalleHitoPresenter.loadVideo(hito);
 
         assert hito != null;
         this.setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
@@ -227,6 +115,45 @@ public class DetalleHitoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public Context getViewContext(){
+        return this;
+    }
+
+    @Override
+    public void navigateToMap(ArrayList<Hito> hitos){
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putParcelableArrayListExtra("hitos", hitos);
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void showError(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void prepareVideoView(Uri vidUri){
+        final VideoView vidView = (VideoView) findViewById(R.id.video_view);
+        vidView.setVideoURI(vidUri);
+        MediaController vidControl = new MediaController(this);
+        vidControl.setAnchorView(vidView);
+        vidView.setMediaController(vidControl);
+        vidView.requestFocus();
+        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                vidView.start();
+            }
+        });
+    }
+
+    @Override
+    public void hideVideoLayout(){
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
+        layout.setVisibility(View.GONE);
     }
 
     @Override

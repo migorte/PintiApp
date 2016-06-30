@@ -1,7 +1,7 @@
 package es.pintiavaccea.pintiapp.vista;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,36 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import es.pintiavaccea.pintiapp.DataSource;
-import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
+import es.pintiavaccea.pintiapp.presentador.ListaHitosPresenter;
 import es.pintiavaccea.pintiapp.R;
-import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
-import es.pintiavaccea.pintiapp.modelo.Hito;
 
-public class ListaHitosFragment extends Fragment {
+public class ListaHitosFragment extends Fragment implements ListaHitosView {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private DataSource dataSource;
+    private ListaHitosPresenter listaHitosPresenter;
 
-    private CoordinatorLayout mLayout;
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        listaHitosPresenter = new ListaHitosPresenter(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +33,6 @@ public class ListaHitosFragment extends Fragment {
                 R.layout.fragment_lista_hitos, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-
-        mLayout = (CoordinatorLayout) getActivity().findViewById(R.id.main);
 
         return rootView;
     }
@@ -67,72 +51,23 @@ public class ListaHitosFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        dataSource = new DataSource(getContext());
+        listaHitosPresenter.getListaHitos();
 
-//        DataSource dataSource = new DataSource(this);
-//        List<Hito> myDataset = dataSource.getAllHitos();
+    }
 
-        // specify an adapter (see also next example)
-//        mAdapter = new ListaHitosAdapter(myDataset);
-//        mRecyclerView.setAdapter(mAdapter);
+    @Override
+    public Context getViewContext(){
+        return getActivity();
+    }
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        JsonHitoParser parser = new JsonHitoParser();
-                        try {
-                            List<Hito> hitos = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject object = response.getJSONObject(i);
-                                hitos.add(parser.leerHito(object));
-                            }
-                            if (!hitos.isEmpty()) {
-                                Collections.sort(hitos, new Comparator<Hito>() {
-                                    @Override
-                                    public int compare(Hito lhs, Hito rhs) {
-                                        return lhs.getNumeroHito() - rhs.getNumeroHito();
-                                    }
-                                });
-                                mAdapter = new ListaHitosAdapter(hitos, getContext());
-                                mRecyclerView.setAdapter(mAdapter);
-                                dataSource.clearHitos();
-                                dataSource.saveListaHitos(hitos);
-                            } else {
-                                if (!dataSource.getAllHitos().isEmpty()) {
-                                    Toast.makeText(getContext(), "No hay hitos disponibles",
-                                            Toast.LENGTH_LONG).show();
-                                    List<Hito> hitosDB = dataSource.getAllHitos();
-                                    Collections.sort(hitosDB, new Comparator<Hito>() {
-                                        @Override
-                                        public int compare(Hito lhs, Hito rhs) {
-                                            return lhs.getNumeroHito() - rhs.getNumeroHito();
-                                        }
-                                    });
-                                    mAdapter = new ListaHitosAdapter(hitosDB, getContext());
-                                    mRecyclerView.setAdapter(mAdapter);
-                                } else {
-                                    Toast.makeText(getContext(), "No hay hitos disponibles",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        } catch (JSONException | IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Ha ocurrido un error con el servidor",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        VolleyRequestQueue.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+    @Override
+    public void setmAdapter(RecyclerView.Adapter adapter){
+        mRecyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    public void showError(String msg){
+        Toast.makeText(getContext(), msg,
+                Toast.LENGTH_LONG).show();
     }
 }

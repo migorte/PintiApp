@@ -25,14 +25,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
+import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.modelo.Video;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
+import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
 import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
-import es.pintiavaccea.pintiapp.vista.MapsActivity;
 
 /**
  * Created by Miguel on 30/06/2016.
@@ -132,6 +132,40 @@ public class DetalleHitoPresenter {
                         detalleHitoView.hideVideoLayout();
 //                        Snackbar.make(this, "Latitud: "  + "\t Longitud: " + mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
 //                                .setAction("Action", null).show();
+                    }
+                }
+        );
+        VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void loadImageGallery(Hito hito){
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId(),
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        JsonImagenParser parser = new JsonImagenParser();
+                        try {
+                            List<Imagen> imagenes = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject object = response.getJSONObject(i);
+                                imagenes.add(parser.leerImagen(object));
+                            }
+                            if (!imagenes.isEmpty()) {
+                                detalleHitoView.showImageGallery(imagenes);
+                            }
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        detalleHitoView.showError(error.getLocalizedMessage());
                     }
                 }
         );

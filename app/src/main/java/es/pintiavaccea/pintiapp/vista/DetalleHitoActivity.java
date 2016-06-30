@@ -22,17 +22,10 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.pintiavaccea.pintiapp.presentador.DetalleHitoPresenter;
-import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
@@ -94,27 +87,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
         mRecyclerView.addItemDecoration(new GaleriaItemDecoration(spacingInPixels));
 
-                /*
-        Comprobar la disponibilidad de la Red
-         */
-        try {
-            ConnectivityManager connMgr = (ConnectivityManager)
-                    getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-            if (networkInfo != null && networkInfo.isConnected()) {
-                new JsonImagenTask().
-                        execute(
-                                new URL("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId()));
-            } else {
-                Toast.makeText(this, "Error de conexión", Toast.LENGTH_LONG).show();
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
+        detalleHitoPresenter.loadImageGallery(hito);
     }
 
     @Override
@@ -154,6 +127,15 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     public void hideVideoLayout(){
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
         layout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showImageGallery(List<Imagen> imagenes){
+        mAdapter = new GaleriaAdapter(imagenes);
+        mRecyclerView.setAdapter(mAdapter);
+        TextView cantidadImagenes = (TextView) findViewById(R.id.cantidad_imagenes);
+        assert cantidadImagenes != null;
+        cantidadImagenes.setText(String.format("%d imágenes", imagenes.size()));
     }
 
     @Override
@@ -211,74 +193,5 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Created by Miguel on 07/06/2016.
-     */
-    public class JsonImagenTask extends AsyncTask<URL, Void, List<Imagen>> {
-
-        public JsonImagenTask() {
-            Context context = DetalleHitoActivity.this;
-        }
-
-        @Override
-        protected List<Imagen> doInBackground(URL... params) {
-            List<Imagen> imagenes = null;
-            HttpURLConnection con = null;
-
-            try {
-
-                //Establecer conexión con el servidor
-                con = (HttpURLConnection) params[0].openConnection();
-                con.setConnectTimeout(15000);
-                con.setReadTimeout(10000);
-
-                //Obtener el estado del recurso
-                int statusCode = con.getResponseCode();
-
-                if (statusCode != 200) {
-                    imagenes = new ArrayList<>();
-                    imagenes.add(new Imagen(0, "ERROR",
-                            new Hito(0, 0, "Error", null, 0.0, 0.0, false, null,0)));
-                } else {
-
-                    //Parsear el flujo con formato JSON
-                    InputStream in = new BufferedInputStream(con.getInputStream());
-
-                    JsonImagenParser parser = new JsonImagenParser();
-//                    GsonHitoParser<Hito> parser = new GsonHitoParser<>(Hito.class);
-                    imagenes = parser.readJsonStream(in);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getBaseContext(), "Ha sido imposible conectarse a internet",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            } finally {
-                con.disconnect();
-            }
-            return imagenes;
-        }
-
-        @Override
-        protected void onPostExecute(List<Imagen> imagenes) {
-            //Asignar los objetos de Json parseados al adaptador
-            if (imagenes != null) {
-
-                mAdapter = new GaleriaAdapter(imagenes);
-                mRecyclerView.setAdapter(mAdapter);
-                TextView cantidadImagenes = (TextView) findViewById(R.id.cantidad_imagenes);
-                assert cantidadImagenes != null;
-                cantidadImagenes.setText(String.format("%d imágenes", imagenes.size()));
-            } else {
-                Toast.makeText(getBaseContext(), "Ha ocurrido un error con el servidor",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
     }
 }

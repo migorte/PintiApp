@@ -2,12 +2,16 @@ package es.pintiavaccea.pintiapp.utility;
 
 import android.util.JsonReader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**
@@ -60,6 +64,16 @@ public class JsonImagenParser {
         }
         reader.endObject();
         return new Imagen(id, nombre);
+    }
+
+    public Imagen leerImagen(JSONObject object) throws IOException, JSONException {
+        int id;
+        String name;
+
+        id = (Integer) object.get("id");
+        name = (String) object.get("name");
+
+        return new Imagen(id, name);
     }
 
 }

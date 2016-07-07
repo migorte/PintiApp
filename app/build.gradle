@@ -35,4 +35,5 @@ dependencies {
     compile 'me.neavo:vitamio:4.2.2'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.volley:volley:1.0.0'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 }

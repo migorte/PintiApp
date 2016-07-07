@@ -59,6 +59,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".vista.DetalleHitoActivity" />
         </activity>
+        <activity android:name=".vista.ImageActivity"></activity>
     </application>
 
 </manifest>

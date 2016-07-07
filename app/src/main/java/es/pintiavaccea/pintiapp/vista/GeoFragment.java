@@ -77,7 +77,7 @@ public class GeoFragment extends Fragment implements GeoView,
 
         ImageView imagen = (ImageView) myFragmentView.findViewById(R.id.foto_portada);
         Picasso.with(getActivity()).setIndicatorsEnabled(true);
-        Picasso.with(getActivity()).load("http://i.imgur.com/DvpvklR.png").fit().centerInside().error(R.drawable.img201205191602434594).into(imagen);
+        Picasso.with(getActivity()).load(R.drawable.img201205191603108139).fit().centerInside().into(imagen);
 
 
         return myFragmentView;

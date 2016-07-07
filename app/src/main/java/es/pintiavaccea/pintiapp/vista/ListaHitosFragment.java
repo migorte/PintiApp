@@ -67,7 +67,7 @@ public class ListaHitosFragment extends Fragment implements ListaHitosView {
 
     @Override
     public void showError(String msg){
-        Toast.makeText(getContext(), msg,
+        Toast.makeText(getViewContext(), msg,
                 Toast.LENGTH_LONG).show();
     }
 }

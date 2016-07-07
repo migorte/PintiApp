@@ -1,10 +1,16 @@
 package es.pintiavaccea.pintiapp.vista;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -49,14 +55,32 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
 
         private ImageView imageView;
         private Context context;
+        private Imagen imagen;
 
         public ViewHolder(View v) {
             super(v);
             imageView = (ImageView) v.findViewById(R.id.imagen_galeria);
             context = v.getContext();
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ImageActivity.class);
+                    intent.putExtra("imagen", imagen);
+//                    context.startActivity(intent);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions options = ActivityOptions
+                                .makeSceneTransitionAnimation((AppCompatActivity) context, imageView, "imagen_galeria");
+                        context.startActivity(intent, options.toBundle());
+                    } else {
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
 
         public void bind (Imagen imagen){
+            this.imagen = imagen;
             Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
                     + imagen.getId()).error(R.drawable.img201205191603108139).into(imageView);

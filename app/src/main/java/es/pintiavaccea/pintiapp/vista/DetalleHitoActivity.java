@@ -115,12 +115,12 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         vidControl.setAnchorView(vidView);
         vidView.setMediaController(vidControl);
         vidView.requestFocus();
-        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                vidView.start();
-            }
-        });
+//        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                vidView.start();
+//            }
+//        });
     }
 
     @Override

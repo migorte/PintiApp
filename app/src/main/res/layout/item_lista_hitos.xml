@@ -36,18 +36,6 @@
         style="@style/TextAppearance.AppCompat.Headline" />
 
     <TextView
-        android:id="@+id/hito_titulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/hito_subtitulo"
-        android:layout_toRightOf="@id/hito_numero"
-        android:layout_toEndOf="@id/hito_numero"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:text="Title"
-        style="@style/TextAppearance.AppCompat.Subhead" />
-
-    <TextView
         android:id="@+id/hito_subtitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,5 +48,19 @@
         android:text="Subtitle"
         android:alpha="0.57"
         style="@style/TextAppearance.AppCompat.Body1"/>
+
+    <TextView
+        android:id="@+id/hito_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/hito_subtitulo"
+        android:layout_toRightOf="@id/hito_numero"
+        android:layout_toEndOf="@id/hito_numero"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:text="Title"
+        style="@style/TextAppearance.AppCompat.Subhead" />
+
+
 
 </RelativeLayout>

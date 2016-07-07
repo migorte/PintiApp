@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Toca para ubicarte"
+                android:text="Pulsa el botón para ubicarte"
                 android:textSize="24sp"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />

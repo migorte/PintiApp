@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.utility.DataSource;
-import es.pintiavaccea.pintiapp.utility.ImageLoader;
+import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
  * Created by Miguel on 02/05/2016.
@@ -117,7 +116,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
                     R.drawable.img201205191603108139);;
             if(portada!=null){
                 try {
-                    bitmapPortada = ImageLoader.loadImageFromStorage(portada.getNombre(), context);
+                    bitmapPortada = StorageManager.loadImageFromStorage(portada.getNombre(), context);
                 } catch (FileNotFoundException e){
                     e.printStackTrace();
                 }
@@ -128,7 +127,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
             hito.getIdImagenPortada())
                     .error(error).into(foto);
-            ImageLoader.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
+            StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
         }
 
 

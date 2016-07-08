@@ -10,14 +10,14 @@ public class Imagen implements Parcelable {
 
     private int id;
     private String nombre;
-    private Hito hito;
+    private int hito;
 
     public Imagen (int id, String nombre){
         this.setId(id);
         this.setNombre(nombre);
     }
 
-    public Imagen (int id, String nombre, Hito hito){
+    public Imagen (int id, String nombre, int hito){
         this.setId(id);
         this.setNombre(nombre);
         this.setHito(hito);
@@ -26,7 +26,7 @@ public class Imagen implements Parcelable {
     protected Imagen(Parcel in) {
         id = in.readInt();
         nombre = in.readString();
-        hito = in.readParcelable(Hito.class.getClassLoader());
+        hito = in.readInt();
     }
 
     public static final Creator<Imagen> CREATOR = new Creator<Imagen>() {
@@ -57,11 +57,11 @@ public class Imagen implements Parcelable {
         this.nombre = nombre;
     }
 
-    public Hito getHito() {
+    public int getHito() {
         return hito;
     }
 
-    public void setHito(Hito hito) {
+    public void setHito(int hito) {
         this.hito = hito;
     }
 
@@ -74,6 +74,6 @@ public class Imagen implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(nombre);
-        dest.writeParcelable(hito, flags);
+        dest.writeInt(hito);
     }
 }

@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +21,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
+import es.pintiavaccea.pintiapp.modelo.Imagen;
+import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.ImageLoader;
-import es.pintiavaccea.pintiapp.utility.StorageWriter;
 
 /**
  * Created by Miguel on 02/05/2016.
@@ -103,11 +110,25 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             numero.setText(String.valueOf(hito.getNumeroHito()));
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
+
+            DataSource dataSource = new DataSource(context);
+            Imagen portada = dataSource.getImagen(hito.getIdImagenPortada());
+            Bitmap bitmapPortada = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.img201205191603108139);;
+            if(portada!=null){
+                try {
+                    bitmapPortada = ImageLoader.loadImageFromStorage(portada.getNombre(), context);
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+            Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
+
             Picasso.with(context).setIndicatorsEnabled(true);
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
             hito.getIdImagenPortada())
-                    .error(R.drawable.img201205191603108139).into(foto);
-            ImageLoader.loadImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
+                    .error(error).into(foto);
+            ImageLoader.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
         }
 
 

@@ -68,10 +68,10 @@ public class JsonImagenParser {
 
     public Imagen leerImagen(JSONObject object) throws IOException, JSONException {
         int id;
-        String name;
+        String name = "";
 
         id = (Integer) object.get("id");
-        name = (String) object.get("name");
+        if(!object.isNull("newFilename")) name = (String) object.get("newFilename");
 
         return new Imagen(id, name);
     }

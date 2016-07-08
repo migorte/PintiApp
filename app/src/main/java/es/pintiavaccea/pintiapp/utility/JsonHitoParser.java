@@ -93,19 +93,19 @@ public class JsonHitoParser {
         int id;
         int numeroHito;
         String titulo;
-        String subtitulo;
-        double latitud;
-        double longitud;
-        String texto;
+        String subtitulo = "";
+        double latitud = 0;
+        double longitud = 0;
+        String texto = "";
         int idImagenPortada;
 
         id = (Integer) object.get("id");
         numeroHito = (Integer) object.get("numeroHito");
         titulo = (String) object.get("titulo");
-        subtitulo = (String) object.get("subtitulo");
-        latitud = (double) object.get("latitud");
-        longitud = (double) object.get("longitud");
-        texto = (String) object.get("texto");
+        if(!object.isNull("subtitulo")) subtitulo = (String) object.get("subtitulo");
+        if(!object.isNull("latitud")) latitud = (double) object.get("latitud");
+        if(!object.isNull("longitud")) longitud = (double) object.get("longitud");
+        if(!object.isNull("texto")) texto = (String) object.get("texto");
         idImagenPortada = (Integer) object.get("idImagenPortada");
 
         return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto, idImagenPortada);

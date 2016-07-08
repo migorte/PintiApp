@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import es.pintiavaccea.pintiapp.DataSource;
+import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
@@ -36,7 +36,7 @@ public class ListaHitosPresenter {
     }
 
     public void getListaHitos(){
-
+        final DataSource dataSource = new DataSource(listaHitosView.getViewContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
@@ -45,7 +45,7 @@ public class ListaHitosPresenter {
                     @Override
                     public void onResponse(JSONArray response) {
                         RecyclerView.Adapter mAdapter;
-                        DataSource dataSource = new DataSource(listaHitosView.getViewContext());
+
                         JsonHitoParser parser = new JsonHitoParser();
                         try {
                             List<Hito> hitos = new ArrayList<>();
@@ -88,7 +88,16 @@ public class ListaHitosPresenter {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        listaHitosView.showError("No se ha podido establecer conexión con el servidor");
+                        listaHitosView.showError("No se ha podido establecer conexión con el servidor, se cargarán los hitos offline");
+                        List<Hito> hitosDB = dataSource.getAllHitos();
+                        Collections.sort(hitosDB, new Comparator<Hito>() {
+                            @Override
+                            public int compare(Hito lhs, Hito rhs) {
+                                return lhs.getNumeroHito() - rhs.getNumeroHito();
+                            }
+                        });
+                        RecyclerView.Adapter mAdapter = new ListaHitosAdapter(hitosDB, listaHitosView.getViewContext());
+                        listaHitosView.setmAdapter(mAdapter);
                     }
                 }
         );

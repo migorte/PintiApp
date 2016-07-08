@@ -20,6 +20,8 @@ import java.util.List;
 
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
+import es.pintiavaccea.pintiapp.utility.ImageLoader;
+import es.pintiavaccea.pintiapp.utility.StorageWriter;
 
 /**
  * Created by Miguel on 02/05/2016.
@@ -105,7 +107,9 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
             hito.getIdImagenPortada())
                     .error(R.drawable.img201205191603108139).into(foto);
+            ImageLoader.loadImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
         }
+
 
         @Override
         public void onClick(View view) {

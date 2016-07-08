@@ -1,4 +1,4 @@
-package es.pintiavaccea.pintiapp;
+package es.pintiavaccea.pintiapp.utility;
 
 import android.content.ContentValues;
 import android.content.Context;

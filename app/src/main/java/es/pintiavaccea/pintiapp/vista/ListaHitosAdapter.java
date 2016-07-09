@@ -127,7 +127,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
             hito.getIdImagenPortada())
                     .error(error).into(foto);
-            StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/"+hito.getId(), context);
+            StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/", hito.getId(), context);
         }
 
 

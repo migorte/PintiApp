@@ -53,6 +53,7 @@ public class GeoPresenter {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            geoView.stopFabAnimation();
                             geoView.showInternetError();
                         }
                     }
@@ -60,6 +61,7 @@ public class GeoPresenter {
             VolleyRequestQueue.getInstance(geoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
         } else {
             geoView.showLocationError();
+            geoView.stopFabAnimation();
         }
     }
 }

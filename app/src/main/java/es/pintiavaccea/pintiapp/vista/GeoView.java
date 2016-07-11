@@ -13,6 +13,7 @@ public interface GeoView {
     Context getViewContext();
     Location getLastLocation();
     void openHito(Hito hito);
+    void stopFabAnimation();
     void showInternetError();
     void showLocationError();
 }

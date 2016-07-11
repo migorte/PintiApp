@@ -18,10 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.jorgecastilloprz.FABProgressCircle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -56,7 +53,7 @@ public class GeoFragment extends Fragment implements GeoView,
     private LocationRequest mLocationRequest;
     protected LocationSettingsRequest mLocationSettingsRequest;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
-    private FloatingActionButton fab;
+    private FABProgressCircle fab;
     public ViewGroup view;
     public GeoPresenter geoPresenter;
 
@@ -67,11 +64,13 @@ public class GeoFragment extends Fragment implements GeoView,
 
         view = myFragmentView;
 
-        fab = (FloatingActionButton) myFragmentView.findViewById(R.id.fab);
+        fab = (FABProgressCircle) myFragmentView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fab.show();
                 geoPresenter.getCloserHito();
+//                fab.beginFinalAnimation();
             }
         });
 
@@ -105,33 +104,40 @@ public class GeoFragment extends Fragment implements GeoView,
     }
 
     @Override
-    public Context getViewContext(){
+    public Context getViewContext() {
         return this.getActivity();
     }
 
     @Override
-    public Location getLastLocation(){
+    public Location getLastLocation() {
         return mLastLocation;
     }
 
     @Override
-    public void openHito(Hito hito){
+    public void openHito(Hito hito) {
         Intent intent = new Intent(getActivity(), DetalleHitoActivity.class);
         intent.putExtra("hito", hito);
         startActivity(intent);
+        stopFabAnimation();
     }
 
     @Override
-    public void showInternetError(){
-        Snackbar.make(view, "Latitud: " + mLastLocation.getLatitude() + "\t Longitud: " +
-                mLastLocation.getLongitude(), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+    public void stopFabAnimation() {
+        fab.hide();
     }
 
     @Override
-    public void showLocationError(){
+    public void showInternetError() {
+        Toast.makeText(getActivity(), "No se tiene conexión a internet",
+                Toast.LENGTH_SHORT).show();
+        stopFabAnimation();
+    }
+
+    @Override
+    public void showLocationError() {
         Toast.makeText(getActivity(), "No se pudo obtener su localización",
                 Toast.LENGTH_SHORT).show();
+        stopFabAnimation();
     }
 
     @Override

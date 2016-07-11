@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -34,29 +35,39 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="6dip"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:padding="6dip">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:text="Pulsa el botón para ubicarte"
-                android:textSize="24sp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:textSize="24sp" />
 
         </RelativeLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.github.jorgecastilloprz.FABProgressCircle
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_my_location_white_24dp" />
+        app:arcColor="@color/colorPrimaryDark"
+        app:arcWidth="4dp"
+        app:finalIcon="@drawable/ic_done">
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_my_location_white_24dp"
+            app:rippleColor="@color/colorPrimary"
+            app:borderWidth="0dp"/>
+
+    </com.github.jorgecastilloprz.FABProgressCircle>
 
 </android.support.design.widget.CoordinatorLayout>

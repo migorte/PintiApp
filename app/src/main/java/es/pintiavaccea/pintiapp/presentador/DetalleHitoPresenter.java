@@ -34,6 +34,7 @@ import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.modelo.Video;
+import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
 import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
@@ -48,7 +49,7 @@ public class DetalleHitoPresenter {
     private DetalleHitoView detalleHitoView;
     private Hito hito;
 
-    public DetalleHitoPresenter(DetalleHitoView detalleHitoView){
+    public DetalleHitoPresenter(DetalleHitoView detalleHitoView) {
         this.detalleHitoView = detalleHitoView;
 
     }
@@ -58,7 +59,7 @@ public class DetalleHitoPresenter {
         this.hito = extras.getParcelable("hito");
     }
 
-    public void loadMap(){
+    public void loadMap() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
@@ -84,20 +85,7 @@ public class DetalleHitoPresenter {
                                 });
                                 detalleHitoView.navigateToMap((ArrayList<Hito>) hitos);
                             } else {
-//                                        if (!dataSource.getAllHitos().isEmpty()) {
-//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
-//                                                    Toast.LENGTH_LONG).show();
-//                                            List<Hito> hitosDB = dataSource.getAllHitos();
-//                                            Collections.sort(hitosDB, new Comparator<Hito>() {
-//                                                @Override
-//                                                public int compare(Hito lhs, Hito rhs) {
-//                                                    return lhs.getNumeroHito() - rhs.getNumeroHito();
-//                                                }
-//                                            });
-//                                        } else {
-//                                            Toast.makeText(DetalleHitoActivity.this, "No hay hitos disponibles",
-//                                                    Toast.LENGTH_LONG).show();
-//                                        }
+//
                             }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -118,7 +106,7 @@ public class DetalleHitoPresenter {
     public void loadVideo(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/"+ hito.getId(),
+                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/" + hito.getId(),
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -159,10 +147,15 @@ public class DetalleHitoPresenter {
                     public void onResponse(JSONArray response) {
                         JsonImagenParser parser = new JsonImagenParser();
                         try {
+                            dataSource.clearImagenes(hito.getId());
                             List<Imagen> imagenes = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject object = response.getJSONObject(i);
-                                imagenes.add(parser.leerImagen(object));
+
+                                Imagen imagen = parser.leerImagen(object);
+                                imagen.setHito(hito.getId());
+                                imagenes.add(imagen);
+                                dataSource.saveImagen(imagen);
                             }
                             if (!imagenes.isEmpty()) {
                                 detalleHitoView.showImageGallery(imagenes);
@@ -177,6 +170,8 @@ public class DetalleHitoPresenter {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         detalleHitoView.showError(error.getLocalizedMessage());
+                        List<Imagen> imagenes = dataSource.getImagenesHito(hito.getId());
+                        detalleHitoView.showImageGallery(imagenes);
                     }
                 }
         );

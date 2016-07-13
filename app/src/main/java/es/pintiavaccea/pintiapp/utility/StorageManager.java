@@ -30,9 +30,15 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
  */
 public class StorageManager {
 
-    //target to save
-    public static Target getTarget(final String url, final Context context){
-        Target target = new Target(){
+    /**
+     * Devuelve el target para guardar la imagen en la memoria externa
+     *
+     * @param url     la url en la que se va a guardar la imagen
+     * @param context el contexto de la aplicación desde donde se llama
+     * @return el target para guardar la imagen en la memoria externa
+     */
+    public static Target getTarget(final String url, final Context context) {
+        Target target = new Target() {
 
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -43,8 +49,7 @@ public class StorageManager {
                         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
                         File directory = cw.getDir("images", Context.MODE_PRIVATE);
                         File file = new File(directory + "/" + url);
-//                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + url);
-//                        String path = Environment.getExternalStorageDirectory().getPath() + "/" + url;
+
                         try {
                             file.createNewFile();
                             FileOutputStream ostream = new FileOutputStream(file);
@@ -72,10 +77,16 @@ public class StorageManager {
         return target;
     }
 
-    public static void saveImage(String url, final Context context) {
+    /**
+     * Guarda una imagen en la base de datos a partir de la url indicada
+     *
+     * @param url     la url de la imagen
+     * @param context el contexto de la actividad desde donde se llama
+     */
+    public static void saveImage(String url, final int idHito, final Context context) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                url + idHito,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -83,10 +94,12 @@ public class StorageManager {
                         JsonImagenParser parser = new JsonImagenParser();
                         try {
                             Imagen imagen = parser.leerImagen(response);
+                            imagen.setHito(idHito);
                             Picasso.with(context)
                                     .load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" + imagen.getId())
                                     .into(getTarget(imagen.getNombre(), context));
                             DataSource dataSource = new DataSource(context);
+                            dataSource.removeImagen(imagen.getId());
                             dataSource.saveImagen(imagen);
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -103,6 +116,14 @@ public class StorageManager {
         VolleyRequestQueue.getInstance(context).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Carga una imagen de la memoria externa y la devuelve como Bitmap
+     *
+     * @param path    la ruta de la imagen
+     * @param context el contexto de la aplicación desde donde se llama
+     * @return la imagen como Bitmap
+     * @throws FileNotFoundException
+     */
     public static Bitmap loadImageFromStorage(String path, Context context) throws FileNotFoundException {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         File directory = cw.getDir("images", Context.MODE_PRIVATE);

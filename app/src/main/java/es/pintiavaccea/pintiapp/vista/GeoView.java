@@ -12,6 +12,7 @@ public interface GeoView {
     Context getViewContext();
     Location getLastLocation();
     void openHito(Intent intent);
+    void stopFabAnimation();
     void showInternetError();
     void showLocationError();
 }

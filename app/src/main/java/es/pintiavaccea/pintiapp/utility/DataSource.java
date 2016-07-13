@@ -80,6 +80,9 @@ public class DataSource {
     public void clearHitos(){
         database.delete(HITO_TABLE, null, null);
     }
+    public void clearImagenes(int hito){
+        database.delete(IMAGEN_TABLE, ColumnImagen.HITO + "=" + hito, null);
+    }
 
     public List<Hito> getAllHitos() {
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
@@ -137,7 +140,7 @@ public class DataSource {
 
         values.put(ColumnImagen.ID, imagen.getId());
         values.put(ColumnImagen.NOMBRE, imagen.getNombre());
-        values.put(ColumnImagen.HITO, 3);
+        values.put(ColumnImagen.HITO, imagen.getHito());
 
         database.insert(IMAGEN_TABLE, null, values);
     }
@@ -158,5 +161,31 @@ public class DataSource {
         cursor.close();
 
         return imagen;
+    }
+
+    public List<Imagen> getImagenesHito(int idHito) {
+        String[] args = new String[]{Integer.toString(idHito)};
+        Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where "
+                + ColumnImagen.HITO + " =?", args);
+
+        cursor.moveToFirst();
+
+        List<Imagen> imagenes = new ArrayList<>();
+
+        while (!cursor.isAfterLast()) {
+
+            Imagen imagen = new Imagen(cursor.getInt(cursor.getColumnIndex(ColumnImagen.ID)),
+                    cursor.getString(cursor.getColumnIndex(ColumnImagen.NOMBRE)));
+
+            imagenes.add(imagen);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return imagenes;
+    }
+
+    public void removeImagen(int id){
+        database.delete(IMAGEN_TABLE, ColumnImagen.ID + "=" + id, null);
     }
 }

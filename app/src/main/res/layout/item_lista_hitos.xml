@@ -43,6 +43,8 @@
             android:layout_toEndOf="@id/hito_numero"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:text="Title"
             style="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -54,6 +56,8 @@
             android:layout_toEndOf="@id/hito_numero"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/hito_titulo"
             android:text="Subtitle"

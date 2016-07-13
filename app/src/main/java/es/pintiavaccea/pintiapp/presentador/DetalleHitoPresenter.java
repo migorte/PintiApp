@@ -138,6 +138,7 @@ public class DetalleHitoPresenter {
     }
 
     public void loadImageGallery(){
+        final DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId(),

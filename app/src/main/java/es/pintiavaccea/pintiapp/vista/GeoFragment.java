@@ -115,9 +115,7 @@ public class GeoFragment extends Fragment implements GeoView,
     }
 
     @Override
-    public void openHito(Hito hito){
-        Intent intent = new Intent(getActivity(), DetalleHitoActivity.class);
-        intent.putExtra("hito", hito);
+    public void openHito(Intent intent){
         startActivity(intent);
     }
 

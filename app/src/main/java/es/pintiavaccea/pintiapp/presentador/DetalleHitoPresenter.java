@@ -1,12 +1,16 @@
 package es.pintiavaccea.pintiapp.presentador;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.Request;
@@ -14,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +30,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.modelo.Video;
@@ -40,9 +46,16 @@ import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
 public class DetalleHitoPresenter {
 
     private DetalleHitoView detalleHitoView;
+    private Hito hito;
 
     public DetalleHitoPresenter(DetalleHitoView detalleHitoView){
         this.detalleHitoView = detalleHitoView;
+
+    }
+
+    public void setHito(Intent intent){
+        Bundle extras = intent.getExtras();
+        this.hito = extras.getParcelable("hito");
     }
 
     public void loadMap(){
@@ -102,7 +115,7 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void loadVideo(Hito hito){
+    public void loadVideo(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/"+ hito.getId(),
@@ -116,8 +129,6 @@ public class DetalleHitoPresenter {
 
 
                             String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/"+video.getId();
-//                            String vidAddress =  "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
-//                            String vidAddress =  "http://techslides.com/demos/sample-videos/small.mp4";
                             Uri vidUri = Uri.parse(vidAddress);
                             detalleHitoView.prepareVideoView(vidUri);
 
@@ -138,7 +149,7 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void loadImageGallery(Hito hito){
+    public void loadImageGallery(){
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId(),
@@ -170,5 +181,23 @@ public class DetalleHitoPresenter {
                 }
         );
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void loadTitle(){
+        ((Activity) detalleHitoView.getViewContext()).setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
+    }
+
+    public void loadSubtitulo(TextView subtitulo){
+        subtitulo.setText(hito.getSubtitulo());
+    }
+
+    public void loadTexto(TextView texto){
+        texto.setText(hito.getTexto());
+    }
+
+    public void loadPortada(ImageView portada){
+        Picasso.with(detalleHitoView.getViewContext()).setIndicatorsEnabled(true);
+        Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                + hito.getIdImagenPortada()).error(R.drawable.img201205191603108139).into(portada);
     }
 }

@@ -34,11 +34,7 @@ import android.widget.VideoView;
 
 public class DetalleHitoActivity extends AppCompatActivity implements DetalleHitoView {
 
-    private Hito hito;
-    private ImageView portada;
-    private GaleriaAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private DetalleHitoPresenter detalleHitoPresenter;
 
@@ -50,16 +46,9 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                hito = null;
-            } else hito = extras.getParcelable("hito");
-        } else {
-            hito = savedInstanceState.getParcelable("hito");
-        }
-
         detalleHitoPresenter = new DetalleHitoPresenter(this);
+
+        detalleHitoPresenter.setHito(getIntent());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -70,24 +59,23 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
             }
         });
 
-        detalleHitoPresenter.loadVideo(hito);
+        detalleHitoPresenter.loadVideo();
 
-        assert hito != null;
-        this.setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
+        detalleHitoPresenter.loadTitle();
+
         setContent();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-//        mRecyclerView.setAdapter(new GaleriaAdapter());
 
         // use a linear layout manager
-        mLayoutManager = new GridLayoutManager(DetalleHitoActivity.this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(DetalleHitoActivity.this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
         mRecyclerView.addItemDecoration(new GaleriaItemDecoration(spacingInPixels));
 
-        detalleHitoPresenter.loadImageGallery(hito);
+        detalleHitoPresenter.loadImageGallery();
     }
 
     @Override
@@ -131,7 +119,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
 
     @Override
     public void showImageGallery(List<Imagen> imagenes){
-        mAdapter = new GaleriaAdapter(imagenes);
+        GaleriaAdapter mAdapter = new GaleriaAdapter(imagenes);
         mRecyclerView.setAdapter(mAdapter);
         TextView cantidadImagenes = (TextView) findViewById(R.id.cantidad_imagenes);
         assert cantidadImagenes != null;
@@ -141,47 +129,15 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("hito", hito);
     }
 
     private void setContent() {
         TextView subtitulo = (TextView) findViewById(R.id.subtitulo);
-        subtitulo.setText(hito.getSubtitulo());
+        detalleHitoPresenter.loadSubtitulo(subtitulo);
         TextView texto = (TextView) findViewById(R.id.texto);
-        texto.setText(hito.getTexto());
-        portada = (ImageView) findViewById(R.id.imagen_toolbar);
-        Picasso.with(this).setIndicatorsEnabled(true);
-        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
-                + hito.getIdImagenPortada()).error(R.drawable.img201205191603108139).into(portada);
-
-//        Picasso.with(this).setIndicatorsEnabled(true);
-//        Picasso.with(this).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/4")
-//                .error(R.drawable.img201205191603108139).into(portada);
-
-
-        /********************
-         * Reproductor Vitamio*
-         *********************/
-//        mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
-//        String path = "rtmp://rrbalancer.broadcast.tneg.de:1935/pw/ruk/ruk";
-//        /*options = new HashMap<>();
-//        options.put("rtmp_playpath", "");
-//        options.put("rtmp_swfurl", "");
-//        options.put("rtmp_live", "1");
-//        options.put("rtmp_pageurl", "");*/
-//        mVideoView.setVideoPath(path);
-//        //mVideoView.setVideoURI(Uri.parse(path), options);
-//        mVideoView.setMediaController(new MediaController(this));
-//        mVideoView.requestFocus();
-//
-//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mediaPlayer) {
-//                mediaPlayer.setPlaybackSpeed(1.0f);
-//            }
-//        });
-
-
+        detalleHitoPresenter.loadTexto(texto);
+        ImageView portada = (ImageView) findViewById(R.id.imagen_toolbar);
+        detalleHitoPresenter.loadPortada(portada);
     }
 
     @Override

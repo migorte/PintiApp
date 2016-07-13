@@ -18,6 +18,7 @@ import java.io.IOException;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
+import es.pintiavaccea.pintiapp.vista.DetalleHitoActivity;
 import es.pintiavaccea.pintiapp.vista.GeoView;
 
 /**
@@ -44,7 +45,9 @@ public class GeoPresenter {
                             JsonHitoParser parser = new JsonHitoParser();
                             try {
                                 Hito hito = parser.leerHito(response);
-                                geoView.openHito(hito);
+                                Intent intent = new Intent(geoView.getViewContext(), DetalleHitoActivity.class);
+                                intent.putExtra("hito", hito);
+                                geoView.openHito(intent);
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
                             }

@@ -2,6 +2,10 @@ package es.pintiavaccea.pintiapp.presentador;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +43,7 @@ import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
 import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
+import es.pintiavaccea.pintiapp.utility.StorageManager;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
 
@@ -46,7 +52,7 @@ import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
  */
 public class DetalleHitoPresenter {
 
-    private DetalleHitoView detalleHitoView;
+    private final DetalleHitoView detalleHitoView;
     private Hito hito;
 
     public DetalleHitoPresenter(DetalleHitoView detalleHitoView) {
@@ -54,7 +60,7 @@ public class DetalleHitoPresenter {
 
     }
 
-    public void setHito(Intent intent){
+    public void setHito(Intent intent) {
         Bundle extras = intent.getExtras();
         this.hito = extras.getParcelable("hito");
     }
@@ -87,7 +93,7 @@ public class DetalleHitoPresenter {
                             } else {
 //
                             }
-                        } catch (IOException | JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
@@ -103,7 +109,7 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void loadVideo(){
+    public void loadVideo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/" + hito.getId(),
@@ -116,11 +122,11 @@ public class DetalleHitoPresenter {
                             Video video = parser.leerVideo(response);
 
 
-                            String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/"+video.getId();
+                            String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/" + video.getId();
                             Uri vidUri = Uri.parse(vidAddress);
                             detalleHitoView.prepareVideoView(vidUri);
 
-                        } catch (IOException | JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -137,7 +143,7 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void loadImageGallery(){
+    public void loadImageGallery() {
         final DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -161,7 +167,7 @@ public class DetalleHitoPresenter {
                             if (!imagenes.isEmpty()) {
                                 detalleHitoView.showImageGallery(imagenes);
                             }
-                        } catch (IOException | JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
@@ -179,21 +185,35 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-    public void loadTitle(){
+    public void loadTitle() {
         ((Activity) detalleHitoView.getViewContext()).setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
     }
 
-    public void loadSubtitulo(TextView subtitulo){
+    public void loadSubtitulo(TextView subtitulo) {
         subtitulo.setText(hito.getSubtitulo());
     }
 
-    public void loadTexto(TextView texto){
+    public void loadTexto(TextView texto) {
         texto.setText(hito.getTexto());
     }
 
-    public void loadPortada(ImageView portada){
+    public void loadPortada(ImageView portada) {
+        DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
+        Imagen imagendb = dataSource.getImagen(hito.getIdImagenPortada());
+        Bitmap bitmapPortada = BitmapFactory.decodeResource(detalleHitoView.getViewContext().getResources(),
+                R.drawable.img201205191603108139);
+
+        if (imagendb != null) {
+            try {
+                bitmapPortada = StorageManager.loadImageFromStorage(imagendb.getNombre(), detalleHitoView.getViewContext());
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
         Picasso.with(detalleHitoView.getViewContext()).setIndicatorsEnabled(true);
-        Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
-                + hito.getIdImagenPortada()).error(R.drawable.img201205191603108139).into(portada);
+        Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
+                + hito.getIdImagenPortada()).error(error).into(portada);
     }
 }

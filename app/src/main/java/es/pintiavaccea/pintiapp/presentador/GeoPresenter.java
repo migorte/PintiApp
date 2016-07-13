@@ -48,7 +48,7 @@ public class GeoPresenter {
                                 Intent intent = new Intent(geoView.getViewContext(), DetalleHitoActivity.class);
                                 intent.putExtra("hito", hito);
                                 geoView.openHito(intent);
-                            } catch (IOException | JSONException e) {
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }

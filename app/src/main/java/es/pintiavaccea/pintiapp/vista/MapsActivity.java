@@ -20,7 +20,6 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     private List<Hito> hitos;
 
     @Override
@@ -50,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        GoogleMap mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         PolylineOptions rectOptions = new PolylineOptions().width(25).color(ContextCompat.getColor(this, R.color.colorAccent));

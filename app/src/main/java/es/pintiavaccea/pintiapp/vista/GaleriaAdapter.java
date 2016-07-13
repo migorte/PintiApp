@@ -32,7 +32,7 @@ import es.pintiavaccea.pintiapp.utility.StorageManager;
  */
 public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHolder> {
 
-    private List<Imagen> mDataset;
+    private final List<Imagen> mDataset;
 
     public GaleriaAdapter(List<Imagen> mDataset) {
         this.mDataset = mDataset;
@@ -60,8 +60,8 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView imageView;
-        private Context context;
+        private final ImageView imageView;
+        private final Context context;
         private Imagen imagen;
 
         public ViewHolder(View v) {
@@ -72,9 +72,8 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ImageActivity.class);
+                    Intent intent = new Intent(context, ImageZoomActivity.class);
                     intent.putExtra("imagen", imagen);
-//                    context.startActivity(intent);
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         ActivityOptions options = ActivityOptions
                                 .makeSceneTransitionAnimation((AppCompatActivity) context, imageView, "imagen_galeria");
@@ -101,7 +100,7 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
             Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
 
             Picasso.with(context).setIndicatorsEnabled(true);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
                     + imagen.getId()).error(error).into(imageView);
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
                     + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));

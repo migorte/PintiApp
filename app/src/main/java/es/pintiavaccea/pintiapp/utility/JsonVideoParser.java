@@ -12,7 +12,7 @@ import es.pintiavaccea.pintiapp.modelo.Video;
  * Created by madri on 28/06/2016.
  */
 public class JsonVideoParser {
-    public Video leerVideo(JSONObject object) throws IOException, JSONException {
+    public Video leerVideo(JSONObject object) throws JSONException {
         int id;
         String nombre;
 

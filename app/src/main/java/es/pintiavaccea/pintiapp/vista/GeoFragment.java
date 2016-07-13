@@ -50,9 +50,9 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 public class GeoFragment extends Fragment implements GeoView{
 
     private FABProgressCircle fab;
-    public ViewGroup view;
-    public GeoPresenter geoPresenter;
-    public CoordinatorLayout mLayout;
+    private ViewGroup view;
+    private GeoPresenter geoPresenter;
+    private CoordinatorLayout mLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

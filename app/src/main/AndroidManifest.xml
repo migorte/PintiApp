@@ -61,7 +61,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".vista.DetalleHitoActivity" />
         </activity>
-        <activity android:name=".vista.ImageActivity"></activity>
+        <activity
+            android:name=".vista.ImageZoomActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".vista.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

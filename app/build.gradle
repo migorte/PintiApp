@@ -36,4 +36,5 @@ dependencies {
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
+    compile 'me.neavo:vitamio:4.2.2'
 }

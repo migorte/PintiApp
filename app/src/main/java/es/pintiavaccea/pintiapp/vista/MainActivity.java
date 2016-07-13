@@ -101,30 +101,10 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                super.onTabReselected(tab);
-            }
         });
 
         mLayout = (CoordinatorLayout) findViewById(R.id.main);
 
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     @Override
@@ -142,8 +122,12 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_ayuda) {
+            startActivity(new Intent(MainActivity.this, AyudaActivity.class));
+        }
+
+        else if (id == R.id.action_precargar) {
+            startActivity(new Intent(MainActivity.this, AyudaActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -447,11 +431,6 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                 }
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 }

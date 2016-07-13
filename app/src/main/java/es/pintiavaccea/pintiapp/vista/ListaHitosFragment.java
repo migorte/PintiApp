@@ -16,7 +16,6 @@ import es.pintiavaccea.pintiapp.R;
 public class ListaHitosFragment extends Fragment implements ListaHitosView {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private ListaHitosPresenter listaHitosPresenter;
 
@@ -48,7 +47,7 @@ public class ListaHitosFragment extends Fragment implements ListaHitosView {
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         listaHitosPresenter.getListaHitos();

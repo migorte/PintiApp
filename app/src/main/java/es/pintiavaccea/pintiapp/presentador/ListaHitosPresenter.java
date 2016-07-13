@@ -80,7 +80,7 @@ public class ListaHitosPresenter {
                                     listaHitosView.showError("No hay hitos disponibles");
                                 }
                             }
-                        } catch (JSONException | IOException e1) {
+                        } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
                     }

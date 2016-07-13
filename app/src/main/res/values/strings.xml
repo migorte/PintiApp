@@ -115,4 +115,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_fullscreen_video">FullscreenVideoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

@@ -113,7 +113,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             DataSource dataSource = new DataSource(context);
             Imagen portada = dataSource.getImagen(hito.getIdImagenPortada());
             Bitmap bitmapPortada = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.img201205191603108139);;
+                    R.drawable.img201205191603108139);
             if(portada!=null){
                 try {
                     bitmapPortada = StorageManager.loadImageFromStorage(portada.getNombre(), context);

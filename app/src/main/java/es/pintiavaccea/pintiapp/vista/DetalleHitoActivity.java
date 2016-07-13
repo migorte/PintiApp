@@ -126,11 +126,6 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         cantidadImagenes.setText(String.format("%d imágenes", imagenes.size()));
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     private void setContent() {
         TextView subtitulo = (TextView) findViewById(R.id.subtitulo);
         detalleHitoPresenter.loadSubtitulo(subtitulo);

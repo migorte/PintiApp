@@ -38,7 +38,7 @@ public class StorageManager {
      * @return el target para guardar la imagen en la memoria externa
      */
     public static Target getTarget(final String url, final Context context) {
-        Target target = new Target() {
+        return new Target() {
 
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -74,7 +74,6 @@ public class StorageManager {
 
             }
         };
-        return target;
     }
 
     /**
@@ -101,7 +100,7 @@ public class StorageManager {
                             DataSource dataSource = new DataSource(context);
                             dataSource.removeImagen(imagen.getId());
                             dataSource.saveImagen(imagen);
-                        } catch (IOException | JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

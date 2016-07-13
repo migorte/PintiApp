@@ -19,54 +19,7 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
  */
 public class JsonImagenParser {
 
-    public List<Imagen> readJsonStream(InputStream in) throws IOException {
-        // Nueva instancia JsonReader
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        try {
-            // Leer Array
-            return leerImagenes(reader);
-        } finally {
-            reader.close();
-        }
-    }
-
-    public List leerImagenes(JsonReader reader) throws IOException {
-        // Lista temporal
-        List imagenes = new ArrayList();
-
-        reader.beginArray();
-        while (reader.hasNext()) {
-            // Leer objeto
-            imagenes.add(leerImagen(reader));
-        }
-        reader.endArray();
-        return imagenes;
-    }
-
-    public Imagen leerImagen(JsonReader reader) throws IOException{
-        int id = 0;
-        String nombre = null;
-
-        reader.beginObject();
-        while (reader.hasNext()){
-            String name = reader.nextName();
-            switch (name) {
-                case "id":
-                    id = reader.nextInt();
-                    break;
-                case "name":
-                    nombre = reader.nextString();
-                    break;
-                default:
-                    reader.skipValue();
-                    break;
-            }
-        }
-        reader.endObject();
-        return new Imagen(id, nombre);
-    }
-
-    public Imagen leerImagen(JSONObject object) throws IOException, JSONException {
+    public Imagen leerImagen(JSONObject object) throws JSONException {
         int id;
         String name = "";
 

@@ -3,9 +3,6 @@ package es.pintiavaccea.pintiapp.utility;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
-import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Video;
 
 /**

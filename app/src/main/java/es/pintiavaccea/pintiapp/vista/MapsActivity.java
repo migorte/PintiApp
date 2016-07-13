@@ -49,23 +49,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
         PolylineOptions rectOptions = new PolylineOptions().width(25).color(ContextCompat.getColor(this, R.color.colorAccent));
 
         for(Hito hito : hitos){
             LatLng position = new LatLng(hito.getLatitud(), hito.getLongitud());
-            mMap.addMarker(new MarkerOptions().position(position).title("Marca en " + hito.getTitulo()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+            googleMap.addMarker(new MarkerOptions().position(position).title("Marca en " + hito.getTitulo()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
             rectOptions.add(position);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
         }
 
-        mMap.addPolyline(rectOptions);
+        googleMap.addPolyline(rectOptions);
 
         // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
     }
 }

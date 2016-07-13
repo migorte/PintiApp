@@ -2,11 +2,7 @@ package es.pintiavaccea.pintiapp.vista;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +42,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
 
         detalleHitoPresenter = new DetalleHitoPresenter(this);
 
-        detalleHitoPresenter.setHito(getIntent());
+        detalleHitoPresenter.setHito(getIntent(), savedInstanceState);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -98,6 +92,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     @Override
     public void prepareVideoView(Uri vidUri){
         final VideoView vidView = (VideoView) findViewById(R.id.video_view);
+        assert vidView != null;
         vidView.setVideoURI(vidUri);
         MediaController vidControl = new MediaController(this);
         vidControl.setAnchorView(vidView);
@@ -114,6 +109,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     @Override
     public void hideVideoLayout(){
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
+        assert layout != null;
         layout.setVisibility(View.GONE);
     }
 
@@ -144,5 +140,11 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        detalleHitoPresenter.onSaveInstanceState(outState);
     }
 }

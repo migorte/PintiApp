@@ -2,8 +2,6 @@ package es.pintiavaccea.pintiapp.presentador;
 
 import android.content.Intent;
 import android.location.Location;
-import android.support.design.widget.Snackbar;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -12,8 +10,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;

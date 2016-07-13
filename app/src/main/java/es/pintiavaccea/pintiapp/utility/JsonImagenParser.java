@@ -1,17 +1,8 @@
 package es.pintiavaccea.pintiapp.utility;
 
-import android.util.JsonReader;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**

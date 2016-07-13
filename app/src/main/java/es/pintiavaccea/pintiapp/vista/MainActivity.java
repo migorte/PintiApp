@@ -41,7 +41,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import es.pintiavaccea.pintiapp.R;
 
-public class MainActivity extends AppCompatActivity implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, ResultCallback<LocationSettingsResult> {
 
     private static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
@@ -76,11 +76,13 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        assert tabLayout != null;
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_white_24dp));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_view_list_white_24dp));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        assert viewPager != null;
         viewPager.setOffscreenPageLimit(2);
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
@@ -124,9 +126,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ayuda) {
             startActivity(new Intent(MainActivity.this, AyudaActivity.class));
-        }
-
-        else if (id == R.id.action_precargar) {
+        } else if (id == R.id.action_precargar) {
             startActivity(new Intent(MainActivity.this, AyudaActivity.class));
         }
 
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
             checkLocationSettings();
         }
     }
+
     //
     public boolean checkGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -309,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                     REQUEST_GPS);
         }
     }
+
     //
 //
     protected void checkLocationSettings() {
@@ -325,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
     public void onConnected(@Nullable Bundle bundle) {
         startLocationUpdates();
     }
+
     //
     @Override
     public void onConnectionSuspended(int i) {
@@ -342,12 +345,10 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
                 + connectionResult.getErrorCode());
     }
 
-        public boolean isLocationEnabled() {
-        LocationManager locationManager = null;
+    public boolean isLocationEnabled() {
+        LocationManager locationManager;
         boolean gps_enabled = false, network_enabled = false;
-
-        if (locationManager == null)
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
             gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex) {
@@ -363,9 +364,6 @@ public class MainActivity extends AppCompatActivity implements  GoogleApiClient.
         return gps_enabled || network_enabled;
 
     }
-
-
-
 
 
     @Override

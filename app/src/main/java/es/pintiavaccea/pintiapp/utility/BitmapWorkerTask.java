@@ -2,7 +2,6 @@ package es.pintiavaccea.pintiapp.utility;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
@@ -18,7 +17,7 @@ public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
     public BitmapWorkerTask(ImageView imageView, Context context) {
         // Use a WeakReference to ensure the ImageView can be garbage collected
-        imageViewReference = new WeakReference<ImageView>(imageView);
+        imageViewReference = new WeakReference<>(imageView);
         this.context = context;
     }
 

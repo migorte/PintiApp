@@ -1,19 +1,10 @@
 package es.pintiavaccea.pintiapp.vista;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +12,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.jorgecastilloprz.FABProgressCircle;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
 import es.pintiavaccea.pintiapp.presentador.GeoPresenter;
-import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.R;
-import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
-import es.pintiavaccea.pintiapp.modelo.Hito;
 
 /**
  * Created by Miguel on 09/06/2016.
@@ -50,16 +23,12 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 public class GeoFragment extends Fragment implements GeoView{
 
     private FABProgressCircle fab;
-    private ViewGroup view;
     private GeoPresenter geoPresenter;
-    private CoordinatorLayout mLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup myFragmentView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_geo, container, false);
-
-        view = myFragmentView;
 
         fab = (FABProgressCircle) myFragmentView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +40,6 @@ public class GeoFragment extends Fragment implements GeoView{
             }
         });
 
-        mLayout = (CoordinatorLayout) myFragmentView.findViewById(R.id.geolayout);
         ImageView imagen = (ImageView) myFragmentView.findViewById(R.id.foto_portada);
         Picasso.with(getActivity()).setIndicatorsEnabled(true);
         Picasso.with(getActivity()).load(R.drawable.img201205191603108139).fit().centerInside().into(imagen);

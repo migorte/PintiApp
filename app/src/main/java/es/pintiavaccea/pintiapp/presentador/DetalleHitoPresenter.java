@@ -6,16 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,12 +50,16 @@ public class DetalleHitoPresenter {
 
     public DetalleHitoPresenter(DetalleHitoView detalleHitoView) {
         this.detalleHitoView = detalleHitoView;
-
     }
 
-    public void setHito(Intent intent) {
+    public void setHito(Intent intent, Bundle saveInstanceState) {
         Bundle extras = intent.getExtras();
         this.hito = extras.getParcelable("hito");
+        if(hito == null) saveInstanceState.getParcelable("hito");
+    }
+
+    public void onSaveInstanceState(Bundle outState){
+        outState.putParcelable("hito", hito);
     }
 
     public void loadMap() {
@@ -90,8 +87,6 @@ public class DetalleHitoPresenter {
                                     }
                                 });
                                 detalleHitoView.navigateToMap((ArrayList<Hito>) hitos);
-                            } else {
-//
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

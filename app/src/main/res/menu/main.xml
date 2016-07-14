@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_precargar"
-        android:orderInCategory="100"
-        android:title="Precargar"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_ayuda"
         android:orderInCategory="100"
         android:title="Ayuda"

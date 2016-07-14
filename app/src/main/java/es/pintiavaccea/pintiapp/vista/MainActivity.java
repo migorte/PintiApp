@@ -41,6 +41,11 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import es.pintiavaccea.pintiapp.R;
 
+/**
+ * Created by Miguel on 09/06/2016.
+ *
+ * Actividad que engloba los fragmentos de la geolocalización y la lista de hitos.
+ */
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, ResultCallback<LocationSettingsResult> {
 
@@ -126,10 +131,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ayuda) {
             startActivity(new Intent(MainActivity.this, AyudaActivity.class));
-        } else if (id == R.id.action_precargar) {
-            startActivity(new Intent(MainActivity.this, AyudaActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -188,18 +190,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     * Inicializa la localización de Google Play Services.
+     */
     public void initializeLocation() {
         if (checkGooglePlayServices()) {
             buildGoogleApiClient();
 
-//        prepare connection request
+            //prepare connection request
             createLocationRequest();
             buildLocationSettingsRequest();
             checkLocationSettings();
         }
     }
 
-    //
+    /**
+     * Comprueba si Google Play Services está disponible
+     * @return true si está disponible
+     */
     public boolean checkGooglePlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int checkGooglePlayServices = googleAPI.isGooglePlayServicesAvailable(this);
@@ -220,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return true;
     }
 
+    /**
+     * Construye una solicitud de localización.
+     */
     protected void buildLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
@@ -311,8 +322,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    //
-//
+    /**
+     * Comprueba la configuración de la localización.
+     */
     protected void checkLocationSettings() {
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(
@@ -345,6 +357,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 + connectionResult.getErrorCode());
     }
 
+    /**
+     * Comprueba si la localización del dispositivo está habilitada.
+     * @return true si la localización está habilitada.
+     */
     public boolean isLocationEnabled() {
         LocationManager locationManager;
         boolean gps_enabled = false, network_enabled = false;

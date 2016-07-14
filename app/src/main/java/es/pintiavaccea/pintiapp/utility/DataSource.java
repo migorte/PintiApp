@@ -190,4 +190,44 @@ public class DataSource {
     public void removeImagen(int id){
         database.delete(IMAGEN_TABLE, ColumnImagen.ID + "=" + id, null);
     }
+
+    public Hito getHitoCercano(double latitud, double longitud){
+        Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
+
+        cursor.moveToFirst();
+
+        Hito resultado = null;
+
+        Double distanciaMin = null;
+
+        while (!cursor.isAfterLast()) {
+
+            boolean itinerario = false;
+            if (cursor.getInt(cursor.getColumnIndex(ColumnHito.ITINERARIO)) == 1) itinerario = true;
+
+            Hito hito = new Hito(cursor.getInt(cursor.getColumnIndex(ColumnHito.ID)),
+                    cursor.getInt(cursor.getColumnIndex(ColumnHito.NUMERO_HITO)),
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.TITULO)),
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.SUBTITULO)),
+                    cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
+                    cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
+                    itinerario,
+                    cursor.getString(cursor.getColumnIndex(ColumnHito.TEXTO)),
+                    cursor.getInt(cursor.getColumnIndex(ColumnHito.IDIMAGENPORTADA)));
+
+            double distancia = Math.sqrt(Math.pow(latitud - hito.getLatitud(), 2) +
+                    Math.pow(longitud - hito.getLongitud(), 2));
+
+            if (distanciaMin == null || distanciaMin > distancia) {
+                resultado = hito;
+                distanciaMin = distancia;
+            }
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return resultado;
+    }
 }

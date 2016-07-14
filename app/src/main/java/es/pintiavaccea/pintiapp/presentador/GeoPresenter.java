@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import es.pintiavaccea.pintiapp.modelo.Hito;
+import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoActivity;
@@ -34,7 +35,7 @@ public class GeoPresenter {
      * la actividad DetalleHitoActivity
      */
     public void getCloserHito() {
-        Location mLastLocation = geoView.getLastLocation();
+        final Location mLastLocation = geoView.getLastLocation();
         if (mLastLocation != null) {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
@@ -58,8 +59,17 @@ public class GeoPresenter {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            geoView.stopFabAnimation();
-                            geoView.showInternetError();
+                            DataSource datasource = new DataSource(geoView.getViewContext());
+                            Hito hito = datasource.getHitoCercano(mLastLocation.getLatitude(),
+                                    mLastLocation.getLongitude());
+                            if(hito != null){
+                                Intent intent = new Intent(geoView.getViewContext(), DetalleHitoActivity.class);
+                                intent.putExtra("hito", hito);
+                                geoView.openHito(intent);
+                            } else {
+                                geoView.stopFabAnimation();
+                                geoView.showInternetError();
+                            }
                         }
                     }
             );

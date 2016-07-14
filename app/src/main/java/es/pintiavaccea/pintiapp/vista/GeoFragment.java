@@ -43,11 +43,6 @@ public class GeoFragment extends Fragment implements GeoView{
             }
         });
 
-        ImageView imagen = (ImageView) myFragmentView.findViewById(R.id.foto_portada);
-        Picasso.with(getActivity()).setIndicatorsEnabled(true);
-        Picasso.with(getActivity()).load(R.drawable.img201205191603108139).fit().centerInside().into(imagen);
-
-
         return myFragmentView;
     }
 
@@ -94,19 +89,4 @@ public class GeoFragment extends Fragment implements GeoView{
                 Toast.LENGTH_SHORT).show();
         stopFabAnimation();
     }
-
-//
-//
-//    /**
-//     * Comprueba si existe conexion a internet
-//     *
-//     * @param context contexto de la actividad
-//     * @return true si existe conexion a internet
-//     */
-//    public static boolean checkNetwork(Context context) {
-//        ConnectivityManager connMgr = (ConnectivityManager)
-//                context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-//        return (networkInfo != null && networkInfo.isConnected());
-//    }
 }

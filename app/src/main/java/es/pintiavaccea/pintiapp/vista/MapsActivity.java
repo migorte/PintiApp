@@ -18,6 +18,9 @@ import java.util.List;
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 
+/**
+ * Muestra el recorrido del yacimiento con todos sus hitos.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private List<Hito> hitos;

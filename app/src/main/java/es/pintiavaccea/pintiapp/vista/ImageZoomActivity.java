@@ -21,6 +21,12 @@ import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.StorageManager;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+/**
+ * Created by Miguel on 20/06/2016.
+ *
+ * Vista que se abre cuando se pulsa en un item de la galería de imágenes. Permite hacer zoom en la
+ * imagen.
+ */
 public class ImageZoomActivity extends AppCompatActivity implements ImageZoomView {
 
     @Override

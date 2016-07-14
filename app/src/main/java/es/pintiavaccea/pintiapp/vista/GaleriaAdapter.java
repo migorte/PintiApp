@@ -24,7 +24,10 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
- * Created by Usuario on 09/06/2016.
+ * Created by Miguel on 09/06/2016.
+ *
+ * Adaptador de la galería de imágenes. Provee acceso a los datos de los items y es responsable
+ * de crear una vista para cada uno de ellos.
  */
 public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHolder> {
 
@@ -54,7 +57,10 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
         return mDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    /**
+     * Describe un la vista de un item del adaptador y sus metadatos.
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imageView;
         private final Context context;
@@ -81,6 +87,10 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
             });
         }
 
+        /**
+         * Enlaza la imagen correspondiente al item del adaptador.
+         * @param imagen la imagen correspondiente al item
+         */
         public void bind(Imagen imagen) {
             this.imagen = imagen;
 
@@ -100,11 +110,6 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
                     + imagen.getId()).error(error).into(imageView);
             Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
                     + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));
-        }
-
-        @Override
-        public void onClick(View v) {
-
         }
     }
 }

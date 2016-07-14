@@ -23,6 +23,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Miguel on 13/07/2016.
+ *
+ * Presentador de la actividad ImageZoomActivity.
  */
 public class ImageZoomPresenter {
 
@@ -33,11 +35,19 @@ public class ImageZoomPresenter {
         this.view = view;
     }
 
+    /**
+     * Configura la imagen que se mostrará en la vista
+     * @param intent el intent con el que se llega a la vista
+     */
     public void setImagen(Intent intent) {
         Bundle extras = intent.getExtras();
         this.imagen = extras.getParcelable("imagen");
     }
 
+    /**
+     * Carga la imagen en la vista.
+     * @param imageView la ImageView donde se cargará la imagen
+     */
     public void loadImagen(ImageView imageView){
         Context context = view.getViewContext();
         DataSource dataSource = new DataSource(context);

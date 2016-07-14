@@ -14,6 +14,8 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**
  * Created by Miguel on 28/04/2016.
+ *
+ * Implementa la persistencia de la aplicación. Inserta los datos en una base de datos SQLite.
  */
 public class DataSource {
     private static final String HITO_TABLE = "Hito";

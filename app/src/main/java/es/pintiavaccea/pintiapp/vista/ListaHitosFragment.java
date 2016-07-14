@@ -13,6 +13,12 @@ import android.widget.Toast;
 import es.pintiavaccea.pintiapp.presentador.ListaHitosPresenter;
 import es.pintiavaccea.pintiapp.R;
 
+/**
+ * Created by Miguel on 02/05/2016.
+ *
+ * Fragmento que contiene el RecyclerView con la lista de hitos. Es la tab de la parte derecha
+ * del TabLayout.
+ */
 public class ListaHitosFragment extends Fragment implements ListaHitosView {
 
     private RecyclerView mRecyclerView;

@@ -19,6 +19,9 @@ import es.pintiavaccea.pintiapp.R;
 
 /**
  * Created by Miguel on 09/06/2016.
+ *
+ * Fragmento que se muestra al iniciar la aplicación. Es la tab de la izquierda del tab layout.
+ * Contiene la funcionalidad de obtener el hito más cercano a la geolocalización del usuario.
  */
 public class GeoFragment extends Fragment implements GeoView{
 
@@ -106,17 +109,4 @@ public class GeoFragment extends Fragment implements GeoView{
 //        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 //        return (networkInfo != null && networkInfo.isConnected());
 //    }
-//
-//
-//
-
-//
-//
-
-//
-
-//
-
-//
-//
 }

@@ -42,6 +42,9 @@ import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
 
 /**
  * Created by Miguel on 30/06/2016.
+ *
+ * Presentador de la actividad DetalleHitoActivity. Se encarga de proporcionar los modelos de datos
+ * a la vista.
  */
 public class DetalleHitoPresenter {
 
@@ -52,16 +55,29 @@ public class DetalleHitoPresenter {
         this.detalleHitoView = detalleHitoView;
     }
 
+    /**
+     * Configura el hito del que se muestran los detalles en la vista
+     * @param intent el intent con el que se llega a la vista
+     * @param saveInstanceState el bundle donde se guarda el hito cuando la actividad se para
+     */
     public void setHito(Intent intent, Bundle saveInstanceState) {
         Bundle extras = intent.getExtras();
         this.hito = extras.getParcelable("hito");
         if(hito == null) saveInstanceState.getParcelable("hito");
     }
 
+    /**
+     * Guarda la instancia del hito
+     * @param outState bundle donde se guarda la instancia
+     */
     public void onSaveInstanceState(Bundle outState){
         outState.putParcelable("hito", hito);
     }
 
+    /**
+     * Carga toda la lista de hitos y se los pasa a la vista para navegar a la actividad donde se
+     * muestra el recorrido en el mapa
+     */
     public void loadMap() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -72,7 +88,6 @@ public class DetalleHitoPresenter {
                     public void onResponse(JSONArray response) {
                         JsonHitoParser parser = new JsonHitoParser();
                         try {
-
 
                             List<Hito> hitos = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
@@ -104,6 +119,9 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Carga la uri del vídeo del hito para pasarsela a la vista.
+     */
     public void loadVideo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -115,7 +133,6 @@ public class DetalleHitoPresenter {
                         JsonVideoParser parser = new JsonVideoParser();
                         try {
                             Video video = parser.leerVideo(response);
-
 
                             String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/" + video.getId();
                             Uri vidUri = Uri.parse(vidAddress);
@@ -138,6 +155,10 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Carga la lista de imágenes del hito para pasárselas a la vista y las guarda en la base
+     * de datos
+     */
     public void loadImageGallery() {
         final DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
@@ -180,18 +201,31 @@ public class DetalleHitoPresenter {
         VolleyRequestQueue.getInstance(detalleHitoView.getViewContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Pasa a la vista el título del hito
+     */
     public void loadTitle() {
         ((Activity) detalleHitoView.getViewContext()).setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
     }
 
+    /**
+     * Pasa a la vista el subtítulo del hito
+     */
     public void loadSubtitulo(TextView subtitulo) {
         subtitulo.setText(hito.getSubtitulo());
     }
 
+    /**
+     * Pasa a la vista el texto del hito
+     */
     public void loadTexto(TextView texto) {
         texto.setText(hito.getTexto());
     }
 
+    /**
+     * Carga la portada del hito en la vista.
+     * @param portada la ImageView donde se cargará la imagen.
+     */
     public void loadPortada(ImageView portada) {
         DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         Imagen imagendb = dataSource.getImagen(hito.getIdImagenPortada());

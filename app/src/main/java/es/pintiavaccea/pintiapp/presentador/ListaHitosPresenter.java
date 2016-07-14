@@ -25,6 +25,8 @@ import es.pintiavaccea.pintiapp.vista.ListaHitosView;
 
 /**
  * Created by Miguel on 30/06/2016.
+ *
+ * Presentador del fragmento ListaHitosFragment.
  */
 public class ListaHitosPresenter {
 
@@ -34,6 +36,9 @@ public class ListaHitosPresenter {
         this.listaHitosView = listaHitosView;
     }
 
+    /**
+     * Carga la lista de hitos completa y se la pasa al adaptador de la lista de hitos.
+     */
     public void getListaHitos(){
         final DataSource dataSource = new DataSource(listaHitosView.getViewContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(

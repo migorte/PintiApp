@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by Usuario on 09/06/2016.
+ * Created by Miguel on 09/06/2016.
+ *
+ * Define la decoración de los elementos de la galería de imágenes.
  */
 public class GaleriaItemDecoration extends RecyclerView.ItemDecoration {
     private int space;

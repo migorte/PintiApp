@@ -26,6 +26,12 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+/**
+ * Created by Miguel on 09/06/2016.
+ *
+ * Pantalla donde se muestra toda la información acerca de un hito, esto es, título, subtítulo, texto,
+ * galería de imágenes y vídeo.
+ */
 public class DetalleHitoActivity extends AppCompatActivity implements DetalleHitoView {
 
     private RecyclerView mRecyclerView;
@@ -98,12 +104,6 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         vidControl.setAnchorView(vidView);
         vidView.setMediaController(vidControl);
         vidView.requestFocus();
-//        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mp) {
-//                vidView.start();
-//            }
-//        });
     }
 
     @Override
@@ -122,6 +122,10 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         cantidadImagenes.setText(String.format("%d imágenes", imagenes.size()));
     }
 
+    /**
+     * Pasa al presentador los campos del subtitulo, el texto y la portada para que se les
+     * asigne los valores.
+     */
     private void setContent() {
         TextView subtitulo = (TextView) findViewById(R.id.subtitulo);
         detalleHitoPresenter.loadSubtitulo(subtitulo);

@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by Miguel on 09/06/2016.
+ *
+ * Adaptador para el TabLayout de la pantalla principal. Muestra dos vistas, la primera para la
+ * geolocalización y la segunda para la lista de hitos.
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

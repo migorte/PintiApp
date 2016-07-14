@@ -9,6 +9,11 @@ import android.view.View;
 
 import es.pintiavaccea.pintiapp.R;
 
+/**
+ * Created by Miguel on 09/06/2016.
+ *
+ * Sección de ayuda que describe el funcionamiento de la aplicación.
+ */
 public class AyudaActivity extends AppCompatActivity {
 
     @Override

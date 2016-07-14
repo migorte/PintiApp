@@ -19,6 +19,8 @@ import es.pintiavaccea.pintiapp.vista.GeoView;
 
 /**
  * Created by Miguel on 29/06/2016.
+ *
+ * Presentador del fragmento GeoFragment.
  */
 public class GeoPresenter {
     private GeoView geoView;
@@ -27,6 +29,10 @@ public class GeoPresenter {
         this.geoView = geoView;
     }
 
+    /**
+     * Obtiene el hito más cercano a la posición del usuario y se le pasa al intent que comenzará
+     * la actividad DetalleHitoActivity
+     */
     public void getCloserHito() {
         Location mLastLocation = geoView.getLastLocation();
         if (mLastLocation != null) {

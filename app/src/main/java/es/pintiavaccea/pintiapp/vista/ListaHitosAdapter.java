@@ -31,6 +31,9 @@ import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
  * Created by Miguel on 02/05/2016.
+ *
+ * Adaptador de la lista de hitos. Provee acceso a los datos de los hitos y es responsable
+ * de crear una vista para cada uno de ellos.
  */
 public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.ViewHolder> {
 
@@ -61,7 +64,9 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
     }
 
     /**
-     * Here is the key method to apply the animation
+     * Configura la animación que se crea al aparecer cada item del adaptador
+     * @param viewToAnimate la vista a animar
+     * @param position la posición de la vista en el adaptador
      */
     private void setAnimation(View viewToAnimate, int position)
     {
@@ -79,6 +84,9 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
         return mDataset.size();
     }
 
+    /**
+     * Describe un la vista de un hito del adaptador y sus metadatos.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public RelativeLayout container;
@@ -104,6 +112,10 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
         }
 
+        /**
+         * Enlaza el hito correspondiente a la vista del item.
+         * @param hito el hito que corresponde a la vista
+         */
         public void bind(Hito hito){
             this.hito = hito;
             numero.setText(String.valueOf(hito.getNumeroHito()));

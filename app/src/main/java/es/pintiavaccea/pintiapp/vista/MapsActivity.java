@@ -57,9 +57,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PolylineOptions rectOptions = new PolylineOptions().width(10).color(ContextCompat.getColor(this, R.color.colorAccent));
 
         for(Hito hito : hitos){
-            LatLng position = new LatLng(hito.getLatitud(), hito.getLongitud());
-            googleMap.addMarker(new MarkerOptions().position(position).title("Marca en " + hito.getTitulo()));
-            rectOptions.add(position);
+            if(hito.isItinerario()) {
+                LatLng position = new LatLng(hito.getLatitud(), hito.getLongitud());
+                googleMap.addMarker(new MarkerOptions().position(position).title("Marca en " + hito.getTitulo()));
+                rectOptions.add(position);
+            }
         }
         googleMap.addPolyline(rectOptions);
 

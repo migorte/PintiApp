@@ -17,6 +17,7 @@ public class JsonHitoParser {
         String subtitulo = "";
         double latitud = 0;
         double longitud = 0;
+        boolean itinerario;
         String texto = "";
         int idImagenPortada;
 
@@ -26,9 +27,11 @@ public class JsonHitoParser {
         if(!object.isNull("subtitulo")) subtitulo = (String) object.get("subtitulo");
         if(!object.isNull("latitud")) latitud = (double) object.get("latitud");
         if(!object.isNull("longitud")) longitud = (double) object.get("longitud");
+        itinerario = object.getBoolean("itinerario");
         if(!object.isNull("texto")) texto = (String) object.get("texto");
         idImagenPortada = (Integer) object.get("idImagenPortada");
 
-        return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, true, texto, idImagenPortada);
+
+        return new Hito(id, numeroHito, titulo, subtitulo, latitud, longitud, itinerario, texto, idImagenPortada);
     }
 }

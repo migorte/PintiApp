@@ -3,6 +3,7 @@ package es.pintiavaccea.pintiapp.vista;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,6 +42,7 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import es.pintiavaccea.pintiapp.R;
+import es.pintiavaccea.pintiapp.presentador.MainPresenter;
 
 /**
  * Created by Miguel on 09/06/2016.
@@ -47,7 +50,7 @@ import es.pintiavaccea.pintiapp.R;
  * Actividad que engloba los fragmentos de la geolocalización y la lista de hitos.
  */
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, ResultCallback<LocationSettingsResult> {
+        LocationListener, ResultCallback<LocationSettingsResult>, MainView {
 
     private static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
     private GoogleApiClient mGoogleApiClient;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected LocationSettingsRequest mLocationSettingsRequest;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private static final int REQUEST_GPS = 3;
+    private MainPresenter presenter;
 
     private CoordinatorLayout mLayout;
 
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setSupportActionBar(toolbar);
 
         mLayout = (CoordinatorLayout) findViewById(R.id.main);
+
+        presenter = new MainPresenter(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -115,6 +121,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
+    public Context getViewContext(){
+        return this;
+    }
+
+    @Override
+    public void setVisitas(String visitas){
+        new AlertDialog.Builder(this)
+                .setTitle("Horario")
+                .setMessage(visitas)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -131,6 +155,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ayuda) {
             startActivity(new Intent(MainActivity.this, AyudaActivity.class));
+        }
+        if (id == R.id.action_visitas) {
+            presenter.getVisitas();
         }
         return super.onOptionsItemSelected(item);
     }

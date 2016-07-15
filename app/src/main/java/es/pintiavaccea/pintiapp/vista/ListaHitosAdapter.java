@@ -117,7 +117,8 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
          */
         public void bind(Hito hito) {
             this.hito = hito;
-            numero.setText(String.valueOf(hito.getNumeroHito()));
+            if(hito.isItinerario()) numero.setText(String.valueOf(hito.getNumeroHito()));
+            else numero.setText("");
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
 

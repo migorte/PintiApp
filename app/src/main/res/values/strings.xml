@@ -2,7 +2,7 @@
     <string name="app_name">PintiApp</string>
 
     <string name="bienvenida">¡Bienvenido a Pintiapp! El propósito de esta aplicación es presentar el yacimiento arqueológico de Pintia sin la necesidad de ningún tipo de guía, sin embargo, se recomienda contratar una visita guiada para vivir la experiencia completa.</string>
-    <string name="title_activity_ayuda">AyudaActivity</string>
+    <string name="title_activity_ayuda">Ayuda</string>
     <string name="ayuda_boton">Pulsando el botón de geolocalización, PintiApp utilizará tu ubicación para mostrarte el hito más cercano a ti. </string>
     <string name="ayuda_precargar">La información es descargada desde nuestros servidores. Debido a que la cobertura de Padilla de Duero no es la mejor, se recomienda precargar los datos antes de realizar la visita. Para ello, basta con pulsar este botón. Actualmente solo se precargan las imágenes y los hitos.</string>
     <string name="title_activity_detalle_hito">DetalleHitoActivity</string>

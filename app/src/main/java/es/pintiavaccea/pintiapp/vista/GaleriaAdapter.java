@@ -21,6 +21,7 @@ import java.util.List;
 
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
+import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
@@ -93,23 +94,25 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
          */
         public void bind(Imagen imagen) {
             this.imagen = imagen;
+            DataSource dataSource = new DataSource(context);
+            if(dataSource.existImagen(imagen)) {
+                Bitmap bitmapPortada = null;
+                try {
+                    bitmapPortada = StorageManager.loadImageFromStorage(imagen.getNombre(), context);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
-            Bitmap bitmapPortada = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.img201205191603108139);
+                Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
 
-            try {
-                bitmapPortada = StorageManager.loadImageFromStorage(imagen.getNombre(), context);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
+                        + imagen.getId()).error(error).into(imageView);
+            } else{
+                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
+                        + imagen.getId()).into(imageView);
+                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                        + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));
             }
-
-            Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
-
-            Picasso.with(context).setIndicatorsEnabled(true);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
-                    + imagen.getId()).error(error).into(imageView);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
-                    + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));
         }
     }
 }

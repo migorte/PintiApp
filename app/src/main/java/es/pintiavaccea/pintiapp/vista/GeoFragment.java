@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.jorgecastilloprz.FABProgressCircle;
-import com.squareup.picasso.Picasso;
 
 import es.pintiavaccea.pintiapp.presentador.GeoPresenter;
 import es.pintiavaccea.pintiapp.R;
@@ -26,6 +25,7 @@ import es.pintiavaccea.pintiapp.R;
 public class GeoFragment extends Fragment implements GeoView{
 
     private FABProgressCircle fab;
+    private FloatingActionButton fabPrecargar;
     private GeoPresenter geoPresenter;
 
     @Override
@@ -40,6 +40,14 @@ public class GeoFragment extends Fragment implements GeoView{
                 fab.show();
                 geoPresenter.getCloserHito();
 //                fab.beginFinalAnimation();
+            }
+        });
+
+        fabPrecargar = (FloatingActionButton) myFragmentView.findViewById(R.id.fab2);
+        fabPrecargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geoPresenter.precargarDatos(getActivity());
             }
         });
 

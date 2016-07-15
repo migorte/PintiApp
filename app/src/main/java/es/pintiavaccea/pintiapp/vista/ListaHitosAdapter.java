@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +30,7 @@ import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
  * Created by Miguel on 02/05/2016.
- *
+ * <p/>
  * Adaptador de la lista de hitos. Provee acceso a los datos de los hitos y es responsable
  * de crear una vista para cada uno de ellos.
  */
@@ -65,15 +64,14 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
     /**
      * Configura la animación que se crea al aparecer cada item del adaptador
+     *
      * @param viewToAnimate la vista a animar
-     * @param position la posición de la vista en el adaptador
+     * @param position      la posición de la vista en el adaptador
      */
-    private void setAnimation(View viewToAnimate, int position)
-    {
+    private void setAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition)
-        {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
         }
@@ -114,9 +112,10 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
         /**
          * Enlaza el hito correspondiente a la vista del item.
+         *
          * @param hito el hito que corresponde a la vista
          */
-        public void bind(Hito hito){
+        public void bind(Hito hito) {
             this.hito = hito;
             numero.setText(String.valueOf(hito.getNumeroHito()));
             titulo.setText(hito.getTitulo());
@@ -124,22 +123,25 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
 
             DataSource dataSource = new DataSource(context);
             Imagen portada = dataSource.getImagen(hito.getIdImagenPortada());
-            Bitmap bitmapPortada = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.img201205191603108139);
-            if(portada!=null){
+
+            if (portada != null) {
+                Bitmap bitmapPortada = null;
                 try {
                     bitmapPortada = StorageManager.loadImageFromStorage(portada.getNombre(), context);
-                } catch (FileNotFoundException e){
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-            Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
+                Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
 
-            Picasso.with(context).setIndicatorsEnabled(true);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" +
-            hito.getIdImagenPortada())
-                    .error(error).into(foto);
-            StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/", hito.getId(), context);
+                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/" +
+                        hito.getIdImagenPortada())
+                        .error(error).into(foto);
+            } else {
+                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/" +
+                        hito.getIdImagenPortada()).into(foto);
+                StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/", hito.getId(), context);
+            }
+
         }
 
 

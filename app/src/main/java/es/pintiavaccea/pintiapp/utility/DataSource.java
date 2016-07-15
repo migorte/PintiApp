@@ -191,6 +191,18 @@ public class DataSource {
         database.delete(IMAGEN_TABLE, ColumnImagen.ID + "=" + id, null);
     }
 
+    public boolean existImagen(Imagen imagen){
+        String[] args = new String[]{Integer.toString(imagen.getId())};
+        Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where "
+                + ColumnImagen.ID + " =?", args);
+        if(cursor.getCount()<=0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     public Hito getHitoCercano(double latitud, double longitud){
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 

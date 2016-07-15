@@ -1,26 +1,12 @@
 package es.pintiavaccea.pintiapp.vista;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import java.io.FileNotFoundException;
-
 import es.pintiavaccea.pintiapp.R;
-import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.presentador.ImageZoomPresenter;
-import es.pintiavaccea.pintiapp.utility.DataSource;
-import es.pintiavaccea.pintiapp.utility.StorageManager;
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 /**
  * Created by Miguel on 20/06/2016.
  *

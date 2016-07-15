@@ -24,7 +24,7 @@ public interface GeoView {
 
     /**
      * Muestra la información del hito más cercano al usuario.
-     * @param intent
+     * @param intent el intent para comenzar la siguiente actividad
      */
     void openHito(Intent intent);
 

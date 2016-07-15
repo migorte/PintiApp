@@ -3,7 +3,6 @@ package es.pintiavaccea.pintiapp.presentador;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -28,7 +27,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.modelo.Video;
@@ -229,20 +227,23 @@ public class DetalleHitoPresenter {
     public void loadPortada(ImageView portada) {
         DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         Imagen imagendb = dataSource.getImagen(hito.getIdImagenPortada());
-        Bitmap bitmapPortada = BitmapFactory.decodeResource(detalleHitoView.getViewContext().getResources(),
-                R.drawable.img201205191603108139);
 
         if (imagendb != null) {
+            Bitmap bitmapPortada = null;
             try {
                 bitmapPortada = StorageManager.loadImageFromStorage(imagendb.getNombre(), detalleHitoView.getViewContext());
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
+            Picasso.with(detalleHitoView.getViewContext()).setIndicatorsEnabled(true);
+            Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                    + hito.getIdImagenPortada()).error(error).into(portada);
+        } else {
+            Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                    + hito.getIdImagenPortada()).into(portada);
         }
-        Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
-        Picasso.with(detalleHitoView.getViewContext()).setIndicatorsEnabled(true);
-        Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
-                + hito.getIdImagenPortada()).error(error).into(portada);
+
     }
 }

@@ -33,6 +33,7 @@ import es.pintiavaccea.pintiapp.vista.GeoView;
  *
  * Presentador del fragmento GeoFragment.
  */
+@SuppressWarnings("CanBeFinal")
 public class GeoPresenter {
     private GeoView geoView;
 

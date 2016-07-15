@@ -27,6 +27,8 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**
  * Created by Miguel on 07/07/2016.
+ *
+ * Util para toda la gestión con la memoria externa del dispositivo
  */
 public class StorageManager {
 
@@ -79,13 +81,12 @@ public class StorageManager {
     /**
      * Guarda una imagen en la base de datos a partir de la url indicada
      *
-     * @param url     la url de la imagen
      * @param context el contexto de la actividad desde donde se llama
      */
-    public static void saveImage(String url, final int idHito, final Context context) {
+    public static void saveImage(final int idHito, final Context context) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                url + idHito,
+                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/" + idHito,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

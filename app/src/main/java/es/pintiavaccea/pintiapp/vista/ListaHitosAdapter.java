@@ -34,6 +34,7 @@ import es.pintiavaccea.pintiapp.utility.StorageManager;
  * Adaptador de la lista de hitos. Provee acceso a los datos de los hitos y es responsable
  * de crear una vista para cada uno de ellos.
  */
+@SuppressWarnings("CanBeFinal")
 public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.ViewHolder> {
 
     private List<Hito> mDataset;
@@ -140,7 +141,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
             } else {
                 Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/" +
                         hito.getIdImagenPortada()).into(foto);
-                StorageManager.saveImage("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/", hito.getId(), context);
+                StorageManager.saveImage(hito.getId(), context);
             }
 
         }

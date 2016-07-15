@@ -3,7 +3,6 @@ package es.pintiavaccea.pintiapp.presentador;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 
-import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.StorageManager;
@@ -26,6 +24,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * <p/>
  * Presentador de la actividad ImageZoomActivity.
  */
+@SuppressWarnings("CanBeFinal")
 public class ImageZoomPresenter {
 
     private ImageZoomView view;

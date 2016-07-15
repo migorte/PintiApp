@@ -7,9 +7,17 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 
 /**
  * Created by Miguel on 06/06/2016.
+ *
+ * Util para parsear un Json y lo convierte a Hito.
  */
 public class JsonHitoParser {
 
+    /**
+     * Parsea un JSONObject y lo convierte a Hito
+     * @param object el JSONObject a convertir
+     * @return el Hito convertido
+     * @throws JSONException
+     */
     public Hito leerHito(JSONObject object) throws JSONException {
         int id;
         int numeroHito;

@@ -79,13 +79,25 @@ public class DataSource {
         database = openHelper.getWritableDatabase();
     }
 
+    /**
+     * Borra todos los hitos
+     */
     public void clearHitos(){
         database.delete(HITO_TABLE, null, null);
     }
+
+    /**
+     * Borra todas las imágenes de un determinado hito
+     * @param hito el id del hito
+     */
     public void clearImagenes(int hito){
         database.delete(IMAGEN_TABLE, ColumnImagen.HITO + "=" + hito, null);
     }
 
+    /**
+     * Devuelve todos los hitos guardados en la base de datos
+     * @return todos los hitos guardados
+     */
     public List<Hito> getAllHitos() {
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 
@@ -117,6 +129,10 @@ public class DataSource {
         return listaHitos;
     }
 
+    /**
+     * Guarda una lista de hitos en la base de datos
+     * @param hitos la lista de hitos
+     */
     public void saveListaHitos(List<Hito> hitos){
 
         for(Hito hito : hitos){
@@ -137,6 +153,10 @@ public class DataSource {
         }
     }
 
+    /**
+     * Guarda una imagen en la base de datos
+     * @param imagen la imagen a guardar
+     */
     public void saveImagen(Imagen imagen){
         ContentValues values = new ContentValues();
 
@@ -147,6 +167,11 @@ public class DataSource {
         database.insert(IMAGEN_TABLE, null, values);
     }
 
+    /**
+     * Devuelve una imagen según su id
+     * @param id el id de la imagen a devolver
+     * @return la imagen
+     */
     public Imagen getImagen(int id) {
         String[] args = new String[]{Integer.toString(id)};
         Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where " +
@@ -165,6 +190,11 @@ public class DataSource {
         return imagen;
     }
 
+    /**
+     * Devuelve todas las imagenes de un hito
+     * @param idHito el id del hito
+     * @return todas las imágenes del hito
+     */
     public List<Imagen> getImagenesHito(int idHito) {
         String[] args = new String[]{Integer.toString(idHito)};
         Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where "
@@ -187,10 +217,19 @@ public class DataSource {
         return imagenes;
     }
 
+    /**
+     * Borra una imagen según su id
+     * @param id el id de la imagen a borrar
+     */
     public void removeImagen(int id){
         database.delete(IMAGEN_TABLE, ColumnImagen.ID + "=" + id, null);
     }
 
+    /**
+     * Comprueba si existe una imagen en la base de datos
+     * @param imagen la imagen a comprobar
+     * @return true si la imagen existe
+     */
     public boolean existImagen(Imagen imagen){
         String[] args = new String[]{Integer.toString(imagen.getId())};
         Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where "
@@ -203,6 +242,12 @@ public class DataSource {
         return true;
     }
 
+    /**
+     * Devuelve el hito más cercano a una posición determinada.
+     * @param latitud la latitud de la ubicación
+     * @param longitud la longitud de la ubicación
+     * @return el hito más cercano
+     */
     public Hito getHitoCercano(double latitud, double longitud){
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 

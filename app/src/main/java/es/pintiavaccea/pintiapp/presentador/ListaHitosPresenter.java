@@ -28,6 +28,7 @@ import es.pintiavaccea.pintiapp.vista.ListaHitosView;
  *
  * Presentador del fragmento ListaHitosFragment.
  */
+@SuppressWarnings("CanBeFinal")
 public class ListaHitosPresenter {
 
     private ListaHitosView listaHitosView;

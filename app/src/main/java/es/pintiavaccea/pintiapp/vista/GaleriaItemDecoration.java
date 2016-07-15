@@ -9,6 +9,7 @@ import android.view.View;
  *
  * Define la decoración de los elementos de la galería de imágenes.
  */
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class GaleriaItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
 

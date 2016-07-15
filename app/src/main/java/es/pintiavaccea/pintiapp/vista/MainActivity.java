@@ -49,6 +49,7 @@ import es.pintiavaccea.pintiapp.presentador.MainPresenter;
  *
  * Actividad que engloba los fragmentos de la geolocalización y la lista de hitos.
  */
+@SuppressWarnings("WeakerAccess")
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, ResultCallback<LocationSettingsResult>, MainView {
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
     protected LocationSettingsRequest mLocationSettingsRequest;
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private static final int REQUEST_GPS = 3;
     private MainPresenter presenter;
 

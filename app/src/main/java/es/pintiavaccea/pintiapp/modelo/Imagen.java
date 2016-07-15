@@ -5,7 +5,10 @@ import android.os.Parcelable;
 
 /**
  * Created by Usuario on 09/06/2016.
+ *
+ * Modela una imagen asociada a un hito.
  */
+@SuppressWarnings("WeakerAccess")
 public class Imagen implements Parcelable {
 
     private int id;
@@ -23,6 +26,7 @@ public class Imagen implements Parcelable {
         this.setHito(hito);
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected Imagen(Parcel in) {
         id = in.readInt();
         nombre = in.readString();
@@ -45,6 +49,7 @@ public class Imagen implements Parcelable {
         return id;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void setId(int id) {
         this.id = id;
     }
@@ -53,6 +58,7 @@ public class Imagen implements Parcelable {
         return nombre;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

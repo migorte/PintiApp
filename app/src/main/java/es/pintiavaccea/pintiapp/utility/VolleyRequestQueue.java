@@ -8,7 +8,10 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Miguel on 14/06/2016.
+ *
+ * Cola de solicitudes del framework Volley para Android.
  */
+@SuppressWarnings("WeakerAccess")
 public class VolleyRequestQueue {
 
     // Atributos
@@ -21,6 +24,11 @@ public class VolleyRequestQueue {
         requestQueue = getRequestQueue();
     }
 
+    /**
+     * Singleton de la clase
+     * @param context el contexto de la actividad
+     * @return la instancia única
+     */
     public static synchronized VolleyRequestQueue getInstance(Context context) {
         if (singleton == null) {
             singleton = new VolleyRequestQueue(context);
@@ -28,6 +36,10 @@ public class VolleyRequestQueue {
         return singleton;
     }
 
+    /**
+     * Devuelve la cola de solicitudes.
+     * @return la cola de solicitudes.
+     */
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -35,6 +47,10 @@ public class VolleyRequestQueue {
         return requestQueue;
     }
 
+    /**
+     * Añade una solicitud a la cola
+     * @param req la solicitud a añadir
+     */
     public  void addToRequestQueue(Request req) {
         getRequestQueue().add(req);
     }

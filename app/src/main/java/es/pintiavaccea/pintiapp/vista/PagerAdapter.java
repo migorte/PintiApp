@@ -10,8 +10,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Adaptador para el TabLayout de la pantalla principal. Muestra dos vistas, la primera para la
  * geolocalización y la segunda para la lista de hitos.
  */
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);

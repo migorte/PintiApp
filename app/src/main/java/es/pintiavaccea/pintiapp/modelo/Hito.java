@@ -5,7 +5,10 @@ import android.os.Parcelable;
 
 /**
  * Created by Miguel on 02/05/2016.
+ *
+ * Modela un hito del yacimiento.
  */
+@SuppressWarnings("WeakerAccess")
 public class Hito implements Parcelable {
 
     private int id;

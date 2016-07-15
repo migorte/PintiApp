@@ -4,8 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by madri on 28/06/2016.
+ * Created by Miguel on 28/06/2016.
+ *
+ * Modela un video que muestra información sobre un hito del yacimiento.
  */
+@SuppressWarnings("WeakerAccess")
 public class Video implements Parcelable {
 
     private int id;

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by Miguel on 28/04/2016.
+ *
+ * Helper de la base de datos SQLite que implementa la aplicación
  */
 public class DBHelper extends SQLiteOpenHelper{
 
@@ -30,8 +32,6 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(DataSource.CREATE_IMAGEN_SCRIPT);
         db.execSQL(DataSource.CREATE_VIDEO_SCRIPT);
 
-//        db.execSQL(DataSource.INSERT_HITO_SCRIPT);
-//        db.execSQL(DataSource.INSERT_HITO_SCRIPT1);
     }
 
     @Override

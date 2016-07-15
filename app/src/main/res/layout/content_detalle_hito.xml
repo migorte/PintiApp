@@ -33,7 +33,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:text="Subtitulo"
                 android:textSize="@dimen/subtitulo_size" />
 
         </RelativeLayout>
@@ -72,7 +71,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:text="Descripción" />
+                android:text="@string/descripcion" />
 
             <TextView
                 android:id="@+id/texto"
@@ -102,7 +101,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:text="Galería" />
+                android:text="@string/galeria" />
 
             <TextView
                 android:id="@+id/cantidad_imagenes"
@@ -115,7 +114,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:layout_marginTop="16dp"
-                android:text="0 imágenes" />
+                android:text="@string/n_imagenes" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"

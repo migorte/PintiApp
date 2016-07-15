@@ -25,7 +25,6 @@ import es.pintiavaccea.pintiapp.R;
 public class GeoFragment extends Fragment implements GeoView{
 
     private FABProgressCircle fab;
-    private FloatingActionButton fabPrecargar;
     private GeoPresenter geoPresenter;
 
     @Override
@@ -43,7 +42,7 @@ public class GeoFragment extends Fragment implements GeoView{
             }
         });
 
-        fabPrecargar = (FloatingActionButton) myFragmentView.findViewById(R.id.fab2);
+        FloatingActionButton fabPrecargar = (FloatingActionButton) myFragmentView.findViewById(R.id.fab2);
         fabPrecargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

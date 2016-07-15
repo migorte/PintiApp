@@ -13,7 +13,10 @@ import es.pintiavaccea.pintiapp.vista.MainView;
 
 /**
  * Created by Miguel on 15/07/2016.
+ *
+ * Presentador de la vista principal. Principalmente envía los datos de las visitas.
  */
+@SuppressWarnings("CanBeFinal")
 public class MainPresenter {
     private MainView mainView;
 
@@ -22,7 +25,7 @@ public class MainPresenter {
     }
 
     /**
-     * Carga la lista de hitos completa y se la pasa al adaptador de la lista de hitos.
+     * Descarga el horario de las visitas y se lo pasa a la actividad principal.
      */
     public void getVisitas(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

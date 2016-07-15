@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:fontFamily="sans-serif-medium"
-            android:text="Bienvenido a PintiApp"
+            android:text="@string/bienvenido"
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -27,7 +27,7 @@
             android:layout_below="@id/bienvenida"
             android:layout_margin="@dimen/text_margin"
             android:fontFamily="sans-serif-medium"
-            android:text="Para vivir la experiencia completa, se recomienda contratar una visita guiada. Además, nos ayudarías a mantener el yacimiento"
+            android:text="@string/saludo"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
@@ -41,7 +41,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:contentDescription="LogoCEVFW"
+            android:contentDescription="@string/logocevfw"
             android:src="@drawable/logo_cevfw_opt" />
     </RelativeLayout>
 

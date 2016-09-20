@@ -27,7 +27,7 @@ public interface DetalleHitoView {
      * los hitos. Se le pasa el ArrayList de los hitos del yacimiento.
      * @param hitos los hitos del yacimiento
      */
-    void navigateToMap(ArrayList<Hito> hitos);
+    void navigateToMap(ArrayList<Hito> hitos, Hito hito);
 
     /**
      * Muestra un Toast con el mensaje indicado.

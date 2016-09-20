@@ -99,7 +99,7 @@ public class DetalleHitoPresenter {
                                         return lhs.getNumeroHito() - rhs.getNumeroHito();
                                     }
                                 });
-                                detalleHitoView.navigateToMap((ArrayList<Hito>) hitos);
+                                detalleHitoView.navigateToMap((ArrayList<Hito>) hitos, hito);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -237,7 +237,6 @@ public class DetalleHitoPresenter {
                 e.printStackTrace();
             }
             Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
-            Picasso.with(detalleHitoView.getViewContext()).setIndicatorsEnabled(true);
             Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
                     + hito.getIdImagenPortada()).error(error).into(portada);
         } else {

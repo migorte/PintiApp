@@ -84,9 +84,10 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     }
 
     @Override
-    public void navigateToMap(ArrayList<Hito> hitos){
+    public void navigateToMap(ArrayList<Hito> hitos, Hito hito){
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putParcelableArrayListExtra("hitos", hitos);
+        intent.putExtra("hito", hito);
         this.startActivity(intent);
     }
 

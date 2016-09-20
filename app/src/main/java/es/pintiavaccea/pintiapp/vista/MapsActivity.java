@@ -8,6 +8,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -24,6 +25,7 @@ import es.pintiavaccea.pintiapp.modelo.Hito;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private List<Hito> hitos;
+    private Hito hito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             hitos = new ArrayList<>();
-        } else hitos = extras.getParcelableArrayList("hitos");
+            hito = null;
+        } else{
+            hitos = extras.getParcelableArrayList("hitos");
+            hito = extras.getParcelable("hito");
+        }
     }
 
 
@@ -59,13 +65,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(Hito hito : hitos){
             if(hito.isItinerario()) {
                 LatLng position = new LatLng(hito.getLatitud(), hito.getLongitud());
-                googleMap.addMarker(new MarkerOptions().position(position).title("Marca en " + hito.getTitulo()));
+                if(hito.getId()==this.hito.getId()){
+                    googleMap.addMarker(new MarkerOptions().position(position)
+                            .title("Marca en " + hito.getTitulo()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                } else{
+                    googleMap.addMarker(new MarkerOptions().position(position).title("Hito" + hito.getTitulo()));
+                }
                 rectOptions.add(position);
             }
         }
         googleMap.addPolyline(rectOptions);
 
         LatLng position = new LatLng(41.618056, -4.169485);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 18));
     }
 }

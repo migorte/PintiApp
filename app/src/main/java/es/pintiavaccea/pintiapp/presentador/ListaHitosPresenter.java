@@ -32,6 +32,7 @@ import es.pintiavaccea.pintiapp.vista.ListaHitosView;
 public class ListaHitosPresenter {
 
     private ListaHitosView listaHitosView;
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public ListaHitosPresenter(ListaHitosView listaHitosView){
         this.listaHitosView = listaHitosView;
@@ -44,7 +45,7 @@ public class ListaHitosPresenter {
         final DataSource dataSource = new DataSource(listaHitosView.getViewContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
+                URL + "/getHitosItinerario",
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override

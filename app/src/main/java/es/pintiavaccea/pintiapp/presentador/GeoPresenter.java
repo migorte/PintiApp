@@ -36,6 +36,7 @@ import es.pintiavaccea.pintiapp.vista.GeoView;
 @SuppressWarnings("CanBeFinal")
 public class GeoPresenter {
     private GeoView geoView;
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public GeoPresenter(GeoView geoView) {
         this.geoView = geoView;
@@ -50,7 +51,7 @@ public class GeoPresenter {
         if (mLastLocation != null) {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitoCercano?latitud=" + mLastLocation.getLatitude()
+                    URL + "/getHitoCercano?latitud=" + mLastLocation.getLatitude()
                             + "&longitud=" + mLastLocation.getLongitude(),
                     null,
                     new Response.Listener<JSONObject>() {
@@ -99,7 +100,7 @@ public class GeoPresenter {
         for(final Hito hito : hitos){
             JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                     Request.Method.GET,
-                    "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId(),
+                    URL + "/getImagenesHito/" + hito.getId(),
                     null,
                     new Response.Listener<JSONArray>() {
                         @Override
@@ -113,8 +114,7 @@ public class GeoPresenter {
                                     imagen.setHito(hito.getId());
                                     dataSource.saveImagen(imagen);
                                     Picasso.with(geoView.getViewContext()).
-                                            load("http://virtual.lab.inf.uva.es:20212/pintiaserver/" +
-                                                    "pintiaserver/picture/"
+                                            load(URL + "/picture/"
                                             + imagen.getId()).into(StorageManager
                                             .getTarget(imagen.getNombre(), geoView.getViewContext()));
                                 }

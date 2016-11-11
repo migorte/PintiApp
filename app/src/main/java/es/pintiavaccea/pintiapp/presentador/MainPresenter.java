@@ -19,6 +19,7 @@ import es.pintiavaccea.pintiapp.vista.MainView;
 @SuppressWarnings("CanBeFinal")
 public class MainPresenter {
     private MainView mainView;
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public MainPresenter(MainView mainView){
         this.mainView = mainView;
@@ -30,7 +31,7 @@ public class MainPresenter {
     public void getVisitas(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVisita",
+                URL + "/getVisita",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

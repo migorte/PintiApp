@@ -29,6 +29,7 @@ public class ImageZoomPresenter {
 
     private ImageZoomView view;
     private Imagen imagen;
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public ImageZoomPresenter(ImageZoomView view) {
         this.view = view;
@@ -66,7 +67,7 @@ public class ImageZoomPresenter {
             Drawable error = new BitmapDrawable(context.getResources(), imagenError);
 
             final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+            Picasso.with(context).load(URL + "/picture/"
                     + imagen.getId()).error(error).into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -80,7 +81,7 @@ public class ImageZoomPresenter {
             });
         } else {
             final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-            Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+            Picasso.with(context).load(URL + "/picture/"
                     + imagen.getId()).into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {

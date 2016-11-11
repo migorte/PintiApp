@@ -48,6 +48,7 @@ public class DetalleHitoPresenter {
 
     private final DetalleHitoView detalleHitoView;
     private Hito hito;
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public DetalleHitoPresenter(DetalleHitoView detalleHitoView) {
         this.detalleHitoView = detalleHitoView;
@@ -79,7 +80,7 @@ public class DetalleHitoPresenter {
     public void loadMap() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getHitosItinerario",
+                URL + "/getHitosItinerario",
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -123,7 +124,7 @@ public class DetalleHitoPresenter {
     public void loadVideo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getVideoHito/" + hito.getId(),
+                URL + "/getVideoHito/" + hito.getId(),
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -132,7 +133,7 @@ public class DetalleHitoPresenter {
                         try {
                             Video video = parser.leerVideo(response);
 
-                            String vidAddress = "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/video/" + video.getId();
+                            String vidAddress = URL + "/video/" + video.getId();
                             Uri vidUri = Uri.parse(vidAddress);
                             detalleHitoView.prepareVideoView(vidUri);
 
@@ -161,7 +162,7 @@ public class DetalleHitoPresenter {
         final DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getImagenesHito/" + hito.getId(),
+                URL + "/getImagenesHito/" + hito.getId(),
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -237,10 +238,10 @@ public class DetalleHitoPresenter {
                 e.printStackTrace();
             }
             Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
-            Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+            Picasso.with(detalleHitoView.getViewContext()).load(URL + "/picture/"
                     + hito.getIdImagenPortada()).error(error).into(portada);
         } else {
-            Picasso.with(detalleHitoView.getViewContext()).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+            Picasso.with(detalleHitoView.getViewContext()).load(URL + "/picture/"
                     + hito.getIdImagenPortada()).into(portada);
         }
 

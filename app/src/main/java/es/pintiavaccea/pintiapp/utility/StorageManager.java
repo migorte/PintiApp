@@ -31,7 +31,7 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
  * Util para toda la gestión con la memoria externa del dispositivo
  */
 public class StorageManager {
-
+    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
     /**
      * Devuelve el target para guardar la imagen en la memoria externa
      *
@@ -86,7 +86,7 @@ public class StorageManager {
     public static void saveImage(final int idHito, final Context context) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/getPortada/" + idHito,
+                URL + "/getPortada/" + idHito,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -96,7 +96,7 @@ public class StorageManager {
                             Imagen imagen = parser.leerImagen(response);
                             imagen.setHito(idHito);
                             Picasso.with(context)
-                                    .load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/" + imagen.getId())
+                                    .load(URL + "/picture/" + imagen.getId())
                                     .into(getTarget(imagen.getNombre(), context));
                             DataSource dataSource = new DataSource(context);
                             dataSource.removeImagen(imagen.getId());

@@ -7,20 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.jorgecastilloprz.FABProgressCircle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,7 +48,7 @@ import es.pintiavaccea.pintiapp.presentador.MainPresenter;
 
 /**
  * Created by Miguel on 09/06/2016.
- *
+ * <p>
  * Actividad que engloba los fragmentos de la geolocalización y la lista de hitos.
  */
 @SuppressWarnings("WeakerAccess")
@@ -63,6 +65,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private MainPresenter presenter;
 
     private CoordinatorLayout mLayout;
+    private SwipeRefreshLayout refreshLayout;
+
+    private RecyclerView mRecyclerView;
+
+    private FABProgressCircle fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setSupportActionBar(toolbar);
 
         mLayout = (CoordinatorLayout) findViewById(R.id.main);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
 
         presenter = new MainPresenter(this);
 
@@ -87,47 +96,76 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        assert tabLayout != null;
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_view_list_white_24dp));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        assert viewPager != null;
-        viewPager.setOffscreenPageLimit(2);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        presenter.getListaHitos();
+
+        fab = (FABProgressCircle) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                int tabIconColor = ContextCompat.getColor(getApplicationContext(), R.color.colorAccent);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            public void onClick(View view) {
+                fab.show();
+                presenter.getCloserHito();
+//                fab.beginFinalAnimation();
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                super.onTabUnselected(tab);
-                int tabIconColor = ContextCompat.getColor(getApplicationContext(), R.color.lightGray);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-            }
-
         });
 
-        mLayout = (CoordinatorLayout) findViewById(R.id.main);
+        FloatingActionButton fabPrecargar = (FloatingActionButton) findViewById(R.id.fab2);
+        fabPrecargar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.precargarDatos((Activity) v.getContext());
+            }
+        });
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                mLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        /*
+ * Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+ * performs a swipe-to-refresh gesture.
+ */
+        refreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        presenter.getListaHitos();
+                    }
+                }
+        );
     }
 
     @Override
-    public Context getViewContext(){
+    public Context getViewContext() {
         return this;
     }
 
     @Override
-    public void setVisitas(String visitas){
+    public void setmAdapter(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
+        refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showError(String msg) {
+        Toast.makeText(getViewContext(), msg,
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setVisitas(String visitas) {
         new AlertDialog.Builder(this)
                 .setTitle("Horario")
                 .setMessage(visitas)
@@ -137,6 +175,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public Location getLastLocation() {
+        return getmLastLocation();
+    }
+
+    @Override
+    public void openHito(Intent intent) {
+        startActivity(intent);
+        stopFabAnimation();
+    }
+
+    @Override
+    public void stopFabAnimation() {
+        fab.hide();
+    }
+
+    @Override
+    public void showInternetError() {
+        Toast.makeText(this, "No se tiene conexión a internet",
+                Toast.LENGTH_SHORT).show();
+        stopFabAnimation();
+    }
+
+    @Override
+    public void showLocationError() {
+        Toast.makeText(this, "No se pudo obtener su localización",
+                Toast.LENGTH_SHORT).show();
+        stopFabAnimation();
     }
 
     @Override
@@ -234,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     /**
      * Comprueba si Google Play Services está disponible
+     *
      * @return true si está disponible
      */
     public boolean checkGooglePlayServices() {
@@ -387,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     /**
      * Comprueba si la localización del dispositivo está habilitada.
+     *
      * @return true si la localización está habilitada.
      */
     public boolean isLocationEnabled() {

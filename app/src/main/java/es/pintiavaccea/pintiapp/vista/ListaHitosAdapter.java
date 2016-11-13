@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import es.pintiavaccea.pintiapp.R;
@@ -42,7 +43,15 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
     private int lastPosition = -1;
 
     public ListaHitosAdapter(List<Hito> mDataset, Context context) {
-        this.mDataset = mDataset;
+        List<Hito> itinerario = new ArrayList<>();
+        List<Hito> noItinerario = new ArrayList<>();
+        for (Hito h : mDataset) {
+            if (h.getNumeroHito() == 0)
+                noItinerario.add(h);
+            else itinerario.add(h);
+        }
+        itinerario.addAll(noItinerario);
+        this.mDataset = itinerario;
         this.context = context;
     }
 
@@ -88,13 +97,15 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
      */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public RelativeLayout container;
-        public ImageView foto;
-        public TextView numero;
-        public TextView titulo;
-        public TextView subtitulo;
-        public Hito hito;
+        private RelativeLayout container;
+        private ImageView foto;
+        private TextView numero;
+        private TextView titulo;
+        private TextView subtitulo;
+        private Hito hito;
+        private static final String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
         private final Context context;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -118,7 +129,7 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
          */
         public void bind(Hito hito) {
             this.hito = hito;
-            if(hito.isItinerario()) numero.setText(String.valueOf(hito.getNumeroHito()));
+            if (hito.isItinerario()) numero.setText(String.valueOf(hito.getNumeroHito()));
             else numero.setText("");
             titulo.setText(hito.getTitulo());
             subtitulo.setText(hito.getSubtitulo());
@@ -135,11 +146,14 @@ public class ListaHitosAdapter extends RecyclerView.Adapter<ListaHitosAdapter.Vi
                 }
                 Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
 
-                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/" +
+                String pene = URL + "/thumbnail/" +
+                        hito.getIdImagenPortada();
+
+                Picasso.with(context).load(URL + "/thumbnail/" +
                         hito.getIdImagenPortada())
                         .error(error).into(foto);
             } else {
-                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/" +
+                Picasso.with(context).load(URL + "/thumbnail/" +
                         hito.getIdImagenPortada()).into(foto);
                 StorageManager.saveImage(hito.getId(), context);
             }

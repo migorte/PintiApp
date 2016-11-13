@@ -65,6 +65,7 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
         private final ImageView imageView;
         private final Context context;
         private Imagen imagen;
+        private static final String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
         public ViewHolder(View v) {
             super(v);
@@ -104,12 +105,12 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
 
                 Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
 
-                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
+                Picasso.with(context).load(URL + "/thumbnail/"
                         + imagen.getId()).error(error).into(imageView);
             } else{
-                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/thumbnail/"
+                Picasso.with(context).load(URL + "/thumbnail/"
                         + imagen.getId()).into(imageView);
-                Picasso.with(context).load("http://virtual.lab.inf.uva.es:20212/pintiaserver/pintiaserver/picture/"
+                Picasso.with(context).load(URL + "/picture/"
                         + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));
             }
         }

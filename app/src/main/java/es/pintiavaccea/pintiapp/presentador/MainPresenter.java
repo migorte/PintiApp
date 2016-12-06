@@ -27,7 +27,6 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
-import es.pintiavaccea.pintiapp.utility.StorageManager;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoActivity;
 import es.pintiavaccea.pintiapp.vista.ListaHitosAdapter;
@@ -215,10 +214,10 @@ public class MainPresenter {
                                     Imagen imagen = parser.leerImagen(object);
                                     imagen.setHito(hito.getId());
                                     dataSource.saveImagen(imagen);
-                                    Picasso.with(mainView.getViewContext()).
-                                            load(URL + "/picture/"
-                                                    + imagen.getId()).into(StorageManager
-                                            .getTarget(imagen.getNombre(), mainView.getViewContext()));
+//                                    Picasso.with(mainView.getViewContext()).
+//                                            load(URL + "/picture/"
+//                                                    + imagen.getId()).into(StorageManager
+//                                            .getTarget(imagen.getNombre(), mainView.getViewContext()));
                                 }
                                 progressDialog.dismiss();
                             } catch (JSONException e) {

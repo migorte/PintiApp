@@ -27,7 +27,6 @@
                 android:background="@drawable/scrim_top"
                 app:layout_collapseMode="pin" />
 
-
             <ImageView
                 android:id="@+id/imagen_toolbar"
                 android:layout_width="match_parent"
@@ -50,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

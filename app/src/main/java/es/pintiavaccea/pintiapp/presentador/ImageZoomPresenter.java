@@ -2,20 +2,16 @@ package es.pintiavaccea.pintiapp.presentador;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-
+import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
-import es.pintiavaccea.pintiapp.utility.DataSource;
-import es.pintiavaccea.pintiapp.utility.StorageManager;
 import es.pintiavaccea.pintiapp.vista.ImageZoomView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -29,7 +25,7 @@ public class ImageZoomPresenter {
 
     private ImageZoomView view;
     private Imagen imagen;
-    public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
+    private static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
 
     public ImageZoomPresenter(ImageZoomView view) {
         this.view = view;
@@ -50,49 +46,38 @@ public class ImageZoomPresenter {
      *
      * @param imageView la ImageView donde se cargará la imagen
      */
-    public void loadImagen(ImageView imageView) {
-        Context context = view.getViewContext();
-        DataSource dataSource = new DataSource(context);
+    public void loadImagen(final ImageView imageView) {
+        final Context context = view.getViewContext();
         assert imagen != null;
-        Imagen imagendb = dataSource.getImagen(imagen.getId());
 
-        if (imagendb != null) {
-            Bitmap imagenError = null;
-            try {
-                imagenError = StorageManager.loadImageFromStorage(imagendb.getNombre(), context);
+        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+        Picasso.with(context)
+                .load(URL + "/picture/" + imagen.getId())
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        attacher.update();
+                    }
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Drawable error = new BitmapDrawable(context.getResources(), imagenError);
+                    @Override
+                    public void onError() {
+                        //Try again online if cache failed
+                        Picasso.with(context)
+                                .load(URL + "/picture/" + imagen.getId())
+                                .error(R.drawable.logo_cevfw_opt)
+                                .into(imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        attacher.update();
+                                    }
 
-            final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-            Picasso.with(context).load(URL + "/picture/"
-                    + imagen.getId()).error(error).into(imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    attacher.update();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } else {
-            final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-            Picasso.with(context).load(URL + "/picture/"
-                    + imagen.getId()).into(imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    attacher.update();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        }
+                                    @Override
+                                    public void onError() {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
+                    }
+                });
     }
 }

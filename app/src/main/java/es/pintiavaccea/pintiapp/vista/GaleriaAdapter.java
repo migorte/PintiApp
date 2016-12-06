@@ -8,20 +8,20 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
-import es.pintiavaccea.pintiapp.utility.DataSource;
-import es.pintiavaccea.pintiapp.utility.StorageManager;
 
 /**
  * Created by Miguel on 09/06/2016.
@@ -92,27 +92,37 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ViewHold
          * Enlaza la imagen correspondiente al item del adaptador.
          * @param imagen la imagen correspondiente al item
          */
-        public void bind(Imagen imagen) {
+        public void bind(final Imagen imagen) {
             this.imagen = imagen;
-            DataSource dataSource = new DataSource(context);
-            if(dataSource.existImagen(imagen)) {
-                Bitmap bitmapPortada = null;
-                try {
-                    bitmapPortada = StorageManager.loadImageFromStorage(imagen.getNombre(), context);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
 
-                Drawable error = new BitmapDrawable(context.getResources(), bitmapPortada);
+            Picasso.with(context)
+                    .load(URL + "/thumbnail/" + imagen.getId())
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
 
-                Picasso.with(context).load(URL + "/thumbnail/"
-                        + imagen.getId()).error(error).into(imageView);
-            } else{
-                Picasso.with(context).load(URL + "/thumbnail/"
-                        + imagen.getId()).into(imageView);
-                Picasso.with(context).load(URL + "/picture/"
-                        + imagen.getId()).into(StorageManager.getTarget(imagen.getNombre(), context));
-            }
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(context)
+                                    .load(URL + "/thumbnail/" + imagen.getId())
+                                    .error(R.drawable.logo_cevfw_opt)
+                                    .into(imageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso","Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 }

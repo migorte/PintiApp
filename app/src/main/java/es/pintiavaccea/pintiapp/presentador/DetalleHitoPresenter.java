@@ -2,11 +2,9 @@ package es.pintiavaccea.pintiapp.presentador;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +13,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import es.pintiavaccea.pintiapp.R;
 import es.pintiavaccea.pintiapp.modelo.Hito;
 import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.modelo.Video;
@@ -34,7 +35,6 @@ import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
 import es.pintiavaccea.pintiapp.utility.JsonVideoParser;
-import es.pintiavaccea.pintiapp.utility.StorageManager;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
 
@@ -225,25 +225,36 @@ public class DetalleHitoPresenter {
      * Carga la portada del hito en la vista.
      * @param portada la ImageView donde se cargará la imagen.
      */
-    public void loadPortada(ImageView portada) {
-        DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
-        Imagen imagendb = dataSource.getImagen(hito.getIdImagenPortada());
+    public void loadPortada(final ImageView portada) {
 
-        if (imagendb != null) {
-            Bitmap bitmapPortada = null;
-            try {
-                bitmapPortada = StorageManager.loadImageFromStorage(imagendb.getNombre(), detalleHitoView.getViewContext());
+        Picasso.with(detalleHitoView.getViewContext())
+                .load(URL + "/picture/" + hito.getIdImagenPortada())
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(portada, new Callback() {
+                    @Override
+                    public void onSuccess() {
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Drawable error = new BitmapDrawable(detalleHitoView.getViewContext().getResources(), bitmapPortada);
-            Picasso.with(detalleHitoView.getViewContext()).load(URL + "/picture/"
-                    + hito.getIdImagenPortada()).error(error).into(portada);
-        } else {
-            Picasso.with(detalleHitoView.getViewContext()).load(URL + "/picture/"
-                    + hito.getIdImagenPortada()).into(portada);
-        }
+                    }
+
+                    @Override
+                    public void onError() {
+                        //Try again online if cache failed
+                        Picasso.with(detalleHitoView.getViewContext())
+                                .load(URL + "/picture/" + hito.getIdImagenPortada())
+                                .error(R.drawable.logo_cevfw_opt)
+                                .into(portada, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
+                    }
+                });
 
     }
 }

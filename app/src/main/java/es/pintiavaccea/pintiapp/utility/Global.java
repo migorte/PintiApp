@@ -1,31 +1,22 @@
 package es.pintiavaccea.pintiapp.utility;
 
-/**
- * Created by madri on 14/11/2016.
- */
-
 import android.app.Application;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Created by Miguel Ortega on 14/11/2016.
+ *
+ * Crea una instancia del builder de Picasso para que sea utilizado en toda la aplicación.
+ */
 public class Global extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-//        Picasso.Builder builder = new Picasso.Builder(this);
-//        builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
-//        builder.downloader(new OkHttpDownloader(new OkHttpClient()));
-//        Picasso built = builder.build();
-//        built.setIndicatorsEnabled(true);
-//        built.setLoggingEnabled(true);
-//        Picasso.setSingletonInstance(built);
 
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(20, TimeUnit.SECONDS);

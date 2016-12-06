@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
+    android:background="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/colorPrimaryDark"
-    android:background="@color/colorPrimaryDark">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/hito_foto"
@@ -32,7 +31,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:textColor="@color/white"
             style="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
@@ -46,8 +44,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:textColor="@color/white"
-            style="@style/TextAppearance.AppCompat.Subhead" />
+            style="@style/AppTheme.TituloHito" />
 
         <TextView
             android:id="@+id/hito_subtitulo"
@@ -62,8 +59,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/hito_titulo"
             android:alpha="0.57"
-            android:textColor="@color/white"
-            style="@style/TextAppearance.AppCompat.Body1"/>
+            style="@style/AppTheme.SubTituloHito"/>
 
     </RelativeLayout>
 

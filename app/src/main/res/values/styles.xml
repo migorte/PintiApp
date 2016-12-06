@@ -28,4 +28,24 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="AppTheme.TextoPrimario">
+        <item name="android:alpha">0.87</item>
+    </style>
+
+    <style name="AppTheme.TextoSecundario">
+        <item name="android:alpha">0.54</item>
+    </style>
+
+    <style name="AppTheme.TituloHito" parent="AppTheme.TextoPrimario">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppTheme.SubTituloHito" parent="AppTheme.TextoSecundario">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.Texto" parent="AppTheme.TextoPrimario">
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

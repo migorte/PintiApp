@@ -204,7 +204,7 @@ public class DetalleHitoPresenter {
      * Pasa a la vista el título del hito
      */
     public void loadTitle() {
-        ((Activity) detalleHitoView.getViewContext()).setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
+        detalleHitoView.setTitle(hito.getNumeroHito() + ". " + hito.getTitulo());
     }
 
     /**

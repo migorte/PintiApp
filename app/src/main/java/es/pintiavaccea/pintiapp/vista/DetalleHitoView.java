@@ -17,6 +17,11 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 public interface DetalleHitoView {
 
     /**
+     * Configura el título del hito.
+     */
+    void setTitle(String titulo);
+
+    /**
      * Devuelve el contexto de la actividad.
      * @return el contexto de la actividad
      */

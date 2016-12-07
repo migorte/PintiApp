@@ -15,74 +15,25 @@
         android:background="@color/background"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/subtitulo"
+            style="@style/AppTheme.TituloHito"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@color/white"
-            android:clipToPadding="false"
-            android:elevation="2dp"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:padding="32dp" />
 
-            <TextView
-                android:id="@+id/subtitulo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:textSize="@dimen/subtitulo_size" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/video_layout"
+        <VideoView
+            android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/white"
-            android:clipToPadding="false"
-            android:elevation="2dp"
-            android:padding="16dp">
+            android:padding="32dp" />
 
-            <VideoView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/texto"
+            style="@style/AppTheme.SubTituloHito"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@color/white"
-            android:clipToPadding="false"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/etiqueta_descripcion"
-                style="@style/Etiqueta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/descripcion" />
-
-            <TextView
-                android:id="@+id/texto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etiqueta_descripcion"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                style="@style/AppTheme.Texto"/>
-
-        </RelativeLayout>
+            android:padding="32dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"

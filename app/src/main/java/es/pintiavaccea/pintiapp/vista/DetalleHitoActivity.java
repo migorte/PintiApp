@@ -46,6 +46,8 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         detalleHitoPresenter = new DetalleHitoPresenter(this);
 
         detalleHitoPresenter.setHito(getIntent(), savedInstanceState);
@@ -79,6 +81,12 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
     }
 
     @Override
+    public void setTitle(String titulo){
+        TextView textView = (TextView) findViewById(R.id.hito_titulo);
+        textView.setText(titulo);
+    }
+
+    @Override
     public Context getViewContext(){
         return this;
     }
@@ -109,7 +117,7 @@ public class DetalleHitoActivity extends AppCompatActivity implements DetalleHit
 
     @Override
     public void hideVideoLayout(){
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.video_layout);
+        VideoView layout = (VideoView) findViewById(R.id.video_view);
         assert layout != null;
         layout.setVisibility(View.GONE);
     }

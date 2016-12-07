@@ -16,9 +16,9 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="312dp"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="#00000000"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <View
@@ -30,7 +30,7 @@
             <ImageView
                 android:id="@+id/imagen_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="312dp"
+                android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:transitionName="portada_hito"
@@ -40,14 +40,28 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sheet_text_scrim_height_bottom"
-                android:layout_alignBottom="@id/imagen_toolbar"
                 android:layout_gravity="bottom"
                 android:background="@drawable/scrim_bottom" />
+
+            <TextView
+                android:id="@+id/hito_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:paddingLeft="36dp"
+                android:paddingStart="36dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="12dp"
+                android:paddingTop="24dp"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="156dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextAppearance="@style/Toolbar.TitleText"/>

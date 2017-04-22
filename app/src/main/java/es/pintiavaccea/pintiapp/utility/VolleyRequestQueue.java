@@ -51,7 +51,7 @@ public class VolleyRequestQueue {
      * Añade una solicitud a la cola
      * @param req la solicitud a añadir
      */
-    public  void addToRequestQueue(Request req) {
+    public void addToRequestQueue(Request req) {
         getRequestQueue().add(req);
     }
 

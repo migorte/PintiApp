@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private RecyclerView mRecyclerView;
 
-    private FABProgressCircle fab;
+    private FloatingActionButton fab;
 
 
     @Override
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         presenter.getListaHitos();
 
-        fab = (FABProgressCircle) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,22 +119,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        FloatingActionButton fabPrecargar = (FloatingActionButton) findViewById(R.id.fab2);
-        fabPrecargar.setOnClickListener(new View.OnClickListener() {
+        Button btnPrecargar = (Button) findViewById(R.id.precargar_boton);
+        btnPrecargar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                presenter.precargarDatos((Activity) v.getContext());
+            public void onClick(View view) {
+                presenter.precargarDatos(MainActivity.this);
             }
         });
+
+//        FloatingActionButton fabPrecargar = (FloatingActionButton) findViewById(R.id.fab2);
+//        fabPrecargar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                presenter.precargarDatos((Activity) v.getContext());
+//            }
+//        });
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /*
- * Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
- * performs a swipe-to-refresh gesture.
- */
+         * Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+         * performs a swipe-to-refresh gesture.
+         */
         refreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override

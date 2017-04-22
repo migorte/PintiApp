@@ -39,4 +39,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.2'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'me.neavo:vitamio:4.2.2'
+    compile "me.henrytao:smooth-app-bar-layout:24.2.1.0"
 }

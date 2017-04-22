@@ -22,6 +22,17 @@
             android:layout_height="match_parent"
             android:padding="32dp" />
 
+        <Button
+            android:id ="@+id/push_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Localización"
+            android:background="@drawable/rounded_button"
+            android:padding="15dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary" />
+
         <VideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"

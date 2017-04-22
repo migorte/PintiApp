@@ -34,22 +34,35 @@ import es.pintiavaccea.pintiapp.vista.MainView;
 
 /**
  * Created by Miguel on 15/07/2016.
- *
+ * <p>
  * Presentador de la vista principal. Principalmente envía los datos de las visitas.
  */
 @SuppressWarnings("CanBeFinal")
 public class MainPresenter {
     private MainView mainView;
     public static String URL = "http://per.infor.uva.es:8080/pintiaserver/pintiaserver";
+    private int requestPending;
 
-    public MainPresenter(MainView mainView){
+    public MainPresenter(MainView mainView) {
         this.mainView = mainView;
+    }
+
+    private void setRequestPending(int value) {
+        requestPending = value;
+    }
+
+    private synchronized void decRequestPending() {
+        requestPending--;
+    }
+
+    private synchronized boolean isRequestPendingEmpty() {
+        return requestPending == 0;
     }
 
     /**
      * Descarga el horario de las visitas y se lo pasa a la actividad principal.
      */
-    public void getVisitas(){
+    public void getVisitas() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 URL + "/getVisita",
@@ -78,7 +91,7 @@ public class MainPresenter {
     /**
      * Carga la lista de hitos completa y se la pasa al adaptador de la lista de hitos.
      */
-    public void getListaHitos(){
+    public void getListaHitos() {
         final DataSource dataSource = new DataSource(mainView.getViewContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -175,7 +188,7 @@ public class MainPresenter {
                             DataSource datasource = new DataSource(mainView.getViewContext());
                             Hito hito = datasource.getHitoCercano(mLastLocation.getLatitude(),
                                     mLastLocation.getLongitude());
-                            if(hito != null){
+                            if (hito != null) {
                                 Intent intent = new Intent(mainView.getViewContext(), DetalleHitoActivity.class);
                                 intent.putExtra("hito", hito);
                                 mainView.openHito(intent);
@@ -193,12 +206,14 @@ public class MainPresenter {
         }
     }
 
-    public void precargarDatos(Activity activity){
+    public void precargarDatos(Activity activity) {
         final ProgressDialog progressDialog = new ProgressDialog(activity);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Descargando datos...");
         final DataSource dataSource = new DataSource(mainView.getViewContext());
         List<Hito> hitos = dataSource.getAllHitos();
-        for(final Hito hito : hitos){
+        setRequestPending(hitos.size());
+        for (final Hito hito : hitos) {
             JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
                     Request.Method.GET,
                     URL + "/getImagenesHito/" + hito.getId(),
@@ -214,12 +229,13 @@ public class MainPresenter {
                                     Imagen imagen = parser.leerImagen(object);
                                     imagen.setHito(hito.getId());
                                     dataSource.saveImagen(imagen);
-//                                    Picasso.with(mainView.getViewContext()).
-//                                            load(URL + "/picture/"
-//                                                    + imagen.getId()).into(StorageManager
-//                                            .getTarget(imagen.getNombre(), mainView.getViewContext()));
+                                    Picasso.with(mainView.getViewContext()).
+                                            load(URL + "/picture/" + imagen.getId()).fetch();
                                 }
-                                progressDialog.dismiss();
+                                decRequestPending();
+                                if (isRequestPendingEmpty()){
+                                    progressDialog.dismiss();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -234,7 +250,7 @@ public class MainPresenter {
                     }
             );
             VolleyRequestQueue.getInstance(mainView.getViewContext()).addToRequestQueue(jsonObjectRequest);
-            progressDialog.show();
         }
+        progressDialog.show();
     }
 }

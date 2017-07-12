@@ -1,6 +1,7 @@
 package es.pintiavaccea.pintiapp.presentador;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
@@ -27,6 +28,7 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 import es.pintiavaccea.pintiapp.utility.DataSource;
 import es.pintiavaccea.pintiapp.utility.JsonHitoParser;
 import es.pintiavaccea.pintiapp.utility.JsonImagenParser;
+import es.pintiavaccea.pintiapp.utility.PreloadNotification;
 import es.pintiavaccea.pintiapp.utility.VolleyRequestQueue;
 import es.pintiavaccea.pintiapp.vista.DetalleHitoActivity;
 import es.pintiavaccea.pintiapp.vista.ListaHitosAdapter;
@@ -210,6 +212,8 @@ public class MainPresenter {
         final ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Descargando datos...");
+        PreloadNotification.buildNotification(activity);
+        PreloadNotification.startNotification();
         final DataSource dataSource = new DataSource(mainView.getViewContext());
         List<Hito> hitos = dataSource.getAllHitos();
         setRequestPending(hitos.size());
@@ -234,6 +238,7 @@ public class MainPresenter {
                                 }
                                 decRequestPending();
                                 if (isRequestPendingEmpty()){
+                                    PreloadNotification.finishNotification();
                                     progressDialog.dismiss();
                                 }
                             } catch (JSONException e) {
@@ -245,7 +250,11 @@ public class MainPresenter {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            progressDialog.dismiss();
+                            decRequestPending();
+                            if (isRequestPendingEmpty()){
+                                PreloadNotification.finishNotification();
+                                progressDialog.dismiss();
+                            }
                         }
                     }
             );

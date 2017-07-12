@@ -14,7 +14,7 @@ import es.pintiavaccea.pintiapp.modelo.Imagen;
 
 /**
  * Created by Miguel on 28/04/2016.
- *
+ * <p>
  * Implementa la persistencia de la aplicación. Inserta los datos en una base de datos SQLite.
  */
 public class DataSource {
@@ -82,20 +82,47 @@ public class DataSource {
     /**
      * Borra todos los hitos
      */
-    public void clearHitos(){
+    public void clearHitos() {
         database.delete(HITO_TABLE, null, null);
     }
 
     /**
      * Borra todas las imágenes de un determinado hito
+     *
      * @param hito el id del hito
      */
-    public void clearImagenes(int hito){
+    public void clearImagenes(int hito) {
         database.delete(IMAGEN_TABLE, ColumnImagen.HITO + "=" + hito, null);
+    }
+
+    public Hito getHito(int id) {
+        String[] args = new String[]{Integer.toString(id)};
+        Cursor cursor = database.rawQuery("select * from " + HITO_TABLE + " where " +
+                ColumnHito.ID + " = ?", args);
+
+        cursor.moveToFirst();
+        boolean itinerario = false;
+
+        if (cursor.getInt(cursor.getColumnIndex(ColumnHito.ITINERARIO)) == 1) itinerario = true;
+
+        Hito hito = new Hito(cursor.getInt(cursor.getColumnIndex(ColumnHito.ID)),
+                cursor.getInt(cursor.getColumnIndex(ColumnHito.NUMERO_HITO)),
+                cursor.getString(cursor.getColumnIndex(ColumnHito.TITULO)),
+                cursor.getString(cursor.getColumnIndex(ColumnHito.SUBTITULO)),
+                cursor.getDouble(cursor.getColumnIndex(ColumnHito.LATITUD)),
+                cursor.getDouble(cursor.getColumnIndex(ColumnHito.LONGITUD)),
+                itinerario,
+                cursor.getString(cursor.getColumnIndex(ColumnHito.TEXTO)),
+                cursor.getInt(cursor.getColumnIndex(ColumnHito.IDIMAGENPORTADA)));
+
+        cursor.close();
+
+        return hito;
     }
 
     /**
      * Devuelve todos los hitos guardados en la base de datos
+     *
      * @return todos los hitos guardados
      */
     public List<Hito> getAllHitos() {
@@ -131,11 +158,12 @@ public class DataSource {
 
     /**
      * Guarda una lista de hitos en la base de datos
+     *
      * @param hitos la lista de hitos
      */
-    public void saveListaHitos(List<Hito> hitos){
+    public void saveListaHitos(List<Hito> hitos) {
 
-        for(Hito hito : hitos){
+        for (Hito hito : hitos) {
 
             ContentValues values = new ContentValues();
 
@@ -155,9 +183,10 @@ public class DataSource {
 
     /**
      * Guarda una imagen en la base de datos
+     *
      * @param imagen la imagen a guardar
      */
-    public void saveImagen(Imagen imagen){
+    public void saveImagen(Imagen imagen) {
         ContentValues values = new ContentValues();
 
         values.put(ColumnImagen.ID, imagen.getId());
@@ -169,6 +198,7 @@ public class DataSource {
 
     /**
      * Devuelve una imagen según su id
+     *
      * @param id el id de la imagen a devolver
      * @return la imagen
      */
@@ -181,7 +211,7 @@ public class DataSource {
 
         Imagen imagen = null;
 
-        if (cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             imagen = new Imagen(cursor.getInt(cursor.getColumnIndex(ColumnImagen.ID)),
                     cursor.getString(cursor.getColumnIndex(ColumnImagen.NOMBRE)));
         }
@@ -192,6 +222,7 @@ public class DataSource {
 
     /**
      * Devuelve todas las imagenes de un hito
+     *
      * @param idHito el id del hito
      * @return todas las imágenes del hito
      */
@@ -219,22 +250,24 @@ public class DataSource {
 
     /**
      * Borra una imagen según su id
+     *
      * @param id el id de la imagen a borrar
      */
-    public void removeImagen(int id){
+    public void removeImagen(int id) {
         database.delete(IMAGEN_TABLE, ColumnImagen.ID + "=" + id, null);
     }
 
     /**
      * Comprueba si existe una imagen en la base de datos
+     *
      * @param imagen la imagen a comprobar
      * @return true si la imagen existe
      */
-    public boolean existImagen(Imagen imagen){
+    public boolean existImagen(Imagen imagen) {
         String[] args = new String[]{Integer.toString(imagen.getId())};
         Cursor cursor = database.rawQuery("select * from " + IMAGEN_TABLE + " where "
                 + ColumnImagen.ID + " =?", args);
-        if(cursor.getCount()<=0){
+        if (cursor.getCount() <= 0) {
             cursor.close();
             return false;
         }
@@ -244,11 +277,12 @@ public class DataSource {
 
     /**
      * Devuelve el hito más cercano a una posición determinada.
-     * @param latitud la latitud de la ubicación
+     *
+     * @param latitud  la latitud de la ubicación
      * @param longitud la longitud de la ubicación
      * @return el hito más cercano
      */
-    public Hito getHitoCercano(double latitud, double longitud){
+    public Hito getHitoCercano(double latitud, double longitud) {
         Cursor cursor = database.rawQuery("select * from " + HITO_TABLE, null);
 
         cursor.moveToFirst();

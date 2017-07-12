@@ -40,7 +40,7 @@ import es.pintiavaccea.pintiapp.vista.DetalleHitoView;
 
 /**
  * Created by Miguel on 30/06/2016.
- *
+ * <p>
  * Presentador de la actividad DetalleHitoActivity. Se encarga de proporcionar los modelos de datos
  * a la vista.
  */
@@ -56,20 +56,22 @@ public class DetalleHitoPresenter {
 
     /**
      * Configura el hito del que se muestran los detalles en la vista
-     * @param intent el intent con el que se llega a la vista
+     *
+     * @param intent            el intent con el que se llega a la vista
      * @param saveInstanceState el bundle donde se guarda el hito cuando la actividad se para
      */
     public void setHito(Intent intent, Bundle saveInstanceState) {
         Bundle extras = intent.getExtras();
         this.hito = extras.getParcelable("hito");
-        if(hito == null) saveInstanceState.getParcelable("hito");
+        if (hito == null) saveInstanceState.getParcelable("hito");
     }
 
     /**
      * Guarda la instancia del hito
+     *
      * @param outState bundle donde se guarda la instancia
      */
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("hito", hito);
     }
 
@@ -223,12 +225,16 @@ public class DetalleHitoPresenter {
 
     /**
      * Carga la portada del hito en la vista.
+     *
      * @param portada la ImageView donde se cargará la imagen.
      */
     public void loadPortada(final ImageView portada) {
 
+        final DataSource dataSource = new DataSource(detalleHitoView.getViewContext());
+        final int idImagenPortada = dataSource.getHito(hito.getId()).getIdImagenPortada();
+
         Picasso.with(detalleHitoView.getViewContext())
-                .load(URL + "/picture/" + hito.getIdImagenPortada())
+                .load(URL + "/picture/" + idImagenPortada)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(portada, new Callback() {
                     @Override
@@ -240,7 +246,7 @@ public class DetalleHitoPresenter {
                     public void onError() {
                         //Try again online if cache failed
                         Picasso.with(detalleHitoView.getViewContext())
-                                .load(URL + "/picture/" + hito.getIdImagenPortada())
+                                .load(URL + "/picture/" + idImagenPortada)
                                 .error(R.drawable.logo_cevfw_opt)
                                 .into(portada, new Callback() {
                                     @Override
@@ -250,7 +256,7 @@ public class DetalleHitoPresenter {
 
                                     @Override
                                     public void onError() {
-                                        Log.v("Picasso","Could not fetch image");
+                                        Log.v("Picasso", "Could not fetch image");
                                     }
                                 });
                     }

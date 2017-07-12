@@ -295,6 +295,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        fab.show();
+    }
+
     /**
      * Inicializa la localización de Google Play Services.
      */
